@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     
     var session: AVCaptureSession?
     var output = AVCapturePhotoOutput()
+    var timer: Timer!
 
     var previewLayer = AVCaptureVideoPreviewLayer()
     var shutterButton: UIButton = {
@@ -38,6 +39,7 @@ class ViewController: UIViewController {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 70, height: 40))
         label.text = "--"
         label.adjustsFontSizeToFitWidth = true
+        label.textColor = .white
         return label
     }()
 
@@ -54,6 +56,7 @@ class ViewController: UIViewController {
         checkCameraPerms()
         
         shutterButton.addTarget(self, action: #selector(didTapTakePhoto), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
         
         if(output.isPortraitEffectsMatteDeliverySupported) {
             portraitEffekt = true
@@ -117,6 +120,7 @@ class ViewController: UIViewController {
     
     private func setUpCamera(){
         let session = AVCaptureSession()
+        
         if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
       
             do {
@@ -146,6 +150,15 @@ class ViewController: UIViewController {
         setUpCamera()
     }
     
+    @objc private func navigateToSettings(){
+        var newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView")
+        newView?.modalTransitionStyle = .crossDissolve
+        newView?.view.layer.speed = 0.1
+        self.present(newView!, animated: true)
+        
+        //session?.stopRunning()
+    }
+    
     private func getSettings() -> AVCapturePhotoSettings{
         var photoSettings = AVCapturePhotoSettings()
         if(self.portraitEffekt){
@@ -173,13 +186,21 @@ class ViewController: UIViewController {
                     self.shutterButton.isUserInteractionEnabled = true
                     self.shutterButton.layer.borderColor = UIColor.red.cgColor
                     AudioServicesPlaySystemSound(1114)
+                
                 }
             })
         }
-
+        
+        //remove imagepreviews
+        for view in view.subviews{
+            if(view.layer.name == "photoPreview"){
+                view.removeFromSuperview()
+            }
+        }
 
     }
     
+
 }
 
 
@@ -193,9 +214,10 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         
       //  session?.stopRunning()
         
-       // imageView.contentMode = .scaleAspectFill
-        //imageView.frame = view.bounds
-        //view.addSubview(imageView)
+       imageView.contentMode = .scaleAspectFill
+        imageView.frame =   CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
+        imageView.layer.name = "photoPreview"
+        view.addSubview(imageView)
         
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
         
