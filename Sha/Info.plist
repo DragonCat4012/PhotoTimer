@@ -21,5 +21,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ovo</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>uwu</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please</string>
 </dict>
 </plist>
