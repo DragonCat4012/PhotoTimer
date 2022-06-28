@@ -14,6 +14,7 @@
 		DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */; };
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
+		DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1E0E286B5460001FF0BA /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		DDAC1E00286B3929001FF0BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDAC1E0E286B5460001FF0BA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +62,7 @@
 			children = (
 				DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */,
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
-				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
+				DDAC1E0D286B5448001FF0BA /* Tabs */,
 				DDAC1DFA286B3923001FF0BA /* Main.storyboard */,
 				DDAC1E00286B3929001FF0BA /* Assets.xcassets */,
 				DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */,
@@ -68,6 +70,15 @@
 				DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */,
 			);
 			path = Sha;
+			sourceTree = "<group>";
+		};
+		DDAC1E0D286B5448001FF0BA /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
+				DDAC1E0E286B5460001FF0BA /* SettingsView.swift */,
+			);
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */,
 				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
