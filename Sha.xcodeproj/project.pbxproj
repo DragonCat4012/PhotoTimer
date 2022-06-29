@@ -15,6 +15,8 @@
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
 		DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1E0E286B5460001FF0BA /* SettingsView.swift */; };
+		DDB92531286C8E5E0061A623 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB92530286C8E5E0061A623 /* TableCell.swift */; };
+		DDB92533286C8EC60061A623 /* TableStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB92532286C8EC60061A623 /* TableStruct.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDAC1E0E286B5460001FF0BA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DDB92530286C8E5E0061A623 /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		DDB92532286C8EC60061A623 /* TableStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableStruct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
+				DDB92530286C8E5E0061A623 /* TableCell.swift */,
+				DDB92532286C8EC60061A623 /* TableStruct.swift */,
 				DDAC1E0E286B5460001FF0BA /* SettingsView.swift */,
 			);
 			path = Tabs;
@@ -152,6 +158,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDB92533286C8EC60061A623 /* TableStruct.swift in Sources */,
+				DDB92531286C8E5E0061A623 /* TableCell.swift in Sources */,
 				DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */,
 				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
