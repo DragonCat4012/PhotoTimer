@@ -68,14 +68,12 @@ class TextInputCell: UITableViewCell {
         let size : CGFloat = contentView.frame.size.height - 12
         let width = contentView.frame.size.width - 12
         
-        
         iconContainer.frame = CGRect(x: 15, y: 6, width: size, height: size)
         
         let imageSize: CGFloat = size/1.5
         iconImageView.frame = CGRect(x: (size-imageSize)/2, y: (size-imageSize)/2, width: imageSize, height: imageSize)
         
         label.frame = CGRect(x: 25+iconContainer.frame.size.width, y: 0, width: width/2, height: contentView.frame.size.height)
-        
         inputField.frame = CGRect(x: label.frame.maxX + 20, y: 0, width: width-20-iconContainer.frame.size.width - label.frame.width - 40, height: contentView.frame.size.height)
     }
     
