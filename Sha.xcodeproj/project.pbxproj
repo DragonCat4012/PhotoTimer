@@ -18,6 +18,7 @@
 		DDB92531286C8E5E0061A623 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB92530286C8E5E0061A623 /* TableCell.swift */; };
 		DDB92533286C8EC60061A623 /* TableStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB92532286C8EC60061A623 /* TableStruct.swift */; };
 		DDB92535286C9B6B0061A623 /* TextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB92534286C9B6B0061A623 /* TextInputCell.swift */; };
+		DDDE98CB286CC2CC0008BE4A /* TestPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		DDB92530286C8E5E0061A623 /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
 		DDB92532286C8EC60061A623 /* TableStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableStruct.swift; sourceTree = "<group>"; };
 		DDB92534286C9B6B0061A623 /* TextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputCell.swift; sourceTree = "<group>"; };
+		DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPortrait.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				DDB92532286C8EC60061A623 /* TableStruct.swift */,
 				DDAC1E0E286B5460001FF0BA /* SettingsView.swift */,
 				DDB92534286C9B6B0061A623 /* TextInputCell.swift */,
+				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDB92533286C8EC60061A623 /* TableStruct.swift in Sources */,
+				DDDE98CB286CC2CC0008BE4A /* TestPortrait.swift in Sources */,
 				DDB92531286C8E5E0061A623 /* TableCell.swift in Sources */,
 				DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */,
 				DDB92535286C9B6B0061A623 /* TextInputCell.swift in Sources */,

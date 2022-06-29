@@ -11,7 +11,7 @@ import UIKit
 
 class ViewController: UIViewController {
     var useFrontCamera: Bool = false
-    var portraitEffekt: Bool = false
+    var portraitEffekt: Bool = true
     var photoCount: Int = 3
     var timeCount: Int = 3
     
@@ -43,8 +43,13 @@ class ViewController: UIViewController {
         return label
     }()
     
+    func updateData(){
+        self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
+        self.timeCount = UserDefaults.standard.integer(forKey: "Timercount")
+        countLabel.text = String(photoCount)
+    }
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         view.backgroundColor = .black
         view.layer.addSublayer(previewLayer)
@@ -57,11 +62,7 @@ class ViewController: UIViewController {
         
         shutterButton.addTarget(self, action: #selector(didTapTakePhoto), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
-        
-        if(output.isPortraitEffectsMatteDeliverySupported) {
-            portraitEffekt = true
-            output.isPortraitEffectsMatteDeliveryEnabled = true}
-        countLabel.text = String(photoCount)
+        updateData()
     }
     
     
@@ -120,7 +121,7 @@ class ViewController: UIViewController {
     
     private func setUpCamera(){
         let session = AVCaptureSession()
-        
+        //dualwideangel for portrait
         if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
             
             do {
@@ -151,23 +152,34 @@ class ViewController: UIViewController {
     }
     
     @objc private func navigateToSettings(){
-        var newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView")
-        newView?.modalTransitionStyle = .crossDissolve
-        newView?.view.layer.speed = 0.1
-        self.present(newView!, animated: true)
-        
+        var newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView") as! SettingsView
+        newView.modalTransitionStyle = .crossDissolve
+        newView.view.layer.speed = 0.1
+        newView.callback = {
+            self.updateData()
+        }
+        self.present(newView, animated: true)
         //session?.stopRunning()
     }
     
     private func getSettings() -> AVCapturePhotoSettings{
         var photoSettings = AVCapturePhotoSettings()
-        if(self.portraitEffekt){
-            photoSettings.isPortraitEffectsMatteDeliveryEnabled = true}
+        
+        if(self.output.isPortraitEffectsMatteDeliverySupported && self.output.isDepthDataDeliverySupported){
+            self.output.isPortraitEffectsMatteDeliveryEnabled = true
+            self.output.isDepthDataDeliveryEnabled = true
+            
+            photoSettings.isPortraitEffectsMatteDeliveryEnabled = true
+            photoSettings.isDepthDataDeliveryEnabled = true
+            
+            photoSettings.embedsDepthDataInPhoto = true
+            photoSettings.embedsPortraitEffectsMatteInPhoto = true
+        }
+        
         return photoSettings
     }
     
     @objc private func didTapTakePhoto(){
-        
         AudioServicesPlaySystemSound(1113)
         
         DispatchQueue.main.async {
@@ -175,10 +187,10 @@ class ViewController: UIViewController {
             self.shutterButton.layer.borderColor = UIColor.white.cgColor
         }
         
-        
         for i in 1...photoCount {
             let time = timeCount * i
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
+            
                 self.output.capturePhoto(with: self.getSettings(), delegate: self)
                 AudioServicesPlaySystemSound(1108)
                 
@@ -204,13 +216,17 @@ class ViewController: UIViewController {
 }
 
 
+
 extension ViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { return}
+       // print(photo.portraitEffectsMatte) //Optional(L008 2080x1170 v.1.1) or nil
+       // photo.portraitEffectsMatte?.mattingImage
         
+        if(photo.portraitEffectsMatte != nil) { print("------")}
+    
         let image = UIImage(data: data)
         let imageView = UIImageView(image: image)
-        
         
         //  session?.stopRunning()
         
@@ -218,14 +234,10 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         imageView.frame =   CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
-        
+    
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
-        
-        
         //    let genertor = UIImpactFeedbackGenerator(style: .soft)
         //  genertor.impactOccurred()
-        
-        AudioServicesPlaySystemSound(1108)
         
     }
     

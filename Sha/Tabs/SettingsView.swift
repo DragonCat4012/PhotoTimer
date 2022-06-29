@@ -16,11 +16,16 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
         return table
     }()
     
+    var callback: (() -> Void)!
 
     var models = [Section]()
+    private var count: Int =  3
+    private var time: Int = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.count = UserDefaults.standard.integer(forKey: "PhotoCount")
+        self.time = UserDefaults.standard.integer(forKey: "Timercount")
         update()
         
         view.addSubview(tableView)
@@ -41,6 +46,12 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
 
               headerView.addSubview(versionLabel)
               self.tableView.tableFooterView = headerView
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.set(self.count, forKey: "PhotoCount")
+        UserDefaults.standard.set(self.time, forKey: "Timercount")
+        self.callback()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -121,7 +132,7 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
                            icon: UIImage(systemName: "info.circle.fill"),
                            iconBackgroundColor: .systemBlue
                        ){
-                           let url = URL(string: "https://github.com/AKORA-Studios/Calq-iOS")
+                           let url = URL(string: "https://github.com/DragonCat4012/Sha")
                            UIApplication.shared.open(url!)
                        })
            )
@@ -130,11 +141,13 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
             
             .inputCell(model:InputOption(title: "Timer", subtitle: "4", icon: UIImage(systemName: "clock.fill"), iconBackgroundColor: .systemPink)
                            {
-                           
+                               self.time = 3
+                               self.count = 3
                            }),
             .inputCell(model:InputOption(title: "Count", subtitle: "4", icon: UIImage(systemName: "chart.bar.fill"), iconBackgroundColor: .systemTeal)
                            {
-                            
+                               self.count = 10
+                               self.time = 4
                            }),
             .staticCell(model:StaticOption(title: "Change Camera", icon: UIImage(systemName: "arrow.triangle.2.circlepath.camera.fill"), iconBackgroundColor: .systemPurple)
                            {

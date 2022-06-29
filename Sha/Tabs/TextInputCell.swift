@@ -93,7 +93,7 @@ class TextInputCell: UITableViewCell {
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
         
-        self.selectionStyle = .none
-        self.accessoryType = .none
+      //  self.selectionStyle = .none
+       // self.accessoryType = .none
     }
 }
