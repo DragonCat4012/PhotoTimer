@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     var session: AVCaptureSession?
     var output = AVCapturePhotoOutput()
     var timer: Timer!
-
+    
     var previewLayer = AVCaptureVideoPreviewLayer()
     var shutterButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         label.textColor = .white
         return label
     }()
-
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -68,12 +68,12 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer.frame = view.bounds
-     
+        
         shutterButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 70)
         settingsButton.center = CGPoint(x: view.frame.size.width/2 - 70, y: view.frame.size.height - 70)
         countLabel.center = CGPoint(x: view.frame.size.width/2 - 110, y: view.frame.size.height - 70)
     }
-
+    
     
     private func checkCameraPerms() {
         switch AVCaptureDevice.authorizationStatus(for: .video){
@@ -116,13 +116,13 @@ class ViewController: UIViewController {
             break
         }
     }
-
+    
     
     private func setUpCamera(){
         let session = AVCaptureSession()
         
         if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
-      
+            
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 if session.canAddInput(input){
@@ -140,7 +140,7 @@ class ViewController: UIViewController {
                 self.session = session
             }
             catch {
-               print(error)
+                print(error)
             }
         }
     }
@@ -174,7 +174,7 @@ class ViewController: UIViewController {
             self.shutterButton.isUserInteractionEnabled = false
             self.shutterButton.layer.borderColor = UIColor.white.cgColor
         }
-  
+        
         
         for i in 1...photoCount {
             let time = timeCount * i
@@ -186,7 +186,7 @@ class ViewController: UIViewController {
                     self.shutterButton.isUserInteractionEnabled = true
                     self.shutterButton.layer.borderColor = UIColor.red.cgColor
                     AudioServicesPlaySystemSound(1114)
-                
+                    
                 }
             })
         }
@@ -197,10 +197,10 @@ class ViewController: UIViewController {
                 view.removeFromSuperview()
             }
         }
-
+        
     }
     
-
+    
 }
 
 
@@ -212,9 +212,9 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         let imageView = UIImageView(image: image)
         
         
-      //  session?.stopRunning()
+        //  session?.stopRunning()
         
-       imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.frame =   CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
@@ -222,13 +222,13 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
         
         
-    //    let genertor = UIImpactFeedbackGenerator(style: .soft)
-      //  genertor.impactOccurred()
+        //    let genertor = UIImpactFeedbackGenerator(style: .soft)
+        //  genertor.impactOccurred()
         
         AudioServicesPlaySystemSound(1108)
-    
+        
     }
     
-
+    
 }
 
