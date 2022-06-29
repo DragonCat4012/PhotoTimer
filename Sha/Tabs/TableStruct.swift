@@ -15,9 +15,17 @@ struct Section {
 
 enum SettingsOptionType{
     case staticCell(model: StaticOption)
+    case inputCell(model: InputOption)
 }
 
 struct StaticOption{
+    let title: String
+    let icon: UIImage?
+    let iconBackgroundColor: UIColor
+    let selectHandler: (()-> Void)
+}
+
+struct InputOption{
     let title: String
     let subtitle: String?
     let icon: UIImage?

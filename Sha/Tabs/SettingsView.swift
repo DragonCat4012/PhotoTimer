@@ -12,6 +12,7 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
     private let tableView : UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(StaticCell.self, forCellReuseIdentifier: StaticCell.identifier)
+        table.register(TextInputCell.self, forCellReuseIdentifier: TextInputCell.identifier)
         return table
     }()
     
@@ -76,7 +77,14 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
                }
                cell.configure(with: model)
                return cell
+           case .inputCell(model: let model):
+               guard let cell = tableView.dequeueReusableCell(withIdentifier: TextInputCell.identifier, for: indexpath) as? TextInputCell else {
+                   return UITableViewCell()
+               }
+               cell.configure(with: model)
+               return cell
            }
+  
        }
        
        
@@ -87,6 +95,8 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
            
            switch type.self{
            case .staticCell(let model):
+               model.selectHandler()
+           case .inputCell(model: let model):
                model.selectHandler()
            }
        }
@@ -108,7 +118,6 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
                    model:
                        StaticOption(
                            title: "Github",
-                           subtitle: "",
                            icon: UIImage(systemName: "info.circle.fill"),
                            iconBackgroundColor: .systemBlue
                        ){
@@ -119,15 +128,15 @@ class SettingsView: UIViewController, UITableViewDelegate, UITableViewDataSource
         
            models.append(Section(title: "Settings", options: [
             
-            .staticCell(model:StaticOption(title: "Timer", subtitle: "", icon: UIImage(systemName: "clock.fill"), iconBackgroundColor: .systemPink)
+            .inputCell(model:InputOption(title: "Timer", subtitle: "4", icon: UIImage(systemName: "clock.fill"), iconBackgroundColor: .systemPink)
                            {
                            
                            }),
-            .staticCell(model:StaticOption(title: "Count", subtitle: "", icon: UIImage(systemName: "chart.bar.fill"), iconBackgroundColor: .systemTeal)
+            .inputCell(model:InputOption(title: "Count", subtitle: "4", icon: UIImage(systemName: "chart.bar.fill"), iconBackgroundColor: .systemTeal)
                            {
                             
                            }),
-            .staticCell(model:StaticOption(title: "Change Camera", subtitle: "", icon: UIImage(systemName: "arrow.triangle.2.circlepath.camera.fill"), iconBackgroundColor: .systemPurple)
+            .staticCell(model:StaticOption(title: "Change Camera", icon: UIImage(systemName: "arrow.triangle.2.circlepath.camera.fill"), iconBackgroundColor: .systemPurple)
                            {
                             
                            })
