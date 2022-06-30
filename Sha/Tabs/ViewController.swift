@@ -283,7 +283,6 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         imageView.frame =   CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
-        self.lastPreview = imageView
     
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
         
