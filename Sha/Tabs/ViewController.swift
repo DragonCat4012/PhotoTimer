@@ -67,6 +67,7 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        UserDefaults.standard.set("builtInWideAngleCamera", forKey: "CameraType")
         super.viewDidLoad()
         view.backgroundColor = .black
         view.layer.addSublayer(previewLayer)
@@ -142,13 +143,51 @@ class ViewController: UIViewController {
         }*/
     }
     
+    enum CamerTypes: String {
+        case builtInDualCamera
+        case builtInDualWideCamera
+        case builtInTripleCamera
+        case builtInWideAngleCamera
+        case builtInUltraWideCamera
+        case builtInTelephotoCamera
+        case builtInLiDARDepthCamera
+        case builtInTrueDepthCamera
+        case externalUnknown
+    }
+    
+    func getCameraType(_ name: String) -> AVCaptureDevice.DeviceType{
+        var type: AVCaptureDevice.DeviceType = .builtInWideAngleCamera
+        switch name {
+        case "builtInDualCamera":
+            type = .builtInDualCamera
+        case "builtInDualWideCamera":
+            type = .builtInDualWideCamera
+        case "builtInTripleCamera":
+            type = .builtInTripleCamera
+        case "builtInWideAngleCamera":
+            break
+        case "builtInUltraWideCamera":
+            type = .builtInUltraWideCamera
+        case "builtInTelephotoCamera":
+            type = .builtInTelephotoCamera
+        case "builtInLiDARDepthCamera":
+            type = .builtInLiDARDepthCamera
+        case "builtInTrueDepthCamera":
+            type = .builtInTrueDepthCamera
+        case "externalUnknown":
+            break
+        default:
+            break
+        }
+        return type
+    }
     
     private func setUpCamera() {
+        let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let session = AVCaptureSession()
+        
         //dualwideangel for portrait //builtInDualWideCamera
-        if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
-            
-     
+        if let device = AVCaptureDevice.default(getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
@@ -176,6 +215,7 @@ class ViewController: UIViewController {
                       self.present(infoAlert, animated: true)*/
             }
         } else {
+            return previewLayer.backgroundColor = UIColor.red.cgColor
             fatalError("No dual camera.")
            /* let infoAlert = UIAlertController(title: "Oh ein Fehler ist aufgetreten", message: "Dein handy scheint die von dir gewählte Kamera nicht zu haben :/", preferredStyle: .actionSheet)
                   infoAlert.addAction(UIAlertAction(title: "ok", style: .cancel))
@@ -226,8 +266,7 @@ class ViewController: UIViewController {
         for i in 1...photoCount {
             let time = timeCount * i
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
-                //let captureProcessor = PhotoCaptureProcessor()
-            //    photoOutput.capturePhoto(with: photoSettings, delegate: captureProcessor)
+            
                 self.output.capturePhoto(with: self.getSettings(), delegate: self)
                 AudioServicesPlaySystemSound(1108)
                 
