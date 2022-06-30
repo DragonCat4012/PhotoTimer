@@ -143,17 +143,7 @@ class ViewController: UIViewController {
         }*/
     }
     
-    enum CamerTypes: String {
-        case builtInDualCamera
-        case builtInDualWideCamera
-        case builtInTripleCamera
-        case builtInWideAngleCamera
-        case builtInUltraWideCamera
-        case builtInTelephotoCamera
-        case builtInLiDARDepthCamera
-        case builtInTrueDepthCamera
-        case externalUnknown
-    }
+
     
     func getCameraType(_ name: String) -> AVCaptureDevice.DeviceType{
         var type: AVCaptureDevice.DeviceType = .builtInWideAngleCamera
