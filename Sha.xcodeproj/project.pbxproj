@@ -66,6 +66,8 @@
 			children = (
 				DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */,
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
+				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
+				DD3B2050286E0752003E5557 /* PortraitTest2.swift */,
 				DDAC1E0D286B5448001FF0BA /* Tabs */,
 				DDAC1DFA286B3923001FF0BA /* Main.storyboard */,
 				DDAC1E00286B3929001FF0BA /* Assets.xcassets */,
@@ -80,8 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
-				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
-				DD3B2050286E0752003E5557 /* PortraitTest2.swift */,
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 			);
 			path = Tabs;
