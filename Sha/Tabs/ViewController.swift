@@ -146,7 +146,7 @@ class ViewController: UIViewController {
     private func setUpCamera() {
         let session = AVCaptureSession()
         //dualwideangel for portrait //builtInDualWideCamera
-        if let device = AVCaptureDevice.default(.builtInDualWideCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+        if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
             
      
             self.session?.beginConfiguration()
@@ -217,10 +217,10 @@ class ViewController: UIViewController {
             self.shutterButton.layer.borderColor = UIColor.white.cgColor
             
             self.switchButton.isUserInteractionEnabled = false
-            self.switchButton.layer.borderColor = UIColor.clear.cgColor
+            self.switchButton.tintColor = .gray
             
             self.settingsButton.isUserInteractionEnabled = false
-            self.settingsButton.layer.borderColor = UIColor.clear.cgColor
+            self.settingsButton.tintColor = .gray
         }
         
         for i in 1...photoCount {
@@ -236,10 +236,10 @@ class ViewController: UIViewController {
                     self.shutterButton.layer.borderColor = UIColor.red.cgColor
                     
                     self.switchButton.isUserInteractionEnabled = true
-                    self.switchButton.layer.borderColor = UIColor.white.cgColor
+                    self.switchButton.tintColor = .white
                     
                     self.settingsButton.isUserInteractionEnabled = true
-                    self.settingsButton.layer.borderColor = UIColor.white.cgColor
+                    self.settingsButton.tintColor = .white
                     
                     AudioServicesPlaySystemSound(1114)
                 }
