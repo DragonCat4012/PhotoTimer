@@ -67,7 +67,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let cameraString = pickerDataSource[row] ?? pickerDataSource[3]
+        let cameraString = pickerDataSource[row]
         self.camera = cameraString
     }
     

@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     var switchButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.layer.cornerRadius = 20
-        button.setBackgroundImage(UIImage(systemName: "arrow.triangle.2.circlepath"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "arrow.clockwise.circle.fill"), for: .normal)
         button.tintColor = .white
         return button
     }()
@@ -144,39 +144,14 @@ class ViewController: UIViewController {
     
 
     
-    func getCameraType(_ name: String) -> AVCaptureDevice.DeviceType{
-        var type: AVCaptureDevice.DeviceType = .builtInWideAngleCamera
-        switch name {
-        case "builtInDualCamera":
-            type = .builtInDualCamera
-        case "builtInDualWideCamera":
-            type = .builtInDualWideCamera
-        case "builtInTripleCamera":
-            type = .builtInTripleCamera
-        case "builtInWideAngleCamera":
-            break
-        case "builtInUltraWideCamera":
-            type = .builtInUltraWideCamera
-        case "builtInTelephotoCamera":
-            type = .builtInTelephotoCamera
-        case "builtInLiDARDepthCamera":
-            type = .builtInLiDARDepthCamera
-        case "builtInTrueDepthCamera":
-            type = .builtInTrueDepthCamera
-        case "externalUnknown":
-            break
-        default:
-            break
-        }
-        return type
-    }
+
     
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
         
         //dualwideangel for portrait //builtInDualWideCamera
-        if let device = AVCaptureDevice.default(getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
@@ -196,7 +171,9 @@ class ViewController: UIViewController {
                 
                 newSession.startRunning()
                 self.session = newSession
-                print(device.deviceType)
+                
+                self.shutterButton.isUserInteractionEnabled = true
+                self.shutterButton.layer.borderColor = UIColor.red.cgColor
             }
             catch {
                 print(error)
@@ -205,6 +182,8 @@ class ViewController: UIViewController {
                       self.present(infoAlert, animated: true)*/
             }
         } else {
+            self.shutterButton.isUserInteractionEnabled = false
+            self.shutterButton.layer.borderColor = UIColor.gray.cgColor
             previewLayer.session = nil
             return previewLayer.backgroundColor = UIColor.red.cgColor
         }
@@ -219,7 +198,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func navigateToSettings(){
-        var newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView") as! SettingsView
+        let newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView") as! SettingsView
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
         newView.callback = {
@@ -229,11 +208,7 @@ class ViewController: UIViewController {
         self.present(newView, animated: true)
     }
     
-    private func getSettings() -> AVCapturePhotoSettings{
-        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-
-        return photoSettings
-    }
+  
     
     @objc private func didTapTakePhoto(){
         AudioServicesPlaySystemSound(1113)
@@ -253,7 +228,7 @@ class ViewController: UIViewController {
             let time = timeCount * i
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
             
-                self.output.capturePhoto(with: self.getSettings(), delegate: self)
+                self.output.capturePhoto(with: Util.getSettings(), delegate: self)
                 AudioServicesPlaySystemSound(1108)
                 
                 if(i == self.photoCount){
