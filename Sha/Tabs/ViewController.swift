@@ -67,7 +67,6 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        UserDefaults.standard.set("builtInWideAngleCamera", forKey: "CameraType")
         super.viewDidLoad()
         view.backgroundColor = .black
         view.layer.addSublayer(previewLayer)
@@ -174,7 +173,7 @@ class ViewController: UIViewController {
     
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
-        let session = AVCaptureSession()
+        let newSession = AVCaptureSession()
         
         //dualwideangel for portrait //builtInDualWideCamera
         if let device = AVCaptureDevice.default(getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
@@ -184,19 +183,20 @@ class ViewController: UIViewController {
             
             do {
                 let input = try AVCaptureDeviceInput(device: device)
-                if session.canAddInput(input){
-                    session.addInput(input)
+                if newSession.canAddInput(input){
+                    newSession.addInput(input)
                 }
                 
-                if session.canAddOutput(output){
-                    session.addOutput(output)
+                if newSession.canAddOutput(output){
+                    newSession.addOutput(output)
                 }
                 
                 previewLayer.videoGravity = .resizeAspectFill
-                previewLayer.session = session
+                previewLayer.session = newSession
                 
-                session.startRunning()
-                self.session = session
+                newSession.startRunning()
+                self.session = newSession
+                print(device.deviceType)
             }
             catch {
                 print(error)
@@ -205,12 +205,8 @@ class ViewController: UIViewController {
                       self.present(infoAlert, animated: true)*/
             }
         } else {
+            previewLayer.session = nil
             return previewLayer.backgroundColor = UIColor.red.cgColor
-            fatalError("No dual camera.")
-           /* let infoAlert = UIAlertController(title: "Oh ein Fehler ist aufgetreten", message: "Dein handy scheint die von dir gewählte Kamera nicht zu haben :/", preferredStyle: .actionSheet)
-                  infoAlert.addAction(UIAlertAction(title: "ok", style: .cancel))
-                  self.present(infoAlert, animated: true)*/
-            return
         }
     }
     
@@ -228,9 +224,9 @@ class ViewController: UIViewController {
         newView.view.layer.speed = 0.1
         newView.callback = {
             self.updateData()
+            self.setUpCamera()
         }
         self.present(newView, animated: true)
-        //session?.stopRunning()
     }
     
     private func getSettings() -> AVCapturePhotoSettings{
