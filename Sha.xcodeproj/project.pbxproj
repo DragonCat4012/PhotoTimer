@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD3B2051286E0752003E5557 /* PortraitTest2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3B2050286E0752003E5557 /* PortraitTest2.swift */; };
 		DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */; };
 		DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */; };
 		DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF8286B3923001FF0BA /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD3B2050286E0752003E5557 /* PortraitTest2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitTest2.swift; sourceTree = "<group>"; };
 		DDAC1DF1286B3923001FF0BA /* Sha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				DDAC1E0E286B5460001FF0BA /* SettingsView.swift */,
 				DDB92534286C9B6B0061A623 /* TextInputCell.swift */,
 				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
+				DD3B2050286E0752003E5557 /* PortraitTest2.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 				DDB92533286C8EC60061A623 /* TableStruct.swift in Sources */,
 				DDDE98CB286CC2CC0008BE4A /* TestPortrait.swift in Sources */,
 				DDB92531286C8E5E0061A623 /* TableCell.swift in Sources */,
+				DD3B2051286E0752003E5557 /* PortraitTest2.swift in Sources */,
 				DDAC1E0F286B5460001FF0BA /* SettingsView.swift in Sources */,
 				DDB92535286C9B6B0061A623 /* TextInputCell.swift in Sources */,
 				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
