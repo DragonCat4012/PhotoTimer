@@ -21,6 +21,8 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSCameraPortraitEffectEnabled</key>
+	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>ovo</string>
 	<key>NSPhotoLibraryUsageDescription</key>

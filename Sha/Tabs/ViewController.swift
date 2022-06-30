@@ -11,7 +11,6 @@ import UIKit
 
 class ViewController: UIViewController {
     var useFrontCamera: Bool = false
-    var portraitEffekt: Bool = true
     var photoCount: Int = 3
     var timeCount: Int = 3
     
@@ -43,10 +42,19 @@ class ViewController: UIViewController {
         return label
     }()
     
+    var timeLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 70, height: 40))
+        label.text = "--"
+        label.adjustsFontSizeToFitWidth = true
+        label.textColor = .white
+        return label
+    }()
+    
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.timeCount = UserDefaults.standard.integer(forKey: "Timercount")
         countLabel.text = String(photoCount)
+        timeLabel.text = String(self.timeCount) + "s"
     }
     
     override func viewDidLoad() {
@@ -57,6 +65,7 @@ class ViewController: UIViewController {
         view.addSubview(shutterButton)
         view.addSubview(settingsButton)
         view.addSubview(countLabel)
+        view.addSubview(timeLabel)
         
         checkCameraPerms()
         
@@ -73,6 +82,7 @@ class ViewController: UIViewController {
         shutterButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 70)
         settingsButton.center = CGPoint(x: view.frame.size.width/2 - 70, y: view.frame.size.height - 70)
         countLabel.center = CGPoint(x: view.frame.size.width/2 - 110, y: view.frame.size.height - 70)
+        timeLabel.center = CGPoint(x: view.frame.size.width/2 + 110, y: view.frame.size.height - 70)
     }
     
     
@@ -121,14 +131,25 @@ class ViewController: UIViewController {
     
     private func setUpCamera(){
         let session = AVCaptureSession()
-        //dualwideangel for portrait
-        if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+        //dualwideangel for portrait //builtInDualWideCamera
+        if let device = AVCaptureDevice.default(.builtInDualWideCamera, for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+            
+         /*   guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
+                for: .video, position: .unspecified)
+                else { fatalError("No dual camera.") }*/
+     
+            self.session?.beginConfiguration()
+            self.session?.sessionPreset = .photo
+            self.session?.commitConfiguration()
             
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 if session.canAddInput(input){
                     session.addInput(input)
                 }
+                
+                self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+                self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
                 
                 if session.canAddOutput(output){
                     session.addOutput(output)
@@ -163,19 +184,13 @@ class ViewController: UIViewController {
     }
     
     private func getSettings() -> AVCapturePhotoSettings{
-        var photoSettings = AVCapturePhotoSettings()
+        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+        photoSettings.isDepthDataDeliveryEnabled = output.isDepthDataDeliverySupported
+        photoSettings.isPortraitEffectsMatteDeliveryEnabled = output.isPortraitEffectsMatteDeliverySupported
         
-        if(self.output.isPortraitEffectsMatteDeliverySupported && self.output.isDepthDataDeliverySupported){
-            self.output.isPortraitEffectsMatteDeliveryEnabled = true
-            self.output.isDepthDataDeliveryEnabled = true
-            
-            photoSettings.isPortraitEffectsMatteDeliveryEnabled = true
-            photoSettings.isDepthDataDeliveryEnabled = true
-            
-            photoSettings.embedsDepthDataInPhoto = true
-            photoSettings.embedsPortraitEffectsMatteInPhoto = true
-        }
-        
+        self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+        self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+
         return photoSettings
     }
     
@@ -191,6 +206,9 @@ class ViewController: UIViewController {
             let time = timeCount * i
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
             
+                print(self.output.isPortraitEffectsMatteDeliveryEnabled, self.output.isDepthDataDeliveryEnabled)
+                //let captureProcessor = PhotoCaptureProcessor()
+            //    photoOutput.capturePhoto(with: photoSettings, delegate: captureProcessor)
                 self.output.capturePhoto(with: self.getSettings(), delegate: self)
                 AudioServicesPlaySystemSound(1108)
                 
@@ -220,12 +238,13 @@ class ViewController: UIViewController {
 extension ViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { return}
+   
        // print(photo.portraitEffectsMatte) //Optional(L008 2080x1170 v.1.1) or nil
        // photo.portraitEffectsMatte?.mattingImage
         
         if(photo.portraitEffectsMatte != nil) { print("------")}
     
-        let image = UIImage(data: data)
+        let image = UIImage(data:       photo.fileDataRepresentation()!)
         let imageView = UIImageView(image: image)
         
         //  session?.stopRunning()
@@ -243,4 +262,3 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
     
     
 }
-
