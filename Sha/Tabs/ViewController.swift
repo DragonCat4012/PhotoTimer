@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     var output = AVCapturePhotoOutput()
     var timer: Timer!
     
+    let context = CIContext()
+    
     var previewLayer = AVCaptureVideoPreviewLayer()
     var shutterButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
@@ -267,7 +269,7 @@ class ViewController: UIViewController {
     
     
 }
-
+//CIOpTile
 
 
 extension ViewController: AVCapturePhotoCaptureDelegate {
@@ -279,14 +281,37 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         
         //  session?.stopRunning()
         
+
+        
+        
+        let effects = ["CIComicEffect", "CIOpTile", "CIHighlightShadowAdjust", "CIConvolution9Vertical", "CIDepthOfField", "CIGloom"]
+        // save photo with filter
+       /* let comicEffect = CIFilter(name: "CIComicEffect")
+        comicEffect?.setValue(CIImage(data: data), forKey: kCIInputImageKey)
+        let cgImage = self.context.createCGImage(comicEffect!.outputImage!, from: CIImage(data: data)!.extent)!
+        let filteredImage = UIImage(cgImage: cgImage)
+        UIImageWriteToSavedPhotosAlbum(filteredImage, self, nil, nil)
+        
+        let imageView2 = UIImageView(image: filteredImage)
+        imageView2.contentMode = .scaleAspectFill
+        imageView2.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
+        imageView2.layer.name = "photoPreview"
+        view.addSubview(imageView2)*/
+        
+        // save normal photo
         imageView.contentMode = .scaleAspectFill
-        imageView.frame =   CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
+        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
-    
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
-        
     }
     
     
+    
+
+    
+    
+    
 }
+
+
