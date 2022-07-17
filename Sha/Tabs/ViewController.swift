@@ -298,11 +298,22 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         imageView2.layer.name = "photoPreview"
         view.addSubview(imageView2)*/
         
-        // save normal photo
+        
+        //picture white border
+        let border = UIView()
+        border.backgroundColor = .white
+        border.contentMode = .scaleAspectFill
+        border.frame = CGRect(x: 0, y: 0, width: view.frame.width/3.8, height: view.frame.height/3.8)
+        border.layer.name = "borderFrame"
+        
+        //show image on screen
         imageView.contentMode = .scaleAspectFill
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
+        view.addSubview(border)
         view.addSubview(imageView)
+        
+        // save normal photo
         UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
     }
     
