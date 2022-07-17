@@ -73,6 +73,17 @@ class ViewController: UIViewController {
         view.backgroundColor = .black
         view.layer.addSublayer(previewLayer)
         
+        //building grid qwq
+        let thirdX = self.view.frame.maxX / 3
+        let thirdY = self.view.frame.maxY / 3
+        drawLine(CGPoint(x: thirdX, y: 0), CGPoint(x: thirdX, y: self.view.frame.maxY))
+        drawLine(CGPoint(x: 2 * thirdX, y: 0), CGPoint(x: 2 * thirdX, y: self.view.frame.maxY))
+        
+        drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
+        drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
+        
+        
+        //setting up screen
         view.addSubview(shutterButton)
         view.addSubview(settingsButton)
         view.addSubview(switchButton)
@@ -88,6 +99,20 @@ class ViewController: UIViewController {
         updateData()
     }
     
+    
+    private func drawLine(_ point1: CGPoint, _ point2: CGPoint){
+        let stroke = UIBezierPath()
+        stroke.move(to: CGPoint(x: point1.x, y: point1.y))
+        stroke.addLine(to: CGPoint(x: point2.x, y: point2.y))
+        stroke.close()
+  
+        let layer =  CAShapeLayer()
+        layer.path = stroke.cgPath
+        layer.strokeColor = UIColor.white.cgColor
+        layer.lineWidth = 1
+        self.view.layer.addSublayer(layer)
+    }
+  
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
