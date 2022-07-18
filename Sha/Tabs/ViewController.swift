@@ -177,11 +177,14 @@ class ViewController: UIViewController {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
         
-        //dualwideangel for portrait //builtInDualWideCamera
+        // for portrait builtInDualWideCamera
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+            
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
+
+        
             
             do {
                 let input = try AVCaptureDeviceInput(device: device)
@@ -215,6 +218,8 @@ class ViewController: UIViewController {
             return previewLayer.backgroundColor = UIColor.red.cgColor
         }
     }
+    
+ 
     
    @objc private func changeCameraInput(){
         self.useFrontCamera = !self.useFrontCamera
@@ -253,9 +258,25 @@ class ViewController: UIViewController {
         
         for i in 1...photoCount {
             let time = timeCount * i
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
             
-                self.output.capturePhoto(with: Util.getSettings(), delegate: self)
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
+        
+                let photoSettings = Util.getSettings()
+                
+                //enable portraitEffect
+                if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
+                self.output.isHighResolutionCaptureEnabled = true
+                self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+    
+                photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+                    photoSettings.embedsDepthDataInPhoto = true
+                    photoSettings.isDepthDataFiltered = true
+                }
+            
+                
+                self.output.capturePhoto(with: photoSettings, delegate: self)
                 AudioServicesPlaySystemSound(1108)
                 
                 if(i == self.photoCount){
@@ -273,10 +294,8 @@ class ViewController: UIViewController {
         
         AudioServicesPlaySystemSound(1114)
         removePreiewPhoto()
-
-      
-        
     }
+    
     
     //remove imagepreviews
     func removePreiewPhoto(){
@@ -298,16 +317,14 @@ class ViewController: UIViewController {
 
 
 extension ViewController: AVCapturePhotoCaptureDelegate {
+  
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { return}
-    
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
-        
+    
         //  session?.stopRunning()
-        
-
-        
+       
         
         let effects = ["CIComicEffect", "CIOpTile", "CIHighlightShadowAdjust", "CIConvolution9Vertical", "CIDepthOfField", "CIGloom"]
         // save photo with filter
@@ -323,31 +340,29 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
         imageView2.layer.name = "photoPreview"
         view.addSubview(imageView2)*/
         
-        
-        //picture white border
-        let border = UIView()
-        border.backgroundColor = .white
-        border.contentMode = .scaleAspectFill
-        border.frame = CGRect(x: 0, y: 0, width: view.frame.width/3.8, height: view.frame.height/3.8)
-        border.layer.name = "borderFrame"
+    
+        //preview border
+        imageView.layer.borderColor = UIColor.accentColor.cgColor
+        imageView.layer.borderWidth = 2
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 5
+        imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         
         //show image on screen
+        imageView.layer.cornerRadius = 5
+        imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         imageView.contentMode = .scaleAspectFill
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
-        view.addSubview(border)
         view.addSubview(imageView)
         
         // save normal photo
-        UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
-    }
-    
-    
-    
+      UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
+        
+}
 
+    
     
     
     
 }
-
-
