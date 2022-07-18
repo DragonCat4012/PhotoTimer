@@ -28,6 +28,7 @@ class ViewController: UIViewController {
         button.layer.borderColor = UIColor.red.cgColor
         return button
     }()
+    
     var settingsButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.layer.cornerRadius = 20
@@ -35,6 +36,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     var switchButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.layer.cornerRadius = 20
@@ -60,6 +62,7 @@ class ViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
+    
     
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
@@ -98,7 +101,6 @@ class ViewController: UIViewController {
         switchButton.addTarget(self, action: #selector(changeCameraInput), for: .touchUpInside)
         updateData()
     }
-    
     
     private func drawLine(_ point1: CGPoint, _ point2: CGPoint){
         let stroke = UIBezierPath()
