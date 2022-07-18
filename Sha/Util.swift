@@ -7,9 +7,9 @@
 
 import Foundation
 import AVFoundation
+import SwiftUI
 
 struct Util {
-    
     
     static func getCameraType(_ name: String) -> AVCaptureDevice.DeviceType{
         var type: AVCaptureDevice.DeviceType = .builtInWideAngleCamera
@@ -44,4 +44,9 @@ struct Util {
         return photoSettings
     }
     
+}
+
+// MARK: - UIColor Extension
+extension UIColor {
+    static var accentColor: UIColor {return UIColor(named: "AccentColor") ??  UIColor.blue}
 }
