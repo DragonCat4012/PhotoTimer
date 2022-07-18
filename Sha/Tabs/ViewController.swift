@@ -108,7 +108,8 @@ class ViewController: UIViewController {
   
         let layer =  CAShapeLayer()
         layer.path = stroke.cgPath
-        layer.strokeColor = UIColor.white.cgColor
+        layer.strokeColor = UIColor.white.withAlphaComponent(0.5).cgColor
+      
         layer.lineWidth = 1
         self.view.layer.addSublayer(layer)
     }
