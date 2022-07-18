@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0AE5BB286E2C1100F135FB /* Util.swift */; };
+		DD0D33282885E9BF004AC91C /* portrait3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D33272885E9BF004AC91C /* portrait3.swift */; };
 		DD3B2051286E0752003E5557 /* PortraitTest2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3B2050286E0752003E5557 /* PortraitTest2.swift */; };
 		DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3B2052286E1B60003E5557 /* SettingsView.swift */; };
 		DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		DD0AE5BB286E2C1100F135FB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		DD0D33272885E9BF004AC91C /* portrait3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = portrait3.swift; sourceTree = "<group>"; };
 		DD3B2050286E0752003E5557 /* PortraitTest2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitTest2.swift; sourceTree = "<group>"; };
 		DD3B2052286E1B60003E5557 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDAC1DF1286B3923001FF0BA /* Sha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sha.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 				DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */,
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
 				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
+				DD0D33272885E9BF004AC91C /* portrait3.swift */,
 				DD3B2050286E0752003E5557 /* PortraitTest2.swift */,
 				DDAC1E0D286B5448001FF0BA /* Tabs */,
 				DDAC1DFA286B3923001FF0BA /* Main.storyboard */,
@@ -168,6 +171,7 @@
 				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
+				DD0D33282885E9BF004AC91C /* portrait3.swift in Sources */,
 				DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
