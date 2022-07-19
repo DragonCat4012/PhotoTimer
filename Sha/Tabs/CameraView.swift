@@ -336,11 +336,11 @@ class CameraView: UIViewController {
 extension CameraView: AVCapturePhotoCaptureDelegate {
   
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else { return}
+        guard let data = photo.fileDataRepresentation() else { print("No data qwq"); return}
+        guard error == nil else { print("Error capturing photo: \(error!)"); return }
+        
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
-    
-        //  session?.stopRunning()
        
         
         let effects = ["CIComicEffect", "CIOpTile", "CIHighlightShadowAdjust", "CIConvolution9Vertical", "CIDepthOfField", "CIGloom"]
@@ -357,6 +357,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         imageView2.layer.name = "photoPreview"
         view.addSubview(imageView2)*/
         
+        // UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
     
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
@@ -374,12 +375,17 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         view.addSubview(imageView)
         
         // save normal photo
-      UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
+           PHPhotoLibrary.requestAuthorization { status in
+               guard status == .authorized else { return }
+               
+               PHPhotoLibrary.shared().performChanges({
+                   let creationRequest = PHAssetCreationRequest.forAsset()
+                   creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
+               }, completionHandler: nil)
+           }
+        
         
 }
 
-    
-    
-    
     
 }
