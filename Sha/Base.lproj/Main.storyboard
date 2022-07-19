@@ -189,7 +189,7 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FAh-38-Yf3">
                                 <rect key="frame" x="323" y="447" width="49" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <color key="onTintColor" name="AccentColor"/>
                                 <connections>
                                     <action selector="gridSwitched:" destination="2hn-0Q-FZg" eventType="valueChanged" id="L4H-g5-Z1J"/>
@@ -204,6 +204,7 @@
                         <outlet property="PhotoStepper" destination="SFK-ac-0Q5" id="b9j-g8-nwX"/>
                         <outlet property="camerapicker" destination="4DB-Vk-CnD" id="DFC-N9-78g"/>
                         <outlet property="countLabel" destination="Dbj-0R-x0a" id="yhh-Cw-5an"/>
+                        <outlet property="gridSwitch" destination="FAh-38-Yf3" id="vQr-wL-oMc"/>
                         <outlet property="timeStepper" destination="FwD-1h-Xz2" id="lo1-PE-OvH"/>
                         <outlet property="timelabel" destination="7YQ-g9-bKT" id="oed-KZ-Is6"/>
                     </connections>

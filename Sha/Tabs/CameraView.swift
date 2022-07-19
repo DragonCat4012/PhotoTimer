@@ -13,6 +13,7 @@ class CameraView: UIViewController {
     var useFrontCamera: Bool = false
     var photoCount: Int = 3
     var timeCount: Int = 3
+    var gridEnabled: Bool = true
     
     var session: AVCaptureSession?
     var output = AVCapturePhotoOutput()
@@ -68,16 +69,13 @@ class CameraView: UIViewController {
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.timeCount = UserDefaults.standard.integer(forKey: "Timercount")
+        self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
+        
         countLabel.text = String(photoCount)
         timeLabel.text = String(self.timeCount) + "s"
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .black
-        view.layer.addSublayer(previewLayer)
         
-        //building grid qwq
+        //building grid
+        if(self.gridEnabled){
         let thirdX = self.view.frame.maxX / 3
         let thirdY = self.view.frame.maxY / 3
         drawLine(CGPoint(x: thirdX, y: 0), CGPoint(x: thirdX, y: self.view.frame.maxY))
@@ -85,9 +83,16 @@ class CameraView: UIViewController {
         
         drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
         drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
+        } else {
+            self.view.layer.sublayers?.removeAll(where: {$0.name == "GridLayer"})
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .black
+        view.layer.addSublayer(previewLayer)
         
-        
-        //setting up screen
         view.addSubview(shutterButton)
         view.addSubview(settingsButton)
         view.addSubview(switchButton)
@@ -116,6 +121,7 @@ class CameraView: UIViewController {
         layer.strokeColor = UIColor.white.withAlphaComponent(0.5).cgColor
       
         layer.lineWidth = 1
+        layer.name = "GridLayer"
         self.view.layer.addSublayer(layer)
     }
   
