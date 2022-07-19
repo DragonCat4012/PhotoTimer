@@ -4,7 +4,7 @@
 //
 //  Created by Akora on 28.06.22.
 //
-
+/*
 import AVFoundation
 import Photos
 import UIKit
@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var timer: Timer!
     
     let context = CIContext()
+    
     
     var previewLayer = AVCaptureVideoPreviewLayer()
     var shutterButton: UIButton = {
@@ -236,11 +237,16 @@ class ViewController: UIViewController {
         let newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView") as! SettingsView
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
+        
+        session?.stopRunning()
         newView.callback = {
+            self.session?.startRunning()
             self.updateData()
             self.setUpCamera()
         }
-        self.present(newView, animated: true)
+     //   self.present(newView, animated: true)
+        self.navigationController?.pushViewController(newView, animated: true)
+       
     }
     
   
@@ -369,3 +375,4 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
     
     
 }
+*/

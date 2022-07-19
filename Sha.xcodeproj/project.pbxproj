@@ -18,6 +18,8 @@
 		DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */; };
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
+		DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D622886E872000F5A67 /* LaunchView.swift */; };
+		DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D642886E87E000F5A67 /* CameraView.swift */; };
 		DDDE98CB286CC2CC0008BE4A /* TestPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,8 @@
 		DDAC1E00286B3929001FF0BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDB20D622886E872000F5A67 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		DDB20D642886E87E000F5A67 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPortrait.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +77,7 @@
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
 				DDDE98CA286CC2C60008BE4A /* TestPortrait.swift */,
 				DD0D33272885E9BF004AC91C /* portrait3.swift */,
+				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
 				DD3B2050286E0752003E5557 /* PortraitTest2.swift */,
 				DDAC1E0D286B5448001FF0BA /* Tabs */,
 				DDAC1DFA286B3923001FF0BA /* Main.storyboard */,
@@ -87,8 +92,9 @@
 		DDAC1E0D286B5448001FF0BA /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
+				DDB20D622886E872000F5A67 /* LaunchView.swift */,
+				DDB20D642886E87E000F5A67 /* CameraView.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -165,11 +171,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDDE98CB286CC2CC0008BE4A /* TestPortrait.swift in Sources */,
+				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				DD3B2051286E0752003E5557 /* PortraitTest2.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,
 				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
+				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
 				DD0D33282885E9BF004AC91C /* portrait3.swift in Sources */,
 				DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */,
