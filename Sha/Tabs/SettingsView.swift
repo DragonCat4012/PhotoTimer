@@ -22,16 +22,46 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     @IBOutlet weak var countLabel: UILabel!
     @IBOutlet weak var timeStepper: UIStepper!
     @IBOutlet weak var PhotoStepper: UIStepper!
-    @IBOutlet weak var camerapicker: UIPickerView!
     @IBOutlet weak var gridSwitch: UISwitch!
+    @IBOutlet weak var cameraButton: UIButton!
+    
+    let screenWidth = UIScreen.main.bounds.width - 10
+    let screenHeight = UIScreen.main.bounds.height / 2
+    
+    @IBAction func cameraPick(_ sender: Any) {
+        let vc = UIViewController()
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        let index = pickerDataSource.firstIndex(of: self.camera) ?? 0
+        pickerView.selectRow(index, inComponent: 0, animated: true)
+        
+        vc.view.addSubview(pickerView)
+        pickerView.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        pickerView.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        
+        let alert = UIAlertController(title: "Select a camera", message: "", preferredStyle: .actionSheet)
+        alert.popoverPresentationController?.sourceView = cameraButton
+        alert.popoverPresentationController?.sourceRect = cameraButton.bounds
+        alert.setValue(vc, forKey: "contentViewController")
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(UIAlertAction) in
+        }))
+        alert.addAction(UIAlertAction(title: "Select", style: .default, handler: {(UIAlertAction) in
+            let cameraString = self.pickerDataSource[pickerView.selectedRow(inComponent: 0)]
+            self.camera = cameraString
+            self.update()
+        }))
+        self.present(alert, animated: true)
+    }
     
     var pickerDataSource = ["builtInDualCamera", "builtInDualWideCamera", "builtInTripleCamera", "builtInWideAngleCamera", "builtInUltraWideCamera", "builtInTelephotoCamera", "builtInLiDARDepthCamera", "builtInTrueDepthCamera"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         update()
-        camerapicker.delegate = self
-        camerapicker.dataSource = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,6 +79,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         self.time = UserDefaults.standard.integer(forKey: "Timercount")
         self.camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
+        
         update()
     }
     
@@ -58,9 +89,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         timelabel.text = String(self.time)
         countLabel.text = String(self.count)
         
-        let index = pickerDataSource.firstIndex(of: self.camera) ?? 0
-        camerapicker.selectRow(index, inComponent: 0, animated: true)
-        
+        cameraButton.setTitle(self.camera, for: .normal)
         gridSwitch.isOn = self.gridEnabled
     }
     
@@ -81,6 +110,13 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let cameraString = pickerDataSource[row]
         self.camera = cameraString
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 30))
+        label.text = pickerDataSource[row]
+        label.sizeToFit()
+        return label
     }
     
     //Stepper Actions
