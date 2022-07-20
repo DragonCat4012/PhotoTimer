@@ -46,7 +46,7 @@ class LaunchView: UIViewController {
         let newView = storyboard?.instantiateViewController(withIdentifier: "CameraView") as! CameraView
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
-
+        
         self.navigationController?.pushViewController(newView, animated: true)
     }
     

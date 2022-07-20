@@ -98,7 +98,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     
     //SwitchAction
     @IBAction func gridSwitched(_ sender: UISwitch) {
-            self.gridEnabled = gridSwitch.isOn
+        self.gridEnabled = gridSwitch.isOn
     }
     
     //Setup Picker
