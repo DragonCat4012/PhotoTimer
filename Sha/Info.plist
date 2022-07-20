@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraPortraitEffectEnabled</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -21,13 +23,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSCameraPortraitEffectEnabled</key>
-	<true/>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>ovo</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>uwu</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Please</string>
 </dict>
 </plist>
