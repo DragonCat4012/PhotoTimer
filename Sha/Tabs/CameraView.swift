@@ -13,6 +13,7 @@ class CameraView: UIViewController {
     var useFrontCamera: Bool = false
     var photoCount: Int = 3
     var timeCount: Int = 3
+    
     var gridEnabled: Bool = true
     
     var session: AVCaptureSession?
@@ -88,6 +89,11 @@ class CameraView: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.updateData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -107,7 +113,7 @@ class CameraView: UIViewController {
         switchButton.addTarget(self, action: #selector(changeCameraInput), for: .touchUpInside)
         updateData()
         
-         self.navigationItem.hidesBackButton = true
+        self.navigationItem.hidesBackButton = true
     }
     
     private func drawLine(_ point1: CGPoint, _ point2: CGPoint){
@@ -125,7 +131,6 @@ class CameraView: UIViewController {
         self.view.layer.addSublayer(layer)
     }
   
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer.frame = view.bounds
@@ -137,7 +142,6 @@ class CameraView: UIViewController {
         countLabel.center = CGPoint(x: view.frame.size.width/2 - 140, y: view.frame.size.height - 70)
         timeLabel.center = CGPoint(x: view.frame.size.width/2 + 140, y: view.frame.size.height - 70)
     }
-    
     
     private func checkCameraPerms() {
         // Check Camera Permission
@@ -151,7 +155,6 @@ class CameraView: UIViewController {
                     self?.setUpCamera()
                 }
             })
-            
         case .restricted:
             break
         case .denied:
@@ -161,29 +164,7 @@ class CameraView: UIViewController {
         @unknown default:
             break
         }
-
-        
-        // Check PhotoLibrary Permission
-      /*  switch PHPhotoLibrary.authorizationStatus(for: .addOnly){
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly, handler:  {
-            })
-        case .restricted:
-            break
-        case .denied:
-            break
-        case .authorized:
-            return
-        case .limited:
-            break
-        @unknown default:
-            break
-        }*/
     }
-    
-
-    
-
     
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
@@ -196,8 +177,6 @@ class CameraView: UIViewController {
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
 
-        
-            
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 if newSession.canAddInput(input){
@@ -219,9 +198,6 @@ class CameraView: UIViewController {
             }
             catch {
                 print(error)
-                /*let infoAlert = UIAlertController(title: "Oh ein Fehler ist aufgetreten", message: "Dein handy scheint die von dir gewählte Kamera nicht zu haben :/", preferredStyle: .actionSheet)
-                      infoAlert.addAction(UIAlertAction(title: "ok", style: .cancel))
-                      self.present(infoAlert, animated: true)*/
             }
         } else {
             self.shutterButton.isUserInteractionEnabled = false
@@ -246,15 +222,13 @@ class CameraView: UIViewController {
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
         
-        session?.stopRunning()
+      //  session?.stopRunning()
         newView.callback = {
-            self.session?.startRunning()
+       //     self.session?.startRunning()
             self.updateData()
-            self.setUpCamera()
+           // self.setUpCamera()
         }
-     //   self.present(newView, animated: true)
         self.navigationController?.pushViewController(newView, animated: true)
-       
     }
     
   
@@ -281,17 +255,16 @@ class CameraView: UIViewController {
                 let photoSettings = Util.getSettings()
                 
                 //enable portraitEffect
-                if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
-                self.output.isHighResolutionCaptureEnabled = true
-                self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
-                self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
-    
-                photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
-                photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+                   /* if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
+                    self.output.isHighResolutionCaptureEnabled = true
+                    self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                    self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+        
+                    photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                    photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
                     photoSettings.embedsDepthDataInPhoto = true
                     photoSettings.isDepthDataFiltered = true
-                }
-            
+                    }*/
                 
                 self.output.capturePhoto(with: photoSettings, delegate: self)
                 AudioServicesPlaySystemSound(1108)
@@ -341,24 +314,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
-       
-        
-        let effects = ["CIComicEffect", "CIOpTile", "CIHighlightShadowAdjust", "CIConvolution9Vertical", "CIDepthOfField", "CIGloom"]
-        // save photo with filter
-       /* let comicEffect = CIFilter(name: "CIComicEffect")
-        comicEffect?.setValue(CIImage(data: data), forKey: kCIInputImageKey)
-        let cgImage = self.context.createCGImage(comicEffect!.outputImage!, from: CIImage(data: data)!.extent)!
-        let filteredImage = UIImage(cgImage: cgImage)
-        UIImageWriteToSavedPhotosAlbum(filteredImage, self, nil, nil)
-        
-        let imageView2 = UIImageView(image: filteredImage)
-        imageView2.contentMode = .scaleAspectFill
-        imageView2.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
-        imageView2.layer.name = "photoPreview"
-        view.addSubview(imageView2)*/
-        
-        // UIImageWriteToSavedPhotosAlbum(image!, self, nil, nil)
-    
+
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
         imageView.layer.borderWidth = 2
@@ -383,8 +339,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
                    creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
                }, completionHandler: nil)
            }
-        
-        
+  
 }
 
     
