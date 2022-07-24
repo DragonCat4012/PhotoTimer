@@ -13,6 +13,7 @@ class CameraView: UIViewController {
     var useFrontCamera: Bool = false
     var photoCount: Int = 3
     var timeCount: Int = 3
+    var photoTimer: Timer?;
     
     var gridEnabled: Bool = true
     
@@ -114,6 +115,9 @@ class CameraView: UIViewController {
         updateData()
         
         self.navigationItem.hidesBackButton = true
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -128,7 +132,29 @@ class CameraView: UIViewController {
         timeLabel.center = CGPoint(x: view.frame.size.width/2 + 140, y: view.frame.size.height - 70)
     }
     
+    @objc func appMovedToBackground() {
+        if let timmy = self.photoTimer {
+            timmy.invalidate()
+            changeButtonInteraction(true)
+        }
+    //    self.session?.stopRunning()
+    }
+    
     //MARK: Functions
+    private func changeButtonInteraction(_ enabled: Bool){
+        DispatchQueue.main.async {
+            self.shutterButton.isUserInteractionEnabled = enabled
+            self.shutterButton.layer.borderColor = enabled ?  UIColor.red.cgColor : UIColor.white.cgColor
+           
+        
+            self.switchButton.isUserInteractionEnabled = enabled
+            self.switchButton.tintColor = enabled ? .white : .gray
+        
+            self.settingsButton.isUserInteractionEnabled = enabled
+            self.settingsButton.tintColor = enabled ? .white : .gray
+        }
+    }
+    
     private func drawLine(_ point1: CGPoint, _ point2: CGPoint){
         let stroke = UIBezierPath()
         stroke.move(to: CGPoint(x: point1.x, y: point1.y))
@@ -233,67 +259,27 @@ class CameraView: UIViewController {
     @objc private func didTapTakePhoto(){
         AudioServicesPlaySystemSound(1113)
         
-        DispatchQueue.main.async {
-            self.shutterButton.isUserInteractionEnabled = false
-            self.shutterButton.layer.borderColor = UIColor.white.cgColor
-            
-            self.switchButton.isUserInteractionEnabled = false
-            self.switchButton.tintColor = .gray
-            
-            self.settingsButton.isUserInteractionEnabled = false
-            self.settingsButton.tintColor = .gray
-        }
+        self.changeButtonInteraction(false)
         
-        for i in 1...photoCount {
-            let time = timeCount * i
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(time), execute: {
-                
+        var runCount = 0
+
+        self.photoTimer = Timer.scheduledTimer(withTimeInterval: Double(timeCount), repeats: true) { timer in
+            runCount += 1
+
+            DispatchQueue.main.async {
                 let photoSettings = Util.getSettings()
-                
-                //enable portraitEffect
-                /* if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
-                 self.output.isHighResolutionCaptureEnabled = true
-                 self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
-                 self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
-                 
-                 photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
-                 photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
-                 photoSettings.embedsDepthDataInPhoto = true
-                 photoSettings.isDepthDataFiltered = true
-                 }*/
                 
                 self.output.capturePhoto(with: photoSettings, delegate: self)
                 AudioServicesPlaySystemSound(1108)
-                
-                if(i == self.photoCount){
-                    self.shutterButton.isUserInteractionEnabled = true
-                    self.shutterButton.layer.borderColor = UIColor.red.cgColor
-                    
-                    self.switchButton.isUserInteractionEnabled = true
-                    self.switchButton.tintColor = .white
-                    
-                    self.settingsButton.isUserInteractionEnabled = true
-                    self.settingsButton.tintColor = .white
-                }
-            })
+            }
+            
+            if runCount == self.photoCount {
+                self.changeButtonInteraction(true)
+                timer.invalidate()
+            }
         }
         
         AudioServicesPlaySystemSound(1114)
-        removePreiewPhoto()
-    }
-    
-    
-    //remove imagepreviews
-    func removePreiewPhoto(){
-        for view in view.subviews{
-            for sub in view.subviews {
-                //  print(sub.layer.name)
-            }
-            if(view.layer.name == "photoPreview"){
-                view.removeFromSuperview()
-            }
-        }
     }
     
     
