@@ -11,20 +11,20 @@ import UIKit
 
 class CameraView: UIViewController {
     var useFrontCamera: Bool = false
+    var gridEnabled: Bool = true
+    
     var photoCount: Int = 3
     var timeCount: Int = 3
     var photoTimer: Timer?;
-    
-    var gridEnabled: Bool = true
+    var blurAmount: Int = 10
     
     var session: AVCaptureSession?
     var output = AVCapturePhotoOutput()
     var timer: Timer!
     
     let context = CIContext()
-    
-    
     var previewLayer = AVCaptureVideoPreviewLayer()
+    
     var shutterButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         button.layer.cornerRadius = 35
@@ -72,6 +72,7 @@ class CameraView: UIViewController {
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.timeCount = UserDefaults.standard.integer(forKey: "Timercount")
         self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
+        self.blurAmount = UserDefaults.standard.integer(forKey: "BlurAmount")
         
         countLabel.text = String(photoCount)
         timeLabel.text = String(self.timeCount) + "s"
@@ -146,28 +147,12 @@ class CameraView: UIViewController {
             self.shutterButton.isUserInteractionEnabled = enabled
             self.shutterButton.layer.borderColor = enabled ?  UIColor.red.cgColor : UIColor.white.cgColor
            
-        
             self.switchButton.isUserInteractionEnabled = enabled
             self.switchButton.tintColor = enabled ? .white : .gray
         
             self.settingsButton.isUserInteractionEnabled = enabled
             self.settingsButton.tintColor = enabled ? .white : .gray
         }
-    }
-    
-    private func drawLine(_ point1: CGPoint, _ point2: CGPoint){
-        let stroke = UIBezierPath()
-        stroke.move(to: CGPoint(x: point1.x, y: point1.y))
-        stroke.addLine(to: CGPoint(x: point2.x, y: point2.y))
-        stroke.close()
-        
-        let layer =  CAShapeLayer()
-        layer.path = stroke.cgPath
-        layer.strokeColor = UIColor.white.withAlphaComponent(0.5).cgColor
-        
-        layer.lineWidth = 1
-        layer.name = "GridLayer"
-        self.view.layer.addSublayer(layer)
     }
     
     private func checkCameraPerms() {
@@ -198,7 +183,7 @@ class CameraView: UIViewController {
         let newSession = AVCaptureSession()
         
         // for portrait builtInDualWideCamera
-        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.back)){
+        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.front)){
             
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
@@ -216,6 +201,7 @@ class CameraView: UIViewController {
                 
                 previewLayer.videoGravity = .resizeAspectFill
                 previewLayer.session = newSession
+                previewLayer.connection?.videoOrientation = .portrait
                 
                 newSession.startRunning()
                 self.session = newSession
@@ -247,11 +233,11 @@ class CameraView: UIViewController {
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
         
-        //  session?.stopRunning()
+        // session?.stopRunning()
         newView.callback = {
-            //     self.session?.startRunning()
-            self.updateData()
-            // self.setUpCamera()
+        // self.session?.startRunning()
+        self.updateData()
+        // self.setUpCamera()
         }
         self.navigationController?.pushViewController(newView, animated: true)
     }
@@ -268,6 +254,18 @@ class CameraView: UIViewController {
 
             DispatchQueue.main.async {
                 let photoSettings = Util.getSettings()
+                
+                //enable portraitEffect
+                if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
+                    self.output.isHighResolutionCaptureEnabled = true
+                    self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                    self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+    
+                    photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
+                    photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
+                    photoSettings.embedsDepthDataInPhoto = true
+                    photoSettings.isDepthDataFiltered = true
+                }
                 
                 self.output.capturePhoto(with: photoSettings, delegate: self)
                 AudioServicesPlaySystemSound(1108)
@@ -295,6 +293,26 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
         
+        
+        // Portrait Effect
+        if var portraitEffectsMatte = photo.portraitEffectsMatte {
+            print("portrait found")
+            if let orientation = photo.metadata[ String(kCGImagePropertyOrientation) ] as? UInt32 {
+                portraitEffectsMatte = portraitEffectsMatte.applyingExifOrientation(CGImagePropertyOrientation(rawValue: orientation)!)
+              
+                let portraitEffectsMattePixelBuffer = portraitEffectsMatte.mattingImage
+                let portraitEffectsMatteImage = CIImage( cvImageBuffer: portraitEffectsMattePixelBuffer, options: [ .auxiliaryPortraitEffectsMatte: true ] )
+              
+                //save with effect
+                let filterImg = createFocalBlur(image!, portraitEffectsMatteImage)
+                UIImageWriteToSavedPhotosAlbum(filterImg!, self, nil, nil)
+                
+                //previewImage
+                //show mask
+                //let imageView = UIImageView(image: UIImage(ciImage: portraitEffectsMatteImage.applyingFilter("CIColorInvert")))
+            }
+        }
+        
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
         imageView.layer.borderWidth = 2
@@ -302,7 +320,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         imageView.layer.cornerRadius = 5
         imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         
-        //show image on screen
+        //previewImage
         imageView.layer.cornerRadius = 5
         imageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         imageView.contentMode = .scaleAspectFill
@@ -318,9 +336,45 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
                 let creationRequest = PHAssetCreationRequest.forAsset()
                 creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
             }, completionHandler: nil)
-        }
-        
+    }
     }
     
-    
+    func createFocalBlur (_ image: UIImage,_ mask: CIImage) -> UIImage? {
+        let ciImage = CIImage(image: image)!.oriented(.right)
+        let invertedMask = mask.applyingFilter("CIColorInvert")
+        let imageExtent = CGRect(x: 0, y: 0, width: 1472.0, height: 2304.0)
+        
+        //scale mask and image size to the same
+        var scaleX = imageExtent.width / mask.extent.width
+        var scaleY = imageExtent.height / mask.extent.height
+        var scale = scaleX < scaleY ? scaleX : scaleX
+        
+        let scaledMask = invertedMask.transformed(by: .init(scaleX: scale, y: scale))
+        
+        scaleX = imageExtent.width / ciImage.extent.width
+        scaleY = imageExtent.height / ciImage.extent.height
+        scale = scaleX < scaleY ? scaleX : scaleX
+        
+        let scaledImage = ciImage.transformed(by: .init(scaleX: scale, y: scale))
+        
+
+        let output = scaledImage.clampedToExtent().applyingFilter(
+            "CIMaskedVariableBlur",
+            parameters: [
+                "inputMask" : scaledMask,
+                "inputRadius": self.blurAmount
+            ]).cropped(to: scaledImage.extent)
+        let croppedOutput = output.cropped(to: imageExtent)
+        
+  
+        //Convert to CGImage
+        guard let cgImage = context.createCGImage(croppedOutput, from: croppedOutput.extent) else {
+            return nil
+        }
+        return UIImage(cgImage: cgImage)
+    }
+
+
 }
+        
+      
