@@ -292,7 +292,6 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
         
-        
         // Portrait Effect
         if var portraitEffectsMatte = photo.portraitEffectsMatte {
             print("portrait found")
@@ -301,14 +300,6 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
               
                 let portraitEffectsMattePixelBuffer = portraitEffectsMatte.mattingImage
                 let portraitEffectsMatteImage = CIImage( cvImageBuffer: portraitEffectsMattePixelBuffer, options: [ .auxiliaryPortraitEffectsMatte: true ] )
-              
-                //save with effect
-                let filterImg = createFocalBlur(image!, portraitEffectsMatteImage)
-                UIImageWriteToSavedPhotosAlbum(filterImg!, self, nil, nil)
-                
-                //previewImage
-                //show mask
-                //let imageView = UIImageView(image: UIImage(ciImage: portraitEffectsMatteImage.applyingFilter("CIColorInvert")))
             }
         }
         
@@ -335,44 +326,8 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
                 let creationRequest = PHAssetCreationRequest.forAsset()
                 creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
             }, completionHandler: nil)
-    }
-    }
-    
-    func createFocalBlur (_ image: UIImage,_ mask: CIImage) -> UIImage? {
-        let ciImage = CIImage(image: image)!.oriented(.right)
-        let invertedMask = mask.applyingFilter("CIColorInvert")
-        let imageExtent = CGRect(x: 0, y: 0, width: 1472.0, height: 2304.0)
-        
-        //scale mask and image size to the same
-        var scaleX = imageExtent.width / mask.extent.width
-        var scaleY = imageExtent.height / mask.extent.height
-        var scale = scaleX < scaleY ? scaleX : scaleX
-        
-        let scaledMask = invertedMask.transformed(by: .init(scaleX: scale, y: scale))
-        
-        scaleX = imageExtent.width / ciImage.extent.width
-        scaleY = imageExtent.height / ciImage.extent.height
-        scale = scaleX < scaleY ? scaleX : scaleX
-        
-        let scaledImage = ciImage.transformed(by: .init(scaleX: scale, y: scale))
-        
-
-        let output = scaledImage.clampedToExtent().applyingFilter(
-            "CIMaskedVariableBlur",
-            parameters: [
-                "inputMask" : scaledMask,
-                "inputRadius": self.blurAmount
-            ]).cropped(to: scaledImage.extent)
-        let croppedOutput = output.cropped(to: imageExtent)
-        
-  
-        //Convert to CGImage
-        guard let cgImage = context.createCGImage(croppedOutput, from: croppedOutput.extent) else {
-            return nil
         }
-        return UIImage(cgImage: cgImage)
     }
-
 
 }
         
