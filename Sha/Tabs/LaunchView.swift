@@ -10,11 +10,13 @@ import UIKit
 class LaunchView: UIViewController {
     private var count: Int = 3
     private var time: Int = 3
+    private var camera: String = ""
     
     @IBOutlet weak var timelabel: UILabel!
     @IBOutlet weak var countLabel: UILabel!
     @IBOutlet weak var timeStepper: UIStepper!
     @IBOutlet weak var PhotoStepper: UIStepper!
+    @IBOutlet weak var cameraLabel: UILabel!
     @IBOutlet weak var GoButton: UIButton!
     
     override func viewDidLoad() {
@@ -31,6 +33,7 @@ class LaunchView: UIViewController {
         super.viewWillAppear(animated)
         self.count = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.time = UserDefaults.standard.integer(forKey: "Timercount")
+        self.camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         update()
     }
     
@@ -39,6 +42,7 @@ class LaunchView: UIViewController {
         PhotoStepper.value = Double(self.count)
         timelabel.text = String(self.time)
         countLabel.text = String(self.count)
+        cameraLabel.text = self.camera
     }
     
     //Button action
