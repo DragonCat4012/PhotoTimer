@@ -181,10 +181,9 @@ class CameraView: UIViewController {
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
-        
-        // for portrait builtInDualWideCamera
-        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.front : AVCaptureDevice.Position.front)){
-            
+   
+        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.back)){
+
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
@@ -237,7 +236,7 @@ class CameraView: UIViewController {
         newView.callback = {
         // self.session?.startRunning()
         self.updateData()
-        // self.setUpCamera()
+         self.setUpCamera()
         }
         self.navigationController?.pushViewController(newView, animated: true)
     }

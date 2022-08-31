@@ -29,9 +29,7 @@ struct Util {
         case "builtInLiDARDepthCamera":
             if #available(iOS 15.4, *) {
                 type = .builtInLiDARDepthCamera
-            } else {
-                // Fallback on earlier versions
-            }
+            } 
         case "builtInTrueDepthCamera":
             type = .builtInTrueDepthCamera
         case "externalUnknown":
