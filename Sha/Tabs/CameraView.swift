@@ -138,7 +138,7 @@ class CameraView: UIViewController {
             timmy.invalidate()
             changeButtonInteraction(true)
         }
-    //    self.session?.stopRunning()
+        //    self.session?.stopRunning()
     }
     
     //MARK: Functions
@@ -146,10 +146,10 @@ class CameraView: UIViewController {
         DispatchQueue.main.async {
             self.shutterButton.isUserInteractionEnabled = enabled
             self.shutterButton.layer.borderColor = enabled ?  UIColor.red.cgColor : UIColor.white.cgColor
-           
+            
             self.switchButton.isUserInteractionEnabled = enabled
             self.switchButton.tintColor = enabled ? .white : .gray
-        
+            
             self.settingsButton.isUserInteractionEnabled = enabled
             self.settingsButton.tintColor = enabled ? .white : .gray
         }
@@ -181,9 +181,9 @@ class CameraView: UIViewController {
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
-   
+        
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.back)){
-
+            
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
@@ -234,9 +234,9 @@ class CameraView: UIViewController {
         
         // session?.stopRunning()
         newView.callback = {
-        // self.session?.startRunning()
-        self.updateData()
-         self.setUpCamera()
+            // self.session?.startRunning()
+            self.updateData()
+            self.setUpCamera()
         }
         self.navigationController?.pushViewController(newView, animated: true)
     }
@@ -247,10 +247,10 @@ class CameraView: UIViewController {
         self.changeButtonInteraction(false)
         
         var runCount = 0
-
+        
         self.photoTimer = Timer.scheduledTimer(withTimeInterval: Double(timeCount), repeats: true) { timer in
             runCount += 1
-
+            
             DispatchQueue.main.async {
                 let photoSettings = Util.getSettings()
                 
@@ -259,7 +259,7 @@ class CameraView: UIViewController {
                     self.output.isHighResolutionCaptureEnabled = true
                     self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
                     self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
-    
+                    
                     photoSettings.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
                     photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
                     photoSettings.embedsDepthDataInPhoto = true
@@ -275,7 +275,6 @@ class CameraView: UIViewController {
                 timer.invalidate()
             }
         }
-        
         AudioServicesPlaySystemSound(1114)
     }
     
@@ -291,17 +290,6 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
-        
-        // Portrait Effect
-        if var portraitEffectsMatte = photo.portraitEffectsMatte {
-            print("portrait found")
-            if let orientation = photo.metadata[ String(kCGImagePropertyOrientation) ] as? UInt32 {
-                portraitEffectsMatte = portraitEffectsMatte.applyingExifOrientation(CGImagePropertyOrientation(rawValue: orientation)!)
-              
-                let portraitEffectsMattePixelBuffer = portraitEffectsMatte.mattingImage
-                let portraitEffectsMatteImage = CIImage( cvImageBuffer: portraitEffectsMattePixelBuffer, options: [ .auxiliaryPortraitEffectsMatte: true ] )
-            }
-        }
         
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
@@ -328,7 +316,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
             }, completionHandler: nil)
         }
     }
-
+    
 }
-        
-      
+
+
