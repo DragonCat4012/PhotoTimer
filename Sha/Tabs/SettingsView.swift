@@ -16,6 +16,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     private var count: Int = 3
     private var time: Int = 3
     private var camera: String = ""
+    private var blurAmount: Int = 10
     
     private var gridEnabled: Bool = true
     
@@ -70,6 +71,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         UserDefaults.standard.set(self.count, forKey: "PhotoCount")
         UserDefaults.standard.set(self.time, forKey: "Timercount")
         UserDefaults.standard.set(self.camera, forKey: "CameraType")
+        UserDefaults.standard.set(self.blurAmount, forKey: "BlurAmount")
         
         UserDefaults.standard.set(self.gridEnabled, forKey: "GridEnabled")
         self.callback()
@@ -80,6 +82,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         self.count = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.time = UserDefaults.standard.integer(forKey: "Timercount")
         self.camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
+        self.blurAmount = UserDefaults.standard.integer(forKey: "BlurAmount")
         
         self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
         

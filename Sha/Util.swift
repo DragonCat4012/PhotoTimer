@@ -54,3 +54,20 @@ struct Util {
 extension UIColor {
     static var accentColor: UIColor {return UIColor(named: "AccentColor") ??  UIColor.blue}
 }
+
+extension CameraView {
+     func drawLine(_ point1: CGPoint, _ point2: CGPoint){
+        let stroke = UIBezierPath()
+        stroke.move(to: CGPoint(x: point1.x, y: point1.y))
+        stroke.addLine(to: CGPoint(x: point2.x, y: point2.y))
+        stroke.close()
+        
+        let layer =  CAShapeLayer()
+        layer.path = stroke.cgPath
+        layer.strokeColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        
+        layer.lineWidth = 1
+        layer.name = "GridLayer"
+        self.view.layer.addSublayer(layer)
+    }
+}
