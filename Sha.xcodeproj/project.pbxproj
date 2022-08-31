@@ -322,7 +322,7 @@
 				DEVELOPMENT_TEAM = 93TVBDWQK4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sha/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Self Timer Camera";
+				INFOPLIST_KEY_CFBundleDisplayName = Sha;
 				INFOPLIST_KEY_NSCameraUsageDescription = Please;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = ovo;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = uwu;
@@ -354,7 +354,7 @@
 				DEVELOPMENT_TEAM = 93TVBDWQK4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sha/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Self Timer Camera";
+				INFOPLIST_KEY_CFBundleDisplayName = Sha;
 				INFOPLIST_KEY_NSCameraUsageDescription = Please;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = ovo;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = uwu;
