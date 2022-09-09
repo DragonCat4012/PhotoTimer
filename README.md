@@ -1,5 +1,5 @@
 # Sha
-cosplay foto app idk qwq
+cosplay foto app idk
 
 ## Features
 * self timer
