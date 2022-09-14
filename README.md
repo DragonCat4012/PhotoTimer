@@ -11,7 +11,7 @@ cosplay foto app idk
 ![launchscreen](https://media.discordapp.net/attachments/867129329363976212/1014531039659577444/unknown.png?width=309&height=670)
 
 ## Note on portrait photos
-You nedd to manually activate the portrait effect in the phot app
+front camera is temporarly deactivated
 
 ## Goals
 * zoom
