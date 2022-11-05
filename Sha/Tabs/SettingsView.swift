@@ -19,6 +19,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     private var blurAmount: Int = 10
     
     private var gridEnabled: Bool = true
+    private var liveEnabled: Bool = false
+    private var portraitEnabled: Bool = true
     
     @IBOutlet weak var timelabel: UILabel!
     @IBOutlet weak var countLabel: UILabel!
@@ -26,6 +28,9 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     @IBOutlet weak var PhotoStepper: UIStepper!
     
     @IBOutlet weak var gridSwitch: UISwitch!
+    @IBOutlet weak var liveSwitch: UISwitch!
+    @IBOutlet weak var portraitSwitch: UISwitch!
+    
     @IBOutlet weak var cameraButton: UIButton!
     
     let screenWidth = UIScreen.main.bounds.width - 10
@@ -74,6 +79,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         UserDefaults.standard.set(self.blurAmount, forKey: "BlurAmount")
         
         UserDefaults.standard.set(self.gridEnabled, forKey: "GridEnabled")
+        UserDefaults.standard.set(self.liveEnabled, forKey: "LiveEnabled")
+        UserDefaults.standard.set(self.portraitEnabled, forKey: "PortraitEnabled")
         self.callback()
     }
     
@@ -85,6 +92,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         self.blurAmount = UserDefaults.standard.integer(forKey: "BlurAmount")
         
         self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
+        self.liveEnabled = UserDefaults.standard.bool(forKey: "LiveEnabled")
+        self.portraitEnabled = UserDefaults.standard.bool(forKey: "PortraitEnabled")
         
         update()
     }
@@ -97,11 +106,28 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         
         cameraButton.setTitle(self.camera, for: .normal)
         gridSwitch.isOn = self.gridEnabled
+        liveSwitch.isOn = self.liveEnabled
+        portraitSwitch.isOn = self.portraitEnabled
     }
     
     //SwitchAction
     @IBAction func gridSwitched(_ sender: UISwitch) {
-        self.gridEnabled = gridSwitch.isOn
+        print(sender.restorationIdentifier)
+        print(sender.isOn)
+        switch sender.restorationIdentifier {
+        case "gridSwitch":
+            self.gridEnabled = gridSwitch.isOn
+        case "liveSwitch":
+            self.liveEnabled = liveSwitch.isOn
+            self.portraitEnabled = !liveSwitch.isOn
+            portraitSwitch.isOn = !liveSwitch.isOn
+        case "portraitSwitch":
+            self.portraitEnabled = portraitSwitch.isOn
+            self.liveEnabled = !portraitSwitch.isOn
+            liveSwitch.isOn = !portraitSwitch.isOn
+        default:
+            print("switch not found")
+        }
     }
     
     //Setup Picker

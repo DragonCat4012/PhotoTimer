@@ -12,6 +12,8 @@ import UIKit
 class CameraView: UIViewController {
     var useFrontCamera: Bool = false
     var gridEnabled: Bool = true
+    private var liveEnabled: Bool = false
+    private var portraitEnabled: Bool = false
     
     var photoCount: Int = 3
     var timeCount: Int = 3
@@ -49,6 +51,14 @@ class CameraView: UIViewController {
         return button
     }()
     
+    var liveIcon: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button.layer.cornerRadius = 20
+        button.setBackgroundImage(UIImage(systemName: "livephoto"), for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
     var countLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 70, height: 40))
         label.text = "--"
@@ -71,11 +81,25 @@ class CameraView: UIViewController {
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.timeCount = UserDefaults.standard.integer(forKey: "Timercount")
-        self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
         self.blurAmount = UserDefaults.standard.integer(forKey: "BlurAmount")
+        
+        self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
+        self.liveEnabled = UserDefaults.standard.bool(forKey: "LiveEnabled")
+        self.portraitEnabled = UserDefaults.standard.bool(forKey: "PortraitEnabled")
         
         countLabel.text = String(photoCount)
         timeLabel.text = String(self.timeCount) + "s"
+        
+        //adjust live icon
+        if(self.liveEnabled){
+            liveIcon.isHidden = false
+            liveIcon.setBackgroundImage(UIImage(systemName: "livephoto"), for: .normal)
+        } else if (self.portraitEnabled){
+            liveIcon.isHidden = false
+            liveIcon.setBackgroundImage(UIImage(systemName: "person.fill"), for: .normal)
+        } else {
+            liveIcon.isHidden = true
+        }
         
         //building grid
         if(self.gridEnabled){
@@ -107,6 +131,7 @@ class CameraView: UIViewController {
         
         view.addSubview(countLabel)
         view.addSubview(timeLabel)
+        view.addSubview(liveIcon)
         
         checkCameraPerms()
         
@@ -131,6 +156,8 @@ class CameraView: UIViewController {
         
         countLabel.center = CGPoint(x: view.frame.size.width/2 - 140, y: view.frame.size.height - 70)
         timeLabel.center = CGPoint(x: view.frame.size.width/2 + 140, y: view.frame.size.height - 70)
+        
+        liveIcon.center = CGPoint(x: view.frame.maxX - 40, y: view.frame.minY + 70)
     }
     
     @objc func appMovedToBackground() {
@@ -182,7 +209,7 @@ class CameraView: UIViewController {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
         
-        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (useFrontCamera ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.back)){
+            if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (self.useFrontCamera ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.back)){
             
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
@@ -194,16 +221,19 @@ class CameraView: UIViewController {
                     newSession.addInput(input)
                 }
                 
-                if newSession.canAddOutput(output){
-                    newSession.addOutput(output)
+                if newSession.canAddOutput(self.output){
+                    newSession.addOutput(self.output)
                 }
                 
-                previewLayer.videoGravity = .resizeAspectFill
-                previewLayer.session = newSession
-                previewLayer.connection?.videoOrientation = .portrait
+                self.previewLayer.videoGravity = .resizeAspectFill
+                self.previewLayer.session = newSession
+                self.previewLayer.connection?.videoOrientation = .portrait
                 
+                DispatchQueue.global(qos: .background).async {
+                    print("running in background")
                 newSession.startRunning()
                 self.session = newSession
+                }
                 
                 self.shutterButton.isUserInteractionEnabled = true
                 self.shutterButton.layer.borderColor = UIColor.red.cgColor
@@ -214,9 +244,10 @@ class CameraView: UIViewController {
         } else {
             self.shutterButton.isUserInteractionEnabled = false
             self.shutterButton.layer.borderColor = UIColor.gray.cgColor
-            previewLayer.session = nil
-            return previewLayer.backgroundColor = UIColor.red.cgColor
+            self.previewLayer.session = nil
+            return self.previewLayer.backgroundColor = UIColor.red.cgColor
         }
+       
     }
     
     @objc private func changeCameraInput(){
@@ -224,7 +255,6 @@ class CameraView: UIViewController {
         DispatchQueue.main.async {
             self.setUpCamera()
         }
-        
     }
     
     @objc private func navigateToSettings(){
@@ -242,11 +272,9 @@ class CameraView: UIViewController {
     }
     
     @objc private func didTapTakePhoto(){
-        AudioServicesPlaySystemSound(1113)
-        
-        self.changeButtonInteraction(false)
-        
         var runCount = 0
+        AudioServicesPlaySystemSound(1113)
+        self.changeButtonInteraction(false)
         
         self.photoTimer = Timer.scheduledTimer(withTimeInterval: Double(timeCount), repeats: true) { timer in
             runCount += 1
@@ -254,6 +282,7 @@ class CameraView: UIViewController {
             DispatchQueue.main.async {
                 let photoSettings = Util.getSettings()
                 
+                if(self.portraitEnabled) {
                 //enable portraitEffect
                 if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
                     self.output.isHighResolutionCaptureEnabled = true
@@ -264,6 +293,7 @@ class CameraView: UIViewController {
                     photoSettings.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
                     photoSettings.embedsDepthDataInPhoto = true
                     photoSettings.isDepthDataFiltered = true
+                }
                 }
                 
                 self.output.capturePhoto(with: photoSettings, delegate: self)
@@ -306,7 +336,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
         
-        // save normal photo
+        // save photo
         PHPhotoLibrary.requestAuthorization { status in
             guard status == .authorized else { return }
             
