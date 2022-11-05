@@ -112,8 +112,6 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     
     //SwitchAction
     @IBAction func gridSwitched(_ sender: UISwitch) {
-        print(sender.restorationIdentifier)
-        print(sender.isOn)
         switch sender.restorationIdentifier {
         case "gridSwitch":
             self.gridEnabled = gridSwitch.isOn
@@ -126,7 +124,7 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
             self.liveEnabled = !portraitSwitch.isOn
             liveSwitch.isOn = !portraitSwitch.isOn
         default:
-            print("switch not found")
+            NSLog("switch in settings not found")
         }
     }
     

@@ -230,7 +230,6 @@ class CameraView: UIViewController {
                 self.previewLayer.connection?.videoOrientation = .portrait
                 
                 DispatchQueue.global(qos: .background).async {
-                    print("running in background")
                 newSession.startRunning()
                 self.session = newSession
                 }
@@ -282,8 +281,8 @@ class CameraView: UIViewController {
             DispatchQueue.main.async {
                 let photoSettings = Util.getSettings()
                 
-                if(self.portraitEnabled) {
                 //enable portraitEffect
+                if(self.portraitEnabled) {
                 if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
                     self.output.isHighResolutionCaptureEnabled = true
                     self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
@@ -294,6 +293,9 @@ class CameraView: UIViewController {
                     photoSettings.embedsDepthDataInPhoto = true
                     photoSettings.isDepthDataFiltered = true
                 }
+                } else if (self.liveEnabled){
+                    self.output.isHighResolutionCaptureEnabled = true
+                    self.output.isLivePhotoCaptureEnabled =  self.output.isLivePhotoCaptureSupported
                 }
                 
                 self.output.capturePhoto(with: photoSettings, delegate: self)
@@ -313,10 +315,10 @@ class CameraView: UIViewController {
 
 
 extension CameraView: AVCapturePhotoCaptureDelegate {
-    
+
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else { print("No data qwq"); return}
-        guard error == nil else { print("Error capturing photo: \(error!)"); return }
+        guard let data = photo.fileDataRepresentation() else { NSLog("No image data qwq"); return}
+        guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
         
         let image = UIImage(data:data)
         let imageView = UIImageView(image: image)
@@ -335,18 +337,27 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
-        
+    
         // save photo
         PHPhotoLibrary.requestAuthorization { status in
             guard status == .authorized else { return }
             
             PHPhotoLibrary.shared().performChanges({
                 let creationRequest = PHAssetCreationRequest.forAsset()
-                creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
-            }, completionHandler: nil)
+                    if(self.liveEnabled){
+                        creationRequest.addResource(with: .pairedVideo, data: photo.fileDataRepresentation()!, options: nil)
+                    }else {
+                        creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
+                    }
+                    
+                }, completionHandler: { (result : Bool, error : Error?) -> Void in
+                    if (error != nil){
+                        NSLog("couldnt save image")
+                        print(error)
+                    }
+                })
         }
     }
-    
+  
 }
-
 
