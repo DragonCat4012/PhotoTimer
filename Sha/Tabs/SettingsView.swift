@@ -16,10 +16,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     private var count: Int = 3
     private var time: Int = 3
     private var camera: String = ""
-    private var blurAmount: Int = 10
     
     private var gridEnabled: Bool = true
-    private var liveEnabled: Bool = false
     private var portraitEnabled: Bool = true
     
     @IBOutlet weak var timelabel: UILabel!
@@ -80,10 +78,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         UserDefaults.standard.set(self.count, forKey: "PhotoCount")
         UserDefaults.standard.set(self.time, forKey: "Timercount")
         UserDefaults.standard.set(self.camera, forKey: "CameraType")
-        UserDefaults.standard.set(self.blurAmount, forKey: "BlurAmount")
         
         UserDefaults.standard.set(self.gridEnabled, forKey: "GridEnabled")
-        UserDefaults.standard.set(self.liveEnabled, forKey: "LiveEnabled")
         UserDefaults.standard.set(self.portraitEnabled, forKey: "PortraitEnabled")
         self.callback()
     }
@@ -93,10 +89,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         self.count = UserDefaults.standard.integer(forKey: "PhotoCount")
         self.time = UserDefaults.standard.integer(forKey: "Timercount")
         self.camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
-        self.blurAmount = UserDefaults.standard.integer(forKey: "BlurAmount")
         
         self.gridEnabled = UserDefaults.standard.bool(forKey: "GridEnabled")
-        self.liveEnabled = UserDefaults.standard.bool(forKey: "LiveEnabled")
         self.portraitEnabled = UserDefaults.standard.bool(forKey: "PortraitEnabled")
         
         update()
@@ -110,7 +104,6 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         
         cameraButton.setTitle(self.camera, for: .normal)
         gridSwitch.isOn = self.gridEnabled
-        liveSwitch.isOn = self.liveEnabled
         portraitSwitch.isOn = self.portraitEnabled
     }
     
@@ -119,14 +112,8 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         switch sender.restorationIdentifier {
         case "gridSwitch":
             self.gridEnabled = gridSwitch.isOn
-        case "liveSwitch":
-            self.liveEnabled = liveSwitch.isOn
-            self.portraitEnabled = !liveSwitch.isOn
-            portraitSwitch.isOn = !liveSwitch.isOn
         case "portraitSwitch":
             self.portraitEnabled = portraitSwitch.isOn
-            self.liveEnabled = !portraitSwitch.isOn
-            liveSwitch.isOn = !portraitSwitch.isOn
         default:
             NSLog("switch in settings not found")
         }

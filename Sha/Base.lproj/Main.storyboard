@@ -252,36 +252,6 @@
                                     <action selector="gridSwitched:" destination="2hn-0Q-FZg" eventType="valueChanged" id="L4H-g5-Z1J"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Live" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0WP-Lr-YmZ">
-                                <rect key="frame" x="20" y="371" width="276" height="36"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" restorationIdentifier="liveSwitch" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1nN-ks-Xio">
-                                <rect key="frame" x="322" y="374" width="50" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <color key="onTintColor" name="AccentColor"/>
-                                <connections>
-                                    <action selector="gridSwitched:" destination="2hn-0Q-FZg" eventType="valueChanged" id="goI-mi-cOd"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Portrait" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kvw-8y-csp">
-                                <rect key="frame" x="20" y="421" width="276" height="34"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" restorationIdentifier="portraitSwitch" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xuf-mX-MPa">
-                                <rect key="frame" x="322" y="423" width="50" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <color key="onTintColor" name="AccentColor"/>
-                                <connections>
-                                    <action selector="gridSwitched:" destination="2hn-0Q-FZg" eventType="valueChanged" id="gNn-cX-JQC"/>
-                                </connections>
-                            </switch>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rk-g1-q1d">
                                 <rect key="frame" x="20" y="480" width="372" height="45"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -300,6 +270,21 @@
                                     <action selector="navigateToCamera" destination="2hn-0Q-FZg" eventType="touchUpInside" id="0Pt-1Y-jw2"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Portrait" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kvw-8y-csp">
+                                <rect key="frame" x="20" y="365" width="276" height="34"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" restorationIdentifier="portraitSwitch" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xuf-mX-MPa">
+                                <rect key="frame" x="322" y="367" width="50" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <color key="onTintColor" name="AccentColor"/>
+                                <connections>
+                                    <action selector="gridSwitched:" destination="2hn-0Q-FZg" eventType="valueChanged" id="gNn-cX-JQC"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gr9-kZ-ogl"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -310,7 +295,6 @@
                         <outlet property="cameraButton" destination="q1H-fm-q8N" id="in5-ZJ-Eya"/>
                         <outlet property="countLabel" destination="Dbj-0R-x0a" id="yhh-Cw-5an"/>
                         <outlet property="gridSwitch" destination="FAh-38-Yf3" id="vQr-wL-oMc"/>
-                        <outlet property="liveSwitch" destination="1nN-ks-Xio" id="qr4-5b-VX3"/>
                         <outlet property="portraitSwitch" destination="xuf-mX-MPa" id="PMZ-nv-e8s"/>
                         <outlet property="timeStepper" destination="FwD-1h-Xz2" id="lo1-PE-OvH"/>
                         <outlet property="timelabel" destination="7YQ-g9-bKT" id="oed-KZ-Is6"/>
