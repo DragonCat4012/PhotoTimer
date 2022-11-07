@@ -270,7 +270,6 @@ class CameraView: UIViewController {
     @objc private func didTapTakePhoto(){
         if let timmy = self.photoTimer {
             timmy.invalidate()
-            print("stopped")
             removePreviewLayer()
             self.changeButtonInteraction(true)
             return
