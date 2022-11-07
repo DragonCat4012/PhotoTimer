@@ -119,6 +119,7 @@ class CameraView: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         session?.stopRunning()
+        removePreviewLayer()
     }
     
     override func viewDidLoad() {
@@ -162,6 +163,7 @@ class CameraView: UIViewController {
         if let timmy = self.photoTimer {
             timmy.invalidate()
             changeButtonInteraction(true)
+            removePreviewLayer()
         }
         //    self.session?.stopRunning()
     }
@@ -169,7 +171,7 @@ class CameraView: UIViewController {
     //MARK: Functions
     private func changeButtonInteraction(_ enabled: Bool){
         DispatchQueue.main.async {
-            self.shutterButton.isUserInteractionEnabled = enabled
+         //   self.shutterButton.isUserInteractionEnabled = enabled
             self.shutterButton.layer.borderColor = enabled ?  UIColor.red.cgColor : UIColor.white.cgColor
             
             self.settingsButton.isUserInteractionEnabled = enabled
@@ -257,7 +259,23 @@ class CameraView: UIViewController {
         self.navigationController?.pushViewController(newView, animated: true)
     }
     
+    func removePreviewLayer(){
+        for view in view.subviews {
+            if(view.layer.name == "photoPreview"){
+                view.removeFromSuperview()
+            }
+        }
+    }
+    
     @objc private func didTapTakePhoto(){
+        if let timmy = self.photoTimer {
+            timmy.invalidate()
+            print("stopped")
+            removePreviewLayer()
+            self.changeButtonInteraction(true)
+            return
+        }
+        
         var runCount = 0
         AudioServicesPlaySystemSound(1113)
         self.changeButtonInteraction(false)
