@@ -103,13 +103,28 @@ class CameraView: UIViewController {
         
         //building grid
         if(self.gridEnabled){
-            let thirdX = self.view.frame.maxX / 3
+            let thirdX = self.view.frame.maxX  / 3
             let thirdY = self.view.frame.maxY / 3
+        
+            // vertical lines
             drawLine(CGPoint(x: thirdX, y: 0), CGPoint(x: thirdX, y: self.view.frame.maxY))
             drawLine(CGPoint(x: 2 * thirdX, y: 0), CGPoint(x: 2 * thirdX, y: self.view.frame.maxY))
             
+            //horizontal lines
             drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
             drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
+           
+            //draw scaledversion
+         /*   let scaledX = self.view.frame.maxX  * 0.05
+            let scaledY = self.view.frame.maxY * 0.05
+            let color = UIColor.red.withAlphaComponent(0.5).cgColor
+            
+            drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
+            drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
+            
+            drawLine(CGPoint(x: scaledX, y: 0), CGPoint(x: scaledX, y: self.view.frame.maxY),color)
+            drawLine(CGPoint(x: self.view.frame.maxX - scaledX, y: 0), CGPoint(x: self.view.frame.maxX  - scaledX, y: self.view.frame.maxY),color)*/
+            
         } else {
             self.view.layer.sublayers?.removeAll(where: {$0.name == "GridLayer"})
         }

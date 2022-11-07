@@ -54,7 +54,7 @@ extension UIColor {
 }
 
 extension CameraView {
-     func drawLine(_ point1: CGPoint, _ point2: CGPoint){
+    func drawLine(_ point1: CGPoint, _ point2: CGPoint, _ color: CGColor = UIColor.white.withAlphaComponent(0.5).cgColor){
         let stroke = UIBezierPath()
         stroke.move(to: CGPoint(x: point1.x, y: point1.y))
         stroke.addLine(to: CGPoint(x: point2.x, y: point2.y))
@@ -62,7 +62,7 @@ extension CameraView {
         
         let layer =  CAShapeLayer()
         layer.path = stroke.cgPath
-        layer.strokeColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        layer.strokeColor = color
         
         layer.lineWidth = 1
         layer.name = "GridLayer"
