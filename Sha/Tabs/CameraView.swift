@@ -132,14 +132,14 @@ class CameraView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("appear")
+        if(!(session?.isRunning ?? true)){ setUpCamera()}
         self.updateData()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("disappear")
+        session?.stopRunning()
     }
     
     override func viewDidLoad() {
@@ -230,6 +230,7 @@ class CameraView: UIViewController {
     private func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
+        self.session = newSession
         
             if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: (self.useFrontCamera ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.back)){
             
