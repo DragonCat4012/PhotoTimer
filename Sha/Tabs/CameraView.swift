@@ -78,13 +78,13 @@ class CameraView: UIViewController {
         timeLabel.text = String(self.timeCount) + "s"
         
         portraitIcon.isHidden = portraitEnabled ? false : true
-       
+        
         
         //building grid
         if(self.gridEnabled){
             let thirdX = self.view.frame.maxX  / 3
             let thirdY = self.view.frame.maxY / 3
-        
+            
             // vertical lines
             drawLine(CGPoint(x: thirdX, y: 0), CGPoint(x: thirdX, y: self.view.frame.maxY))
             drawLine(CGPoint(x: 2 * thirdX, y: 0), CGPoint(x: 2 * thirdX, y: self.view.frame.maxY))
@@ -92,17 +92,17 @@ class CameraView: UIViewController {
             //horizontal lines
             drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
             drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
-           
+            
             //draw scaledversion
-         /*   let scaledX = self.view.frame.maxX  * 0.05
-            let scaledY = self.view.frame.maxY * 0.05
-            let color = UIColor.red.withAlphaComponent(0.5).cgColor
-            
-            drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
-            drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
-            
-            drawLine(CGPoint(x: scaledX, y: 0), CGPoint(x: scaledX, y: self.view.frame.maxY),color)
-            drawLine(CGPoint(x: self.view.frame.maxX - scaledX, y: 0), CGPoint(x: self.view.frame.maxX  - scaledX, y: self.view.frame.maxY),color)*/
+            /*   let scaledX = self.view.frame.maxX  * 0.05
+             let scaledY = self.view.frame.maxY * 0.05
+             let color = UIColor.red.withAlphaComponent(0.5).cgColor
+             
+             drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
+             drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
+             
+             drawLine(CGPoint(x: scaledX, y: 0), CGPoint(x: scaledX, y: self.view.frame.maxY),color)
+             drawLine(CGPoint(x: self.view.frame.maxX - scaledX, y: 0), CGPoint(x: self.view.frame.maxX  - scaledX, y: self.view.frame.maxY),color)*/
             
         } else {
             self.view.layer.sublayers?.removeAll(where: {$0.name == "GridLayer"})
@@ -205,7 +205,7 @@ class CameraView: UIViewController {
         let newSession = AVCaptureSession()
         self.session = newSession
         
-            if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
+        if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
             
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
@@ -226,8 +226,8 @@ class CameraView: UIViewController {
                 self.previewLayer.connection?.videoOrientation = .portrait
                 
                 DispatchQueue.global(qos: .background).async {
-                newSession.startRunning()
-                self.session = newSession
+                    newSession.startRunning()
+                    self.session = newSession
                 }
                 
                 self.shutterButton.isUserInteractionEnabled = true
@@ -242,7 +242,7 @@ class CameraView: UIViewController {
             self.previewLayer.session = nil
             return self.previewLayer.backgroundColor = UIColor.red.cgColor
         }
-       
+        
     }
     
     @objc private func navigateToSettings(){
@@ -279,7 +279,7 @@ class CameraView: UIViewController {
                     photoSettings.embedsDepthDataInPhoto = true
                     photoSettings.isDepthDataFiltered = true
                 }
-             
+                
                 self.output.capturePhoto(with: photoSettings, delegate: self)
                 AudioServicesPlaySystemSound(1108)
             }
@@ -296,7 +296,7 @@ class CameraView: UIViewController {
 
 
 extension CameraView: AVCapturePhotoCaptureDelegate {
-
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { NSLog("No image data qwq"); return}
         guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
@@ -318,7 +318,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width/4, height: view.frame.height/4)
         imageView.layer.name = "photoPreview"
         view.addSubview(imageView)
-    
+        
         // save photo
         PHPhotoLibrary.requestAuthorization { status in
             guard status == .authorized else { return }
@@ -326,17 +326,17 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
             PHPhotoLibrary.shared().performChanges({
                 let creationRequest = PHAssetCreationRequest.forAsset()
                 creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
-               
-                }, completionHandler: { (result : Bool, error : Error?) -> Void in
-                    if (error != nil){
-                        NSLog("couldnt save image")
-                        print(error!)
-                    }
-                })
+                
+            }, completionHandler: { (result : Bool, error : Error?) -> Void in
+                if (error != nil){
+                    NSLog("couldnt save image")
+                    print(error!)
+                }
+            })
         }
     }
     
     
-  
+    
 }
 
