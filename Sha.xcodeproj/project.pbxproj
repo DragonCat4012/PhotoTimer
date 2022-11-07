@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0AE5BB286E2C1100F135FB /* Util.swift */; };
+		DD0D9CD22919695D00F7996A /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D9CD12919695D00F7996A /* ShutterButton.swift */; };
 		DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3B2052286E1B60003E5557 /* SettingsView.swift */; };
 		DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */; };
 		DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		DD0AE5BB286E2C1100F135FB /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		DD0D9CD12919695D00F7996A /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		DD3B2052286E1B60003E5557 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDAC1DF1286B3923001FF0BA /* Sha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				DD0AE5BB286E2C1100F135FB /* Util.swift */,
+				DD0D9CD12919695D00F7996A /* ShutterButton.swift */,
 				DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */,
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
 				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
@@ -168,6 +171,7 @@
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
+				DD0D9CD22919695D00F7996A /* ShutterButton.swift in Sources */,
 				DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

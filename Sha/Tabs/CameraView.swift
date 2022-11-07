@@ -24,8 +24,8 @@ class CameraView: UIViewController {
     let context = CIContext()
     var previewLayer = AVCaptureVideoPreviewLayer()
     
-    var shutterButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+    var shutterButton: PulsatingButton = {
+        let button = PulsatingButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         button.layer.cornerRadius = 35
         button.layer.borderWidth = 5
         button.layer.borderColor = UIColor.red.cgColor
@@ -272,9 +272,10 @@ class CameraView: UIViewController {
             timmy.invalidate()
             removePreviewLayer()
             self.changeButtonInteraction(true)
+            shutterButton.stopPulse()
             return
         }
-        
+        shutterButton.pulse()
         var runCount = 0
         AudioServicesPlaySystemSound(1113)
         self.changeButtonInteraction(false)
