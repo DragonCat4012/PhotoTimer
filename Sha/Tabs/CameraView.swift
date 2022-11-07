@@ -117,7 +117,14 @@ class CameraView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("appear")
         self.updateData()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("disappear")
     }
     
     override func viewDidLoad() {
