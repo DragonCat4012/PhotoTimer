@@ -360,7 +360,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
                 }, completionHandler: { (result : Bool, error : Error?) -> Void in
                     if (error != nil){
                         NSLog("couldnt save image")
-                        print(error)
+                        print(error!)
                     }
                 })
         }

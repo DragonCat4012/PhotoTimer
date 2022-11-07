@@ -36,6 +36,10 @@ class SettingsView: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     let screenWidth = UIScreen.main.bounds.width - 10
     let screenHeight = UIScreen.main.bounds.height / 2
     
+    @IBAction func navigateToCamera(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func cameraPick(_ sender: Any) {
         let vc = UIViewController()
         vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
