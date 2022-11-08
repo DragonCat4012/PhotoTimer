@@ -14,7 +14,7 @@ class PulsatingButton: UIButton {
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor
         shape.lineWidth = 10
-        shape.fillColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        shape.fillColor = UIColor.red.withAlphaComponent(0.3).cgColor
         shape.lineCap = .round
         return shape
     }()

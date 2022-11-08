@@ -28,7 +28,7 @@ class CameraView: UIViewController {
         let button = PulsatingButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         button.layer.cornerRadius = 35
         button.layer.borderWidth = 5
-        button.layer.borderColor = UIColor.red.cgColor
+        button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
     
@@ -78,7 +78,6 @@ class CameraView: UIViewController {
         timeLabel.text = String(self.timeCount) + "s"
         
         portraitIcon.isHidden = portraitEnabled ? false : true
-        
         
         //building grid
         if(self.gridEnabled){
@@ -136,7 +135,7 @@ class CameraView: UIViewController {
         
         checkCameraPerms()
         
-        shutterButton.addTarget(self, action: #selector(didTapTakePhoto), for: .touchUpInside)
+        shutterButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
         updateData()
         
@@ -171,9 +170,6 @@ class CameraView: UIViewController {
     //MARK: Functions
     private func changeButtonInteraction(_ enabled: Bool){
         DispatchQueue.main.async {
-         //   self.shutterButton.isUserInteractionEnabled = enabled
-            self.shutterButton.layer.borderColor = enabled ?  UIColor.red.cgColor : UIColor.white.cgColor
-            
             self.settingsButton.isUserInteractionEnabled = enabled
             self.settingsButton.tintColor = enabled ? .white : .gray
         }
@@ -231,16 +227,11 @@ class CameraView: UIViewController {
                     newSession.startRunning()
                     self.session = newSession
                 }
-                
-                self.shutterButton.isUserInteractionEnabled = true
-                self.shutterButton.layer.borderColor = UIColor.red.cgColor
             }
             catch {
                 print(error)
             }
         } else {
-            self.shutterButton.isUserInteractionEnabled = false
-            self.shutterButton.layer.borderColor = UIColor.gray.cgColor
             self.previewLayer.session = nil
             return self.previewLayer.backgroundColor = UIColor.red.cgColor
         }
@@ -267,14 +258,18 @@ class CameraView: UIViewController {
         }
     }
     
-    @objc private func didTapTakePhoto(){
+    @objc private func takePhoto(){
         if let timmy = self.photoTimer {
             timmy.invalidate()
             removePreviewLayer()
             self.changeButtonInteraction(true)
             shutterButton.stopPulse()
+            self.shutterButton.layer.borderColor = UIColor.white.cgColor
+            self.photoTimer = nil
             return
         }
+
+        self.shutterButton.layer.borderColor = UIColor.red.cgColor
         shutterButton.pulse()
         var runCount = 0
         AudioServicesPlaySystemSound(1113)
