@@ -41,10 +41,10 @@ class CameraView: UIViewController {
     }()
     
     var portraitIcon: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button.layer.cornerRadius = 20
         button.setBackgroundImage(UIImage(systemName: "person.fill"), for: .normal)
-        button.tintColor = .gray
+        button.tintColor = .white
         return button
     }()
     
@@ -77,7 +77,12 @@ class CameraView: UIViewController {
         countLabel.text = String(photoCount)
         timeLabel.text = String(self.timeCount) + "s"
         
-        portraitIcon.isHidden = portraitEnabled ? false : true
+        let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
+        portraitIcon.isHidden = portraitEnabled && camera == "builtInDualWideCamera" ? false : true
+        
+        if(portraitEnabled && camera == "builtInDualWideCamera"){
+            drawPortraitGuide()
+        }
         
         //building grid
         if(self.gridEnabled){
@@ -192,10 +197,11 @@ class CameraView: UIViewController {
             
             do {
                 let input = try AVCaptureDeviceInput(device: device)
+                print(input.device.videoZoomFactor)
                 if newSession.canAddInput(input){
                     newSession.addInput(input)
                 }
-                
+             
                 if newSession.canAddOutput(self.output){
                     newSession.addOutput(self.output)
                 }
@@ -246,7 +252,6 @@ class CameraView: UIViewController {
                 
                 //enable portraitEffect
                 if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
-                    print("portrait possible")
                     self.output.isHighResolutionCaptureEnabled = true
                     self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
                     self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported

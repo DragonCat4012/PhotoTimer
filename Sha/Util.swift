@@ -29,7 +29,7 @@ struct Util {
         case "builtInLiDARDepthCamera":
             if #available(iOS 15.4, *) {
                 type = .builtInLiDARDepthCamera
-            } 
+            }
         case "builtInTrueDepthCamera":
             type = .builtInTrueDepthCamera
         case "externalUnknown":
@@ -42,7 +42,7 @@ struct Util {
     
     static func getSettings() -> AVCapturePhotoSettings{
         let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-
+        
         return photoSettings
     }
     
@@ -80,17 +80,14 @@ extension CameraView {
         //horizontal lines
         drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
         drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
+    }
+    
+    func drawPortraitGuide(){
+        let scaledY = self.view.frame.maxY * 0.2
+        let color = UIColor.gray.withAlphaComponent(0.5).cgColor
         
-        //draw scaledversion
-        /*   let scaledX = self.view.frame.maxX  * 0.05
-         let scaledY = self.view.frame.maxY * 0.05
-         let color = UIColor.red.withAlphaComponent(0.5).cgColor
-         
-         drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
-         drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
-         
-         drawLine(CGPoint(x: scaledX, y: 0), CGPoint(x: scaledX, y: self.view.frame.maxY),color)
-         drawLine(CGPoint(x: self.view.frame.maxX - scaledX, y: 0), CGPoint(x: self.view.frame.maxX  - scaledX, y: self.view.frame.maxY),color)*/
+        drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
+        drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
     }
     
     func removePreviewLayer(){
