@@ -190,14 +190,13 @@ class CameraView: UIViewController {
         self.session = newSession
         
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
-            
+    
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
             
             do {
                 let input = try AVCaptureDeviceInput(device: device)
-                print(input.device.videoZoomFactor)
                 if newSession.canAddInput(input){
                     newSession.addInput(input)
                 }
