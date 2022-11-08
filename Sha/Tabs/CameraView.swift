@@ -81,28 +81,7 @@ class CameraView: UIViewController {
         
         //building grid
         if(self.gridEnabled){
-            let thirdX = self.view.frame.maxX  / 3
-            let thirdY = self.view.frame.maxY / 3
-            
-            // vertical lines
-            drawLine(CGPoint(x: thirdX, y: 0), CGPoint(x: thirdX, y: self.view.frame.maxY))
-            drawLine(CGPoint(x: 2 * thirdX, y: 0), CGPoint(x: 2 * thirdX, y: self.view.frame.maxY))
-            
-            //horizontal lines
-            drawLine(CGPoint(x: 0, y: thirdY), CGPoint(x: self.view.frame.maxX, y: thirdY))
-            drawLine(CGPoint(x: 0, y: 2 * thirdY), CGPoint(x: self.view.frame.maxX, y: 2 * thirdY))
-            
-            //draw scaledversion
-            /*   let scaledX = self.view.frame.maxX  * 0.05
-             let scaledY = self.view.frame.maxY * 0.05
-             let color = UIColor.red.withAlphaComponent(0.5).cgColor
-             
-             drawLine(CGPoint(x: 0, y: scaledY), CGPoint(x: self.view.frame.maxX, y: scaledY),color)
-             drawLine(CGPoint(x: 0, y: self.view.frame.maxY - scaledY), CGPoint(x: self.view.frame.maxX, y: self.view.frame.maxY - scaledY),color)
-             
-             drawLine(CGPoint(x: scaledX, y: 0), CGPoint(x: scaledX, y: self.view.frame.maxY),color)
-             drawLine(CGPoint(x: self.view.frame.maxX - scaledX, y: 0), CGPoint(x: self.view.frame.maxX  - scaledX, y: self.view.frame.maxY),color)*/
-            
+           drawGrid()
         } else {
             self.view.layer.sublayers?.removeAll(where: {$0.name == "GridLayer"})
         }
@@ -161,10 +140,12 @@ class CameraView: UIViewController {
     @objc func appMovedToBackground() {
         if let timmy = self.photoTimer {
             timmy.invalidate()
-            changeButtonInteraction(true)
             removePreviewLayer()
+            self.changeButtonInteraction(true)
+            shutterButton.stopPulse()
+            self.shutterButton.layer.borderColor = UIColor.white.cgColor
+            self.photoTimer = nil
         }
-        //    self.session?.stopRunning()
     }
     
     //MARK: Functions
@@ -198,7 +179,7 @@ class CameraView: UIViewController {
         }
     }
     
-    private func setUpCamera() {
+    func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
         self.session = newSession
@@ -237,28 +218,10 @@ class CameraView: UIViewController {
         }
         
     }
-    
-    @objc private func navigateToSettings(){
-        let newView = storyboard?.instantiateViewController(withIdentifier: "SettingsView") as! SettingsView
-        newView.modalTransitionStyle = .crossDissolve
-        newView.view.layer.speed = 0.1
-        
-        newView.callback = {
-            self.updateData()
-            self.setUpCamera()
-        }
-        self.navigationController?.pushViewController(newView, animated: true)
-    }
-    
-    func removePreviewLayer(){
-        for view in view.subviews {
-            if(view.layer.name == "photoPreview"){
-                view.removeFromSuperview()
-            }
-        }
-    }
+
     
     @objc private func takePhoto(){
+        //stop current session if one is running
         if let timmy = self.photoTimer {
             timmy.invalidate()
             removePreviewLayer()
@@ -283,6 +246,7 @@ class CameraView: UIViewController {
                 
                 //enable portraitEffect
                 if self.output.isDepthDataDeliverySupported && self.output.isPortraitEffectsMatteDeliverySupported {
+                    print("portrait possible")
                     self.output.isHighResolutionCaptureEnabled = true
                     self.output.isDepthDataDeliveryEnabled = self.output.isDepthDataDeliverySupported
                     self.output.isPortraitEffectsMatteDeliveryEnabled = self.output.isPortraitEffectsMatteDeliverySupported
