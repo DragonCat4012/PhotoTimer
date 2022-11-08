@@ -14,7 +14,7 @@ class PulsatingButton: UIButton {
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor
         shape.lineWidth = 10
-        shape.fillColor = UIColor.red.withAlphaComponent(0.3).cgColor
+        shape.fillColor = UIColor.clear.cgColor
         shape.lineCap = .round
         return shape
     }()
@@ -55,10 +55,12 @@ class PulsatingButton: UIButton {
         animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         animation.autoreverses = true
         animation.repeatCount = .infinity
+        pulseLayer.fillColor = UIColor.red.withAlphaComponent(0.3).cgColor
         pulseLayer.add(animation, forKey: "pulsing")
     }
     
     func stopPulse(){
         pulseLayer.removeAllAnimations()
+        pulseLayer.fillColor = UIColor.clear.cgColor
     }
 }
