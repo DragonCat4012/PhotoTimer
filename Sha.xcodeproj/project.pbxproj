@@ -12,7 +12,6 @@
 		DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3B2052286E1B60003E5557 /* SettingsView.swift */; };
 		DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */; };
 		DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */; };
-		DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF8286B3923001FF0BA /* ViewController.swift */; };
 		DDAC1DFC286B3923001FF0BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1DFA286B3923001FF0BA /* Main.storyboard */; };
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
@@ -28,7 +27,6 @@
 		DDAC1DF1286B3923001FF0BA /* Sha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DDAC1DF8286B3923001FF0BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DDAC1DFB286B3923001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DDAC1E00286B3929001FF0BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -68,12 +66,10 @@
 		DDAC1DF3286B3923001FF0BA /* Sha */ = {
 			isa = PBXGroup;
 			children = (
-				DD0AE5BB286E2C1100F135FB /* Util.swift */,
-				DD0D9CD12919695D00F7996A /* ShutterButton.swift */,
 				DDAC1DF4286B3923001FF0BA /* AppDelegate.swift */,
 				DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */,
-				DDAC1DF8286B3923001FF0BA /* ViewController.swift */,
-				DDAC1E0D286B5448001FF0BA /* Tabs */,
+				F10A8656295E04A600A38941 /* Util */,
+				DDAC1E0D286B5448001FF0BA /* Views */,
 				DDAC1DFA286B3923001FF0BA /* Main.storyboard */,
 				DDAC1E00286B3929001FF0BA /* Assets.xcassets */,
 				DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */,
@@ -82,15 +78,24 @@
 			path = Sha;
 			sourceTree = "<group>";
 		};
-		DDAC1E0D286B5448001FF0BA /* Tabs */ = {
+		DDAC1E0D286B5448001FF0BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DDB20D642886E87E000F5A67 /* CameraView.swift */,
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
-				DDB20D642886E87E000F5A67 /* CameraView.swift */,
-				F10A8654295E03B800A38941 /* PhotoHandler.swift */,
 			);
-			path = Tabs;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F10A8656295E04A600A38941 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				F10A8654295E03B800A38941 /* PhotoHandler.swift */,
+				DD0D9CD12919695D00F7996A /* ShutterButton.swift */,
+				DD0AE5BB286E2C1100F135FB /* Util.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,7 +172,6 @@
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,
-				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
 				F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */,
