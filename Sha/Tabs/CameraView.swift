@@ -276,14 +276,64 @@ class CameraView: UIViewController {
 }
 
 
+
+
+
+
 extension CameraView: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { NSLog("No image data qwq"); return}
         guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
+        if((photo.portraitEffectsMatte) == nil){ return    }
         
-        let image = UIImage(data:data)
-        let imageView = UIImageView(image: image)
+        var image = UIImage(data:data)
+        
+        if(image == nil){return }
+      //  var im: CIImage = CIImage(cgImage: (image!.cgImage)!)
+        
+            let matte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
+            //print(image!.size)//(3024.0, 4032.0)
+           // print(ph) // (2016.0, 1512.0)
+      /*  let scale1 = image!.size.width / matte.extent.height
+        let scale2 = image!.size.height / matte.extent.width
+            print(scale1)//1.5
+            print(scale2)//2.6666666666666665*/
+        var matteResized = matte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
+           // matteResized = matteResized.oriented(.right)
+            
+            let invertFilter = CIFilter(name: "CIColorInvert")
+            invertFilter?.setValue(matteResized, forKey: kCIInputImageKey)
+            
+            let maskFilter = CIFilter(name: "CIMaskedVariableBlur")
+       //     maskFilter?.setDefaults()
+            let inputCIImage = CIImage(image: image!)
+           let maskImage = invertFilter?.outputImage!
+            maskFilter?.setValue(inputCIImage, forKey: "inputImage")
+            maskFilter?.setValue(maskImage, forKey: "inputMask")
+            maskFilter?.setValue(20, forKey: "inputRadius")
+        
+            var im2 = maskFilter?.outputImage
+            
+       
+        if(im2 == nil ){
+            return print("noooo")
+        }
+       // im2?.oriented(.rightMirrored)
+        im2 = im2!.cropped(to: inputCIImage!.extent)
+        im2 = im2?.oriented(.right)
+        
+        let ciContext = CIContext()
+        let cgIm = ciContext.createCGImage(im2!, from: (im2?.extent)!)
+        if(cgIm == nil ){
+            return print("noooo #2")
+        }
+    
+        var test = UIImage(cgImage: cgIm!)//, scale: 1.0, orientation: .right)
+        var imageView = UIImageView(image: test)
+        
+        var dat =  test.pngData()! //photo.fileDataRepresentation()!
+        
         
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
@@ -306,7 +356,8 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
             
             PHPhotoLibrary.shared().performChanges({
                 let creationRequest = PHAssetCreationRequest.forAsset()
-                creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)
+                creationRequest.addResource(with: .photo, data: dat, options: nil)
+               
                 
             }, completionHandler: { (result : Bool, error : Error?) -> Void in
                 if (error != nil){
