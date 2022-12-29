@@ -1,4 +1,4 @@
-# PhotTimer
+# PhotoTimer
 Selftiming photo app idk
 
 ## Features
