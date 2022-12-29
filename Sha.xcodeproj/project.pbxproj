@@ -328,9 +328,9 @@
 				INFOPLIST_FILE = Sha/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoTimer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
-				INFOPLIST_KEY_NSCameraUsageDescription = Please;
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = ovo;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = uwu;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access needed to take photos";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "were else should we save your photos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "where else should we save your photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -364,9 +364,9 @@
 				INFOPLIST_FILE = Sha/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoTimer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
-				INFOPLIST_KEY_NSCameraUsageDescription = Please;
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = ovo;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = uwu;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access needed to take photos";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "were else should we save your photos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "where else should we save your photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
