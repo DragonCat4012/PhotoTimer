@@ -86,7 +86,7 @@ class CameraView: UIViewController {
         
         //building grid
         if(self.gridEnabled){
-           drawGrid()
+            drawGrid()
         } else {
             self.view.layer.sublayers?.removeAll(where: {$0.name == "GridLayer"})
         }
@@ -190,7 +190,7 @@ class CameraView: UIViewController {
         self.session = newSession
         
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
-    
+            
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
             self.session?.commitConfiguration()
@@ -200,7 +200,7 @@ class CameraView: UIViewController {
                 if newSession.canAddInput(input){
                     newSession.addInput(input)
                 }
-             
+                
                 if newSession.canAddOutput(self.output){
                     newSession.addOutput(self.output)
                 }
@@ -223,7 +223,7 @@ class CameraView: UIViewController {
         }
         
     }
-
+    
     
     @objc private func takePhoto(){
         //stop current session if one is running
@@ -236,7 +236,7 @@ class CameraView: UIViewController {
             self.photoTimer = nil
             return
         }
-
+        
         self.shutterButton.layer.borderColor = UIColor.red.cgColor
         shutterButton.pulse()
         var runCount = 0
@@ -282,57 +282,80 @@ class CameraView: UIViewController {
 
 extension CameraView: AVCapturePhotoCaptureDelegate {
     
+    func savePhoto(data: Data?){
+        guard let data else {
+            return
+        }
+      
+        PHPhotoLibrary.requestAuthorization { status in
+            guard status == .authorized else { return }
+            
+            PHPhotoLibrary.shared().performChanges({
+                let creationRequest = PHAssetCreationRequest.forAsset()
+                creationRequest.addResource(with: .photo, data: data, options: nil)
+                
+                
+            }, completionHandler: { (result : Bool, error : Error?) -> Void in
+                if (error != nil){
+                    NSLog("couldnt save image")
+                    print(error!)
+                }
+            })
+        }
+    }
+    
+    func appyBlur(background: CIImage?, mask: CIImage?) -> CIImage?{
+        guard let background else { return nil}
+        guard let mask else { return nil}
+        
+        let maskFilter = CIFilter(name: "CIMaskedVariableBlur")
+        maskFilter?.setValue(background, forKey: "inputImage")
+        maskFilter?.setValue(mask, forKey: "inputMask")
+        maskFilter?.setValue(20, forKey: "inputRadius")
+        
+        guard let image = maskFilter?.outputImage else {
+            NSLog("⚠️ failed blurring image")
+            return nil
+        }
+        return image
+    }
+    
+    
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else { NSLog("No image data qwq"); return}
+        guard let data = photo.fileDataRepresentation() else { NSLog("⚠️ No image data qwq"); return}
         guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
         if((photo.portraitEffectsMatte) == nil){ return    }
         
         var image = UIImage(data:data)
-        
-        if(image == nil){return }
-      //  var im: CIImage = CIImage(cgImage: (image!.cgImage)!)
-        
-            let matte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
-            //print(image!.size)//(3024.0, 4032.0)
-           // print(ph) // (2016.0, 1512.0)
-      /*  let scale1 = image!.size.width / matte.extent.height
-        let scale2 = image!.size.height / matte.extent.width
-            print(scale1)//1.5
-            print(scale2)//2.6666666666666665*/
-        var matteResized = matte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
-           // matteResized = matteResized.oriented(.right)
-            
-            let invertFilter = CIFilter(name: "CIColorInvert")
-            invertFilter?.setValue(matteResized, forKey: kCIInputImageKey)
-            
-            let maskFilter = CIFilter(name: "CIMaskedVariableBlur")
-       //     maskFilter?.setDefaults()
-            let inputCIImage = CIImage(image: image!)
-           let maskImage = invertFilter?.outputImage!
-            maskFilter?.setValue(inputCIImage, forKey: "inputImage")
-            maskFilter?.setValue(maskImage, forKey: "inputMask")
-            maskFilter?.setValue(20, forKey: "inputRadius")
-        
-            var im2 = maskFilter?.outputImage
-            
-       
-        if(im2 == nil ){
-            return print("noooo")
+        guard let image else {
+            NSLog("⚠️ no image taken"); return
         }
-       // im2?.oriented(.rightMirrored)
-        im2 = im2!.cropped(to: inputCIImage!.extent)
-        im2 = im2?.oriented(.right)
+        
+        //resise portraiteffect to image
+        let portraitEffectsMatte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
+        var matteResized = portraitEffectsMatte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
+        
+        //invert depth mask
+        let invertFilter = CIFilter(name: "CIColorInvert")
+        invertFilter?.setValue(matteResized, forKey: kCIInputImageKey)
+        
+        //create blur effect
+        let inputCIImage = CIImage(image: image)
+        let maskImage = invertFilter?.outputImage!
+        var blurredImage =  appyBlur(background: inputCIImage, mask: maskImage)
+        
+        //rotate and crop result
+        blurredImage = blurredImage!.cropped(to: inputCIImage!.extent)
+        blurredImage = blurredImage!.oriented(.right)
         
         let ciContext = CIContext()
-        let cgIm = ciContext.createCGImage(im2!, from: (im2?.extent)!)
-        if(cgIm == nil ){
-            return print("noooo #2")
-        }
-    
-        var test = UIImage(cgImage: cgIm!)//, scale: 1.0, orientation: .right)
-        var imageView = UIImageView(image: test)
+        guard let cgIm = ciContext.createCGImage(blurredImage!, from: (blurredImage?.extent)!) else {   NSLog("⚠️ ciContext failed"); return}
+
+        let FinalUIImage = UIImage(cgImage: cgIm)
+        let imageView = UIImageView(image: FinalUIImage)
         
-        var dat =  test.pngData()! //photo.fileDataRepresentation()!
+        let saveImageData =  FinalUIImage.pngData()! //photo.fileDataRepresentation()!
         
         
         //preview border
@@ -351,21 +374,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         view.addSubview(imageView)
         
         // save photo
-        PHPhotoLibrary.requestAuthorization { status in
-            guard status == .authorized else { return }
-            
-            PHPhotoLibrary.shared().performChanges({
-                let creationRequest = PHAssetCreationRequest.forAsset()
-                creationRequest.addResource(with: .photo, data: dat, options: nil)
-               
-                
-            }, completionHandler: { (result : Bool, error : Error?) -> Void in
-                if (error != nil){
-                    NSLog("couldnt save image")
-                    print(error!)
-                }
-            })
-        }
+        savePhoto(data: saveImageData)
     }
     
     
