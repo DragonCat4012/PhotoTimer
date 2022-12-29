@@ -186,12 +186,26 @@ class CameraView: UIViewController {
         }
     }
     
+    func setZoom(_ device: AVCaptureDevice){
+        do {
+            try device.lockForConfiguration()
+            defer { device.unlockForConfiguration()}
+            
+            let maxZoom = device.maxAvailableVideoZoomFactor
+            device.videoZoomFactor = maxZoom/1.6
+        } catch {
+            NSLog("⚠️ zoom for dualwidecamera not set")
+            print(error)
+        }
+    }
+    
     func setUpCamera() {
         let camera = UserDefaults.standard.string(forKey: "CameraType") ?? "builtInWideAngleCamera"
         let newSession = AVCaptureSession()
         self.session = newSession
         
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
+            if(camera == "builtInDualWideCamera") {setZoom(device)}
             
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
@@ -288,7 +302,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         guard let data else {
             return
         }
-      
+        
         PHPhotoLibrary.requestAuthorization { status in
             guard status == .authorized else { return }
             
@@ -313,7 +327,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         let maskFilter = CIFilter(name: "CIMaskedVariableBlur")
         maskFilter?.setValue(background, forKey: "inputImage")
         maskFilter?.setValue(mask, forKey: "inputMask")
-        maskFilter?.setValue(20, forKey: "inputRadius")
+        maskFilter?.setValue(12, forKey: "inputRadius")
         
         guard let image = maskFilter?.outputImage else {
             NSLog("⚠️ failed blurring image")
@@ -325,7 +339,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { NSLog("⚠️ No image data qwq"); return}
         guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
-     
+        
         guard let image = UIImage(data:data) else {
             NSLog("⚠️ no image taken"); return
         }
@@ -333,32 +347,32 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         let isPortrait = (photo.portraitEffectsMatte != nil)
         var saveImageData = photo.fileDataRepresentation()!
         var imageView =  UIImageView(image: image)
-      
+        
         if(isPortrait){
-        //resize portraiteffect to image
-        let portraitEffectsMatte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
-        let matteResized = portraitEffectsMatte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
-        
-        //invert depth mask
-        let invertFilter = CIFilter(name: "CIColorInvert")
-        invertFilter?.setValue(matteResized, forKey: kCIInputImageKey)
-        
-        //create blur effect
-        let inputCIImage = CIImage(image: image)
-        let maskImage = invertFilter?.outputImage!
-        var blurredImage =  appyBlur(background: inputCIImage, mask: maskImage)
-        
-        //rotate and crop result
-        blurredImage = blurredImage!.cropped(to: inputCIImage!.extent)
-        blurredImage = blurredImage!.oriented(.right)
-        
-      
-        guard let cgIm = ciContext.createCGImage(blurredImage!, from: (blurredImage?.extent)!) else {  NSLog("⚠️ ciContext failed"); return}
-
-        let FinalUIImage = UIImage(cgImage: cgIm)
-        
-        imageView = UIImageView(image: FinalUIImage)
-        saveImageData =  FinalUIImage.pngData()!
+            //resize portraiteffect to image
+            let portraitEffectsMatte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
+            let matteResized = portraitEffectsMatte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
+            
+            //invert depth mask
+            let invertFilter = CIFilter(name: "CIColorInvert")
+            invertFilter?.setValue(matteResized, forKey: kCIInputImageKey)
+            
+            //create blur effect
+            let inputCIImage = CIImage(image: image)
+            let maskImage = invertFilter?.outputImage!
+            var blurredImage =  appyBlur(background: inputCIImage, mask: maskImage)
+            
+            //rotate and crop result
+            blurredImage = blurredImage!.cropped(to: inputCIImage!.extent)
+            blurredImage = blurredImage!.oriented(.right)
+            
+            
+            guard let cgIm = ciContext.createCGImage(blurredImage!, from: (blurredImage?.extent)!) else {  NSLog("⚠️ ciContext failed"); return}
+            
+            let FinalUIImage = UIImage(cgImage: cgIm)
+            
+            imageView = UIImageView(image: FinalUIImage)
+            saveImageData =  FinalUIImage.pngData()!
         }
         
         //preview border
