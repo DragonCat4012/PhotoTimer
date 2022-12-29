@@ -14,7 +14,6 @@
 		DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */; };
 		DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DF8286B3923001FF0BA /* ViewController.swift */; };
 		DDAC1DFC286B3923001FF0BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1DFA286B3923001FF0BA /* Main.storyboard */; };
-		DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */; };
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
 		DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D622886E872000F5A67 /* LaunchView.swift */; };
@@ -31,7 +30,6 @@
 		DDAC1DF6286B3923001FF0BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DDAC1DF8286B3923001FF0BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DDAC1DFB286B3923001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DDAC1DFE286B3923001FF0BA /* Sha.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sha.xcdatamodel; sourceTree = "<group>"; };
 		DDAC1E00286B3929001FF0BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -80,7 +78,6 @@
 				DDAC1E00286B3929001FF0BA /* Assets.xcassets */,
 				DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */,
 				DDAC1E05286B3929001FF0BA /* Info.plist */,
-				DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */,
 			);
 			path = Sha;
 			sourceTree = "<group>";
@@ -170,7 +167,6 @@
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,
-				DDAC1DFF286B3923001FF0BA /* Sha.xcdatamodeld in Sources */,
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
@@ -402,19 +398,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		DDAC1DFD286B3923001FF0BA /* Sha.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				DDAC1DFE286B3923001FF0BA /* Sha.xcdatamodel */,
-			);
-			currentVersion = DDAC1DFE286B3923001FF0BA /* Sha.xcdatamodel */;
-			path = Sha.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = DDAC1DE9286B3923001FF0BA /* Project object */;
 }
