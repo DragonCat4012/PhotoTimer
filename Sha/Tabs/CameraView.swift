@@ -24,6 +24,8 @@ class CameraView: UIViewController {
     let context = CIContext()
     var previewLayer = AVCaptureVideoPreviewLayer()
     
+    let ciContext = CIContext()
+    
     var shutterButton: PulsatingButton = {
         let button = PulsatingButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         button.layer.cornerRadius = 35
@@ -320,21 +322,22 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         return image
     }
     
-    
-    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else { NSLog("⚠️ No image data qwq"); return}
         guard error == nil else { NSLog("Error capturing photo: \(error!)"); return }
-        if((photo.portraitEffectsMatte) == nil){ return    }
-        
-        var image = UIImage(data:data)
-        guard let image else {
+     
+        guard let image = UIImage(data:data) else {
             NSLog("⚠️ no image taken"); return
         }
         
-        //resise portraiteffect to image
+        let isPortrait = (photo.portraitEffectsMatte != nil)
+        var saveImageData = photo.fileDataRepresentation()!
+        var imageView =  UIImageView(image: image)
+      
+        if(isPortrait){
+        //resize portraiteffect to image
         let portraitEffectsMatte = CIImage(cvPixelBuffer: photo.portraitEffectsMatte!.mattingImage)
-        var matteResized = portraitEffectsMatte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
+        let matteResized = portraitEffectsMatte.transformed (by: CGAffineTransform(scaleX: 2.0, y: 2.0) )
         
         //invert depth mask
         let invertFilter = CIFilter(name: "CIColorInvert")
@@ -349,14 +352,14 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         blurredImage = blurredImage!.cropped(to: inputCIImage!.extent)
         blurredImage = blurredImage!.oriented(.right)
         
-        let ciContext = CIContext()
-        guard let cgIm = ciContext.createCGImage(blurredImage!, from: (blurredImage?.extent)!) else {   NSLog("⚠️ ciContext failed"); return}
+      
+        guard let cgIm = ciContext.createCGImage(blurredImage!, from: (blurredImage?.extent)!) else {  NSLog("⚠️ ciContext failed"); return}
 
         let FinalUIImage = UIImage(cgImage: cgIm)
-        let imageView = UIImageView(image: FinalUIImage)
         
-        let saveImageData =  FinalUIImage.pngData()! //photo.fileDataRepresentation()!
-        
+        imageView = UIImageView(image: FinalUIImage)
+        saveImageData =  FinalUIImage.pngData()!
+        }
         
         //preview border
         imageView.layer.borderColor = UIColor.accentColor.cgColor
