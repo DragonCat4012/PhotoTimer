@@ -19,6 +19,7 @@
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
 		DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D622886E872000F5A67 /* LaunchView.swift */; };
 		DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D642886E87E000F5A67 /* CameraView.swift */; };
+		F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10A8654295E03B800A38941 /* PhotoHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDB20D622886E872000F5A67 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		DDB20D642886E87E000F5A67 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		F10A8654295E03B800A38941 /* PhotoHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
 				DDB20D642886E87E000F5A67 /* CameraView.swift */,
+				F10A8654295E03B800A38941 /* PhotoHandler.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 				DDAC1DF9286B3923001FF0BA /* ViewController.swift in Sources */,
 				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
 				DDAC1DF5286B3923001FF0BA /* AppDelegate.swift in Sources */,
+				F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */,
 				DD0D9CD22919695D00F7996A /* ShutterButton.swift in Sources */,
 				DDAC1DF7286B3923001FF0BA /* SceneDelegate.swift in Sources */,
 			);
