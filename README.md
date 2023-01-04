@@ -4,7 +4,7 @@ Selftiming photo app idk
 ## Features
 * self timer
 * varible time frames and photo count
-* change camera input manually (not all options might work for all devices)
+* change camera input manually (not all options might work for all devices)(dualwideanglecamera will zoom and take portrait photos)
 (* set portrait effect blur amount)
 
 ## Showcase
