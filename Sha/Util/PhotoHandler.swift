@@ -13,16 +13,19 @@ import UIKit
 extension CameraView: AVCapturePhotoCaptureDelegate {
     
     func setZoom(_ device: AVCaptureDevice){
+        print("trying to set zoom")
         do {
             try device.lockForConfiguration()
-            defer { device.unlockForConfiguration()}
+           // defer { device.unlockForConfiguration()}
             
-            let maxZoom = device.maxAvailableVideoZoomFactor
-            device.videoZoomFactor = maxZoom/1.6
+            let maxZoom = device.maxAvailableVideoZoomFactor //121.875
+          //  print(device.minAvailableVideoZoomFactor)//1.0
+            device.videoZoomFactor = 1//maxZoom/1.6
         } catch {
             NSLog("⚠️ zoom for dualwidecamera not set")
             print(error)
         }
+        device.unlockForConfiguration()
     }
     
     func setUpCamera() {
@@ -31,7 +34,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         self.session = newSession
         
         if let device = AVCaptureDevice.default(Util.getCameraType(camera), for: .video, position: AVCaptureDevice.Position.back){
-            if(camera == "builtInDualWideCamera") {setZoom(device)}
+        //    if(camera == "builtInDualWideCamera") {setZoom(device)}
             
             self.session?.beginConfiguration()
             self.session?.sessionPreset = .photo
