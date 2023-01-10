@@ -9,16 +9,29 @@ import UIKit
 import MultipeerConnectivity
 
 
-class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
+class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceAdvertiserDelegate {
     var peerID = MCPeerID(displayName: (UIDevice.current.name + " - sha"))
     private let serviceType = "sha-phototimer"
     var mcSession: MCSession?
-    var mcAdvertiserAssistant: MCAdvertiserAssistant?
+    var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser!
     var currentImage: UIImage?
     
     override func viewDidLoad() {
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none)
         mcSession?.delegate = self
+    }
+    
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Invitation Received"
+
+        let ac = UIAlertController(title: appName, message: "'\(peerID.displayName)' wants to connect.", preferredStyle: .alert)
+        let declineAction = UIAlertAction(title: "Decline", style: .cancel) { [weak self] _ in invitationHandler(false, self?.mcSession) }
+        let acceptAction = UIAlertAction(title: "Accept", style: .default) { [weak self] _ in invitationHandler(true, self?.mcSession) }
+        
+        ac.addAction(declineAction)
+        ac.addAction(acceptAction)
+        
+        present(ac, animated: true)
     }
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
@@ -69,9 +82,9 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
     @objc func startHosting() {
         print(">>> \(UIDevice.current.name) starting to hos a session")
         guard let mcSession = mcSession else { return }
-        mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: mcSession)
-       // mcAdvertiserAssistant?.delegate = self
-        mcAdvertiserAssistant?.start()
+        mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType:serviceType)
+        mcNearbyServiceAdvertiser.delegate = self
+        mcNearbyServiceAdvertiser.startAdvertisingPeer()
     }
 
     @objc func joinSession() {

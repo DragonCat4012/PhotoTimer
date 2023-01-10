@@ -10,7 +10,6 @@ import MultipeerConnectivity
 
 class ReciverView: MultipeerViewController {
     
-  //  var image: UIImage?
     var connectButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.layer.cornerRadius = 20
@@ -19,10 +18,19 @@ class ReciverView: MultipeerViewController {
         return button
     }()
     
+    var hostLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        label.text = "--"
+        label.adjustsFontSizeToFitWidth = true
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
      //   previewLayer.frame = view.bounds
-        
+        hostLabel.center = CGPoint(x: view.frame.size.width/2, y: 60)
         connectButton.center = CGPoint(x: view.frame.size.width/2 - 70, y: view.frame.size.height - 70)
     }
     
@@ -44,8 +52,13 @@ class ReciverView: MultipeerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        connectButton.addTarget(self, action: #selector(joinSession), for: .touchUpInside)
         view.addSubview(connectButton)
+        view.addSubview(hostLabel)
+        
+        connectButton.addTarget(self, action: #selector(joinSession), for: .touchUpInside)
+        hostLabel.text = "--"
+        hostLabel.backgroundColor = .red
+    
         view.backgroundColor = .black
         if ((currentImage) != nil) {
             view.addSubview(UIImageView(image: currentImage))

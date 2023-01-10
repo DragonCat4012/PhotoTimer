@@ -27,6 +27,14 @@ class CameraView: MultipeerViewController {
     
     let ciContext = CIContext()
     
+    var connectionButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.layer.cornerRadius = 20
+        button.setBackgroundImage(UIImage(systemName: "app.connected.to.app.below.fill"), for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
     var shutterButton: PulsatingButton = {
         let button = PulsatingButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         button.layer.cornerRadius = 35
@@ -68,11 +76,6 @@ class CameraView: MultipeerViewController {
         label.textAlignment = .center
         return label
     }()
-    
-    //Multipeer Variables
-   /* var peerID = MCPeerID(displayName: UIDevice.current.name)
-    var mcSession: MCSession?
-    var mcAdvertiserAssistant: MCAdvertiserAssistant?*/
     
     //MARK: Ovveride Stuff
     func updateData(){
@@ -120,6 +123,7 @@ class CameraView: MultipeerViewController {
         
         view.addSubview(shutterButton)
         view.addSubview(settingsButton)
+        view.addSubview(connectionButton)
         
         view.addSubview(countLabel)
         view.addSubview(timeLabel)
@@ -128,8 +132,8 @@ class CameraView: MultipeerViewController {
         checkCameraPerms()
         
         shutterButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
-        //settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(startHosting), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
+        connectionButton.addTarget(self, action: #selector(startHosting), for: .touchUpInside)
         updateData()
         
         self.navigationItem.hidesBackButton = true
@@ -153,6 +157,8 @@ class CameraView: MultipeerViewController {
         
         countLabel.center = CGPoint(x: view.frame.size.width/2 - 140, y: view.frame.size.height - 70)
         timeLabel.center = CGPoint(x: view.frame.size.width/2 + 140, y: view.frame.size.height - 70)
+        
+        connectionButton.center = CGPoint(x: 40, y: view.frame.size.height/8 - 40)
     }
     
     @objc func appMovedToBackground() {
