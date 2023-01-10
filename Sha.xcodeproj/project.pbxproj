@@ -18,6 +18,8 @@
 		DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D622886E872000F5A67 /* LaunchView.swift */; };
 		DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D642886E87E000F5A67 /* CameraView.swift */; };
 		F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10A8654295E03B800A38941 /* PhotoHandler.swift */; };
+		F12A45BE296DB47300DEE286 /* MultipeerConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */; };
+		F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A45BF296DB64E00DEE286 /* ReciverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		DDB20D622886E872000F5A67 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		DDB20D642886E87E000F5A67 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		F10A8654295E03B800A38941 /* PhotoHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHandler.swift; sourceTree = "<group>"; };
+		F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectionManager.swift; sourceTree = "<group>"; };
+		F12A45BF296DB64E00DEE286 /* ReciverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReciverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				DDB20D642886E87E000F5A67 /* CameraView.swift */,
+				F12A45BF296DB64E00DEE286 /* ReciverView.swift */,
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
 			);
@@ -94,6 +99,7 @@
 				F10A8654295E03B800A38941 /* PhotoHandler.swift */,
 				DD0D9CD12919695D00F7996A /* ShutterButton.swift */,
 				DD0AE5BB286E2C1100F135FB /* Util.swift */,
+				F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -169,6 +175,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F12A45BE296DB47300DEE286 /* MultipeerConnectionManager.swift in Sources */,
+				F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */,
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,

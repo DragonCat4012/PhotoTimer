@@ -8,8 +8,9 @@
 import AVFoundation
 import Photos
 import UIKit
+import MultipeerConnectivity
 
-class CameraView: UIViewController {
+class CameraView: MultipeerViewController {
     var gridEnabled: Bool = true
     var portraitEnabled: Bool = false
     
@@ -68,6 +69,11 @@ class CameraView: UIViewController {
         return label
     }()
     
+    //Multipeer Variables
+   /* var peerID = MCPeerID(displayName: UIDevice.current.name)
+    var mcSession: MCSession?
+    var mcAdvertiserAssistant: MCAdvertiserAssistant?*/
+    
     //MARK: Ovveride Stuff
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
@@ -122,13 +128,18 @@ class CameraView: UIViewController {
         checkCameraPerms()
         
         shutterButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
+        //settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(showConnectionPrompt), for: .touchUpInside)
         updateData()
         
         self.navigationItem.hidesBackButton = true
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        
+        //multiper MultipeerConnectivity
+        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        mcSession?.delegate = self
     }
     
     override func viewDidLayoutSubviews() {

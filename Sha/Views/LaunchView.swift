@@ -16,7 +16,9 @@ class LaunchView: UIViewController {
     @IBOutlet weak var timeStepper: UIStepper!
     @IBOutlet weak var PhotoStepper: UIStepper!
     @IBOutlet weak var cameraLabel: UILabel!
+    
     @IBOutlet weak var GoButton: UIButton!
+    @IBOutlet weak var joinButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +46,25 @@ class LaunchView: UIViewController {
     }
     
     //Button action
-    @IBAction func tapButton(_ sender: Any) {
-        let newView = storyboard?.instantiateViewController(withIdentifier: "CameraView") as! CameraView
+    @IBAction func tapButton(_ sender: UIButton) {
+        navigateAsHost()
+    }
+    
+    @IBAction func tapButtonJoin(_ sender: UIButton) {
+        navigateAsHost(false)
+    }
+    
+    func navigateAsHost(_ host: Bool = true){
+        var newView: UIViewController
+        
+        if(host){
+            newView = storyboard?.instantiateViewController(withIdentifier: "CameraView") as! CameraView
+        } else {
+            newView = storyboard?.instantiateViewController(withIdentifier: "ReciverView") as! ReciverView
+        }
+        
         newView.modalTransitionStyle = .crossDissolve
         newView.view.layer.speed = 0.1
-        
         self.navigationController?.pushViewController(newView, animated: true)
     }
     
