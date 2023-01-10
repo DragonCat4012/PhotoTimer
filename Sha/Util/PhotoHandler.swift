@@ -162,6 +162,13 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
                 }
             })
         }
+        
+        //send to multipeer
+        let im = UIImage(data: data)
+        if(im != nil) {
+            shareImage(im!)
+        }
+ 
     }
     
     func appyBlur(background: CIImage?, mask: CIImage?) -> CIImage?{
