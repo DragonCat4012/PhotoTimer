@@ -197,7 +197,6 @@ class CameraView: MultipeerViewController {
     
     override func callUpdate() {
         DispatchQueue.main.async {
-         //   self.joinLabel.backgroundColor = self.connected ? .green : .clear
             if(self.mcSession == nil){ self.joinLabel.text = "";return}
             if(self.mcSession?.connectedPeers.count != 0){
                 self.joinLabel.text = self.mcSession!.connectedPeers[0].displayName
