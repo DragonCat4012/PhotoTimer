@@ -129,7 +129,7 @@ class CameraView: MultipeerViewController {
         
         shutterButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         //settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(showConnectionPrompt), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(startHosting), for: .touchUpInside)
         updateData()
         
         self.navigationItem.hidesBackButton = true

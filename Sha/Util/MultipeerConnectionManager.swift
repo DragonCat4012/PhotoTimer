@@ -66,16 +66,7 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
         dismiss(animated: true)
     }
     
-    
-    @objc func showConnectionPrompt() {
-        let ac = UIAlertController(title: "Connect to others", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Host a session", style: .default, handler: startHosting))
-        ac.addAction(UIAlertAction(title: "Join a session", style: .default, handler: joinSession))
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(ac, animated: true)
-    }
-    
-    func startHosting(action: UIAlertAction) {
+    @objc func startHosting() {
         print(">>> \(UIDevice.current.name) starting to hos a session")
         guard let mcSession = mcSession else { return }
         mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: mcSession)
@@ -83,7 +74,7 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
         mcAdvertiserAssistant?.start()
     }
 
-    func joinSession(action: UIAlertAction) {
+    @objc func joinSession() {
         print(">>> \(UIDevice.current.name) is conencting")
         guard let mcSession = mcSession else { return }
         let mcBrowser = MCBrowserViewController(serviceType: serviceType, session: mcSession)

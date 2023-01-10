@@ -14,7 +14,7 @@ class ReciverView: MultipeerViewController {
     var connectButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.layer.cornerRadius = 20
-        button.setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "app.connected.to.app.below.fill"), for: .normal)
         button.tintColor = .white
         return button
     }()
@@ -28,6 +28,12 @@ class ReciverView: MultipeerViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if (mcSession == nil || mcSession?.connectedPeers.count == 0){
+            mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+            mcSession?.delegate = self
+            joinSession()
+        }
     }
     
     
@@ -38,8 +44,7 @@ class ReciverView: MultipeerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        connectButton.addTarget(self, action: #selector(showConnectionPrompt), for: .touchUpInside)
+        connectButton.addTarget(self, action: #selector(joinSession), for: .touchUpInside)
         view.addSubview(connectButton)
         view.backgroundColor = .black
         if ((currentImage) != nil) {
