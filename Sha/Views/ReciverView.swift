@@ -19,19 +19,20 @@ class ReciverView: MultipeerViewController {
     }()
     
     var hostLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 220, height: 40))
         label.text = "--"
         label.adjustsFontSizeToFitWidth = true
-        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
     
+    var previewView = UIImageView()
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-     //   previewLayer.frame = view.bounds
+        previewView.frame = view.bounds
         hostLabel.center = CGPoint(x: view.frame.size.width/2, y: 60)
-        connectButton.center = CGPoint(x: view.frame.size.width/2 - 70, y: view.frame.size.height - 70)
+        connectButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 70)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +45,19 @@ class ReciverView: MultipeerViewController {
         }
     }
     
+    override func callUpdate() {
+        DispatchQueue.main.async {
+            self.hostLabel.backgroundColor = self.connected ? .green : .red
+            if(self.mcSession == nil){return}
+            if(self.mcSession?.connectedPeers.count != 0){
+                self.hostLabel.text = self.mcSession!.connectedPeers[0].displayName
+        }
+            
+            if((self.currentImage) != nil){
+                self.previewView.image = self.currentImage
+            }
+        }
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -57,7 +71,8 @@ class ReciverView: MultipeerViewController {
         
         connectButton.addTarget(self, action: #selector(joinSession), for: .touchUpInside)
         hostLabel.text = "--"
-        hostLabel.backgroundColor = .red
+        hostLabel.layer.cornerRadius = 8
+        callUpdate()
     
         view.backgroundColor = .black
         if ((currentImage) != nil) {

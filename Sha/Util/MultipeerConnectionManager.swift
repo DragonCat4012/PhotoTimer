@@ -10,11 +10,12 @@ import MultipeerConnectivity
 
 
 class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceAdvertiserDelegate {
-    var peerID = MCPeerID(displayName: (UIDevice.current.name + " - sha"))
+    var peerID = MCPeerID(displayName: UIDevice.current.name)
     private let serviceType = "sha-phototimer"
     var mcSession: MCSession?
     var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser!
     var currentImage: UIImage?
+    var connected = false
     
     override func viewDidLoad() {
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none)
@@ -34,26 +35,34 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
         present(ac, animated: true)
     }
     
+    func callUpdate(){
+        
+    }
+    
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .connected:
-            print("✅ Connected: \(peerID.displayName)")
-
+            print("➤➤➤ Connected: \(peerID.displayName)")
+            connected = true
+            callUpdate()
         case .connecting:
-            print("⚠️ Connecting: \(peerID.displayName)")
+            print("➤➤➤ Connecting: \(peerID.displayName) ...")
 
         case .notConnected:
             print("❌ Not Connected: \(peerID.displayName)")
-
+            connected = false
+            callUpdate()
         @unknown default:
             print("❓Unknown state received: \(peerID.displayName)")
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        DispatchQueue.main.async { [weak self] in
+        print("➤➤➤ reciving image from \(peerID.displayName)")
+        DispatchQueue.main.async {
             if let image = UIImage(data: data) {
-                self!.currentImage = image
+                self.callUpdate()
+                self.currentImage = image
             }
         }
     }
@@ -71,7 +80,7 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
     }
     
     func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
-          print(">>> \(UIDevice.current.name) connected!!!!")
+        print("➤➤➤ \(UIDevice.current.name) connected")
         dismiss(animated: true)
     }
     
@@ -80,15 +89,15 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
     }
     
     @objc func startHosting() {
-        print(">>> \(UIDevice.current.name) starting to hos a session")
-        guard let mcSession = mcSession else { return }
+        print("➤➤➤ \(UIDevice.current.name) starting to host a session")
+        guard mcSession != nil else { return }
         mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType:serviceType)
         mcNearbyServiceAdvertiser.delegate = self
         mcNearbyServiceAdvertiser.startAdvertisingPeer()
     }
 
     @objc func joinSession() {
-        print(">>> \(UIDevice.current.name) is conencting")
+        print("➤➤➤ \(UIDevice.current.name) is conencting")
         guard let mcSession = mcSession else { return }
         let mcBrowser = MCBrowserViewController(serviceType: serviceType, session: mcSession)
         mcBrowser.delegate = self
@@ -103,8 +112,10 @@ class MultipeerViewController: UIViewController, MCSessionDelegate, MCBrowserVie
             if let imageData = image.pngData() {
                 do {
                     try mcSession.send(imageData, toPeers: mcSession.connectedPeers, with: .reliable)
-                    print("send image to \(mcSession.connectedPeers.count) connections")
+                    print("➤➤➤ send image to \(mcSession.connectedPeers.count) connections")
+                    callUpdate()
                 } catch {
+                    print("❌ Error: \(error.localizedDescription)")
                     let ac = UIAlertController(title: "Send error", message: error.localizedDescription, preferredStyle: .alert)
                     ac.addAction(UIAlertAction(title: "OK", style: .default))
                     present(ac, animated: true)

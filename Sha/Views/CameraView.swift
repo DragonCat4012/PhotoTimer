@@ -77,6 +77,14 @@ class CameraView: MultipeerViewController {
         return label
     }()
     
+    var joinLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 220, height: 40))
+        label.text = ""
+        label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .center
+        return label
+    }()
+    
     //MARK: Ovveride Stuff
     func updateData(){
         self.photoCount = UserDefaults.standard.integer(forKey: "PhotoCount")
@@ -129,12 +137,18 @@ class CameraView: MultipeerViewController {
         view.addSubview(timeLabel)
         view.addSubview(portraitIcon)
         
+        view.addSubview(joinLabel)
+        
         checkCameraPerms()
         
         shutterButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(navigateToSettings), for: .touchUpInside)
         connectionButton.addTarget(self, action: #selector(startHosting), for: .touchUpInside)
         updateData()
+        
+        joinLabel.text = ""
+        joinLabel.layer.cornerRadius = 8
+        callUpdate()
         
         self.navigationItem.hidesBackButton = true
         
@@ -159,6 +173,7 @@ class CameraView: MultipeerViewController {
         timeLabel.center = CGPoint(x: view.frame.size.width/2 + 140, y: view.frame.size.height - 70)
         
         connectionButton.center = CGPoint(x: 40, y: view.frame.size.height/8 - 40)
+        joinLabel.center = CGPoint(x: view.frame.size.width/2, y: 60)
     }
     
     @objc func appMovedToBackground() {
@@ -177,6 +192,16 @@ class CameraView: MultipeerViewController {
         DispatchQueue.main.async {
             self.settingsButton.isUserInteractionEnabled = enabled
             self.settingsButton.tintColor = enabled ? .white : .gray
+        }
+    }
+    
+    override func callUpdate() {
+        DispatchQueue.main.async {
+         //   self.joinLabel.backgroundColor = self.connected ? .green : .clear
+            if(self.mcSession == nil){ self.joinLabel.text = "";return}
+            if(self.mcSession?.connectedPeers.count != 0){
+                self.joinLabel.text = self.mcSession!.connectedPeers[0].displayName
+        }
         }
     }
 
