@@ -26,13 +26,14 @@ class ReciverView: MultipeerViewController {
         return label
     }()
     
-    var previewView = UIImageView()
+    var previewView = UIView()
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewView.frame = view.bounds
         hostLabel.center = CGPoint(x: view.frame.size.width/2, y: 60)
         connectButton.center = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height - 70)
+        previewView.frame = CGRect(x: 0, y: view.frame.size.height/3, width: view.frame.width, height: view.frame.height)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +55,18 @@ class ReciverView: MultipeerViewController {
         }
             
             if((self.currentImage) != nil){
-                self.previewView.image = self.currentImage
+                if(self.previewView.subviews.count > 20){
+                    for view in self.previewView.subviews{
+                        view.removeFromSuperview()
+                    }
+                }
+              
+                var img = self.currentImage!.rotate(radians: .pi/2)!// Rotate 90 degrees
+                img = self.resizeImage(image: img, targetSize: CGSizeMake(self.previewView.frame.width, self.previewView.frame.height))
+                self.previewView.addSubview(UIImageView(image: img))
+                print("➤➤➤ image set for preview \(self.previewView.subviews.count)")
+            }else {
+                print("❌ no image received")
             }
         }
     }
@@ -66,22 +78,64 @@ class ReciverView: MultipeerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(connectButton)
-        view.addSubview(hostLabel)
-        
         connectButton.addTarget(self, action: #selector(joinSession), for: .touchUpInside)
         hostLabel.text = "--"
         hostLabel.layer.cornerRadius = 8
+        hostLabel.layer.masksToBounds = true
+        previewView.contentMode = .center
+        
         callUpdate()
     
-        view.backgroundColor = .black
-        if ((currentImage) != nil) {
-            view.addSubview(UIImageView(image: currentImage))
-        }
+        view.addSubview(previewView)
+        view.addSubview(connectButton)
+        view.addSubview(hostLabel)
         
-        //multiper MultipeerConnectivity
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession?.delegate = self
+    }
+}
+
+//rotate received image https://stackoverflow.com/questions/27092354/rotating-uiimage-in-swift
+extension UIImage {
+    func rotate(radians: Float) -> UIImage? {
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        context.rotate(by: CGFloat(radians))
+        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+}
+
+extension ReciverView{ //https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+       let size = image.size
        
+       let widthRatio  = targetSize.width  / size.width
+       let heightRatio = targetSize.height / size.height
+       
+       var newSize: CGSize
+       if(widthRatio > heightRatio) {
+           newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+       } else {
+           newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+       }
+       
+       let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+       
+       UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+       image.draw(in: rect)
+       let newImage = UIGraphicsGetImageFromCurrentImageContext()
+       UIGraphicsEndImageContext()
+       return newImage!
     }
 }
