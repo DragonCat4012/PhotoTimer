@@ -164,7 +164,7 @@ extension CameraView: AVCapturePhotoCaptureDelegate {
         }
         
         //send to multipeer
-        var im = UIImage(data: data)
+        let im = UIImage(data: data)
         if(im != nil) {
             shareImage(im!)
         }
