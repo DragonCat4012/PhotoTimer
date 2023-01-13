@@ -5,6 +5,7 @@ Selftiming photo app idk
 * self timer
 * varible time frames and photo count
 * change camera input manually (not all options might work for all devices)(dualwideanglecamera will zoom and take portrait photos)
+* show photos on second device via multipeerConnectivity (buggy af ik)
 (* set portrait effect blur amount)
 
 ## Showcase
@@ -14,4 +15,4 @@ Selftiming photo app idk
 
 
 ## To Do
-[click here](https://github.com/DragonCat4012/Sha/projects/1)
+[project link](https://github.com/DragonCat4012/Sha/projects/1)
