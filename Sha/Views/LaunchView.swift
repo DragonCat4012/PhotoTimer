@@ -58,7 +58,7 @@ class LaunchView: UIViewController {
         var newView: UIViewController
         
         if(host){
-            newView = storyboard?.instantiateViewController(withIdentifier: "CameraView") as! CameraView
+            newView = storyboard?.instantiateViewController(withIdentifier: "CameraView") as! CameraViewOld
         } else {
             newView = storyboard?.instantiateViewController(withIdentifier: "ReciverView") as! ReciverView
         }

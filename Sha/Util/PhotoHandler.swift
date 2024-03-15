@@ -10,7 +10,7 @@ import Photos
 import UIKit
 
 
-extension CameraView: AVCapturePhotoCaptureDelegate {
+extension CameraViewOld: AVCapturePhotoCaptureDelegate {
     
     func setZoom(_ device: AVCaptureDevice){
         print("trying to set zoom")

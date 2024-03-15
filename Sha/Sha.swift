@@ -7,29 +7,31 @@
 
 import SwiftUI
 
+enum AppView {
+    case start
+    case camera
+    case settings
+}
+
+class Coordiantor: ObservableObject {
+    static let shared = Coordiantor()
+    @Published var presentedView: AppView = .start
+}
+
 @main
 struct PhotoTimer: App {
-
+    @ObservedObject var coordinator = Coordiantor.shared
     
     var body: some Scene {
         WindowGroup {
-            VStack {
-                Text("Aloha")
+            switch Coordiantor.shared.presentedView {
+            case .start:
+                StartView().environmentObject(coordinator)
+            case .camera:
+                CameraView().environmentObject(coordinator)
+            case .settings:
+                StartView().environmentObject(coordinator)
             }
-            
-           /* ZStack(alignment: .top) {
-                TabbarView()
-                ToastView()
-            }
-            .environment(\.managedObjectContext, CoreDataStack.sharedContext)
-            .environmentObject(toastControl)
-            .onAppear {
-                UserDefaults.standard.register(defaults: [UD_repairData: false])
-                UserDefaults.standard.register(defaults: [UD_firstLaunchKey: true])
-                UserDefaults.standard.register(defaults: [UD_lastVersion: "0.0.0"])
-                UserDefaults.standard.register(defaults: [UD_lastAskedForeReview: "\(Date().timeIntervalSince1970)"])
-                UserDefaults.standard.register(defaults: [UD_lastbackup: ""])
-            }*/
         }
     }
 }

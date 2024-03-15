@@ -13,11 +13,13 @@
 		DDAC1E01286B3929001FF0BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E00286B3929001FF0BA /* Assets.xcassets */; };
 		DDAC1E04286B3929001FF0BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */; };
 		DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D622886E872000F5A67 /* LaunchView.swift */; };
-		DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D642886E87E000F5A67 /* CameraView.swift */; };
+		DDB20D652886E87E000F5A67 /* CameraViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB20D642886E87E000F5A67 /* CameraViewOld.swift */; };
 		F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10A8654295E03B800A38941 /* PhotoHandler.swift */; };
 		F12A45BE296DB47300DEE286 /* MultipeerConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */; };
 		F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A45BF296DB64E00DEE286 /* ReciverView.swift */; };
 		F1AEB3682BA4508F004368BE /* Sha.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB3672BA4508F004368BE /* Sha.swift */; };
+		F1AEB36C2BA45AAB004368BE /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB36B2BA45AAB004368BE /* StartView.swift */; };
+		F1AEB36E2BA45E8F004368BE /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB36D2BA45E8F004368BE /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,11 +31,13 @@
 		DDAC1E03286B3929001FF0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDAC1E05286B3929001FF0BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDB20D622886E872000F5A67 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
-		DDB20D642886E87E000F5A67 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		DDB20D642886E87E000F5A67 /* CameraViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewOld.swift; sourceTree = "<group>"; };
 		F10A8654295E03B800A38941 /* PhotoHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHandler.swift; sourceTree = "<group>"; };
 		F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectionManager.swift; sourceTree = "<group>"; };
 		F12A45BF296DB64E00DEE286 /* ReciverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReciverView.swift; sourceTree = "<group>"; };
 		F1AEB3672BA4508F004368BE /* Sha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sha.swift; sourceTree = "<group>"; };
+		F1AEB36B2BA45AAB004368BE /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		F1AEB36D2BA45E8F004368BE /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,10 +83,12 @@
 		DDAC1E0D286B5448001FF0BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DDB20D642886E87E000F5A67 /* CameraView.swift */,
+				DDB20D642886E87E000F5A67 /* CameraViewOld.swift */,
 				F12A45BF296DB64E00DEE286 /* ReciverView.swift */,
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
+				F1AEB36B2BA45AAB004368BE /* StartView.swift */,
+				F1AEB36D2BA45E8F004368BE /* CameraView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,11 +175,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F12A45BE296DB47300DEE286 /* MultipeerConnectionManager.swift in Sources */,
+				F1AEB36C2BA45AAB004368BE /* StartView.swift in Sources */,
 				F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */,
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,
-				DDB20D652886E87E000F5A67 /* CameraView.swift in Sources */,
+				DDB20D652886E87E000F5A67 /* CameraViewOld.swift in Sources */,
+				F1AEB36E2BA45E8F004368BE /* CameraView.swift in Sources */,
 				F10A8655295E03B800A38941 /* PhotoHandler.swift in Sources */,
 				DD0D9CD22919695D00F7996A /* ShutterButton.swift in Sources */,
 				F1AEB3682BA4508F004368BE /* Sha.swift in Sources */,

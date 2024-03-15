@@ -53,7 +53,7 @@ extension UIColor {
     static var accentColor: UIColor {return UIColor(named: "AccentColor") ??  UIColor.blue}
 }
 
-extension CameraView {
+extension CameraViewOld {
     private func drawLine(_ point1: CGPoint, _ point2: CGPoint, _ color: CGColor = UIColor.white.withAlphaComponent(0.5).cgColor){
         let stroke = UIBezierPath()
         stroke.move(to: CGPoint(x: point1.x, y: point1.y))
