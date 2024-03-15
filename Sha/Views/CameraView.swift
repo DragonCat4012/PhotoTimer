@@ -46,7 +46,7 @@ struct CameraView: View {
                         HStack(alignment: .center) {
                             PhotoThumbnail(images: $viewModel.capturedImages)
                             Spacer()
-                            CaptureButton { captureButtonAction() }
+                            CaptureButton(isRunning: $isRunning) { captureButtonAction() }
                             Spacer()
                             Text("\(count)/\(maxCount)") .frame(width: 100)
                         }.padding(.horizontal)
