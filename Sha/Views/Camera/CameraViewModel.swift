@@ -43,12 +43,6 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func switchCamera() {
-        cameraManager.position = cameraManager.position == .front ? .back : .front
-        cameraManager.switchCamera()
-        isFrontCameraOn.toggle()
-    }
-    
     func configureCamera() {
         cameraManager.configureCaptureSession()
     }
@@ -88,5 +82,17 @@ class CameraViewModel: ObservableObject {
      
     func checkGalleryPermissionStatus() -> PHAuthorizationStatus {
        return PHPhotoLibrary.authorizationStatus()
+    }
+    
+    // MARK: Camera Settings
+    func switchCamera() {
+        cameraManager.position = cameraManager.position == .front ? .back : .front
+        cameraManager.switchCamera()
+        isFrontCameraOn.toggle()
+    }
+    
+    func switchFlash() {
+       isFlashOn.toggle()
+       cameraManager.toggleTorch(tourchIsOn: isFlashOn)
     }
 }

@@ -19,7 +19,7 @@ class CameraManager: ObservableObject {
     
     @Published var status = Status.unconfigured
     @Published var position: AVCaptureDevice.Position = .back
-    
+    @Published private var flashMode: AVCaptureDevice.FlashMode = .off
     
     let session = AVCaptureSession()
     
@@ -76,7 +76,6 @@ class CameraManager: ObservableObject {
         }
     }
     
-    
     func switchCamera() {
        guard let videoDeviceInput else { return }
       
@@ -125,13 +124,10 @@ class CameraManager: ObservableObject {
         }
     }
     
-
-
     func captureImage(_ onSucess: @escaping (UIImage?) -> ()) {
        sessionQueue.async { [weak self] in
           guard let self else { return }
       
-          // Configure photo capture settings
           var photoSettings = AVCapturePhotoSettings()
       
           // Capture HEIC photos when supported
@@ -139,14 +135,13 @@ class CameraManager: ObservableObject {
              photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
           }
       
-          // Sets the flash mode for the capture
           if self.videoDeviceInput!.device.isFlashAvailable {
-          //   photoSettings.flashMode = self.flashMode
+            photoSettings.flashMode = self.flashMode
           }
       
           photoSettings.isHighResolutionPhotoEnabled = true
       
-          // Specify photo quality and preview format
+
           if let previewPhotoPixelFormatType = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
              photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPhotoPixelFormatType]
           }
@@ -158,14 +153,37 @@ class CameraManager: ObservableObject {
           }
       
           cameraDelegate = CameraDelegate { [weak self] image in
-         //    self?.capturedImage = image
               onSucess(image)
           }
       
           if let cameraDelegate {
-             // Capture the photo with delegate
              self.photoOutput.capturePhoto(with: photoSettings, delegate: cameraDelegate)
           }
+       }
+    }
+    
+    func toggleTorch(tourchIsOn: Bool) {
+       guard let device = AVCaptureDevice.default(for: .video) else { return }
+          if device.hasTorch {
+            do {
+                try device.lockForConfiguration()
+
+                flashMode = tourchIsOn ? .on : .off
+                /*if flashMode == .on  && position == .front {
+                    switchCamera() // fron and flash doesnt work
+                }*/ // TODO: why not working
+
+                if tourchIsOn {
+                   try device.setTorchModeOn(level: 1.0)
+                } else {
+                   device.torchMode = .off
+                }
+                device.unlockForConfiguration()
+            } catch {
+            print("Failed to set torch mode: \(error).")
+          }
+       } else {
+          print("Torch not available for this device.")
        }
     }
 }

@@ -25,6 +25,14 @@ struct CameraView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Button(action: {
+                                coordinator.presentedView = .start
+                                stop()
+                            }, label: {
+                                Image(systemName: "gear" )
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            })
+                            Button(action: {
+                                viewModel.switchFlash()
                             }, label: {
                                 Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
                                     .font(.system(size: 20, weight: .medium, design: .default))
