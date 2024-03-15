@@ -18,6 +18,7 @@ class CameraViewModel: ObservableObject {
     @Published var showSettingAlert = false
     @Published var isPermissionGranted: Bool = false
     @Published var capturedImage: UIImage?
+    @Published var capturedImages = [UIImage]()
     
     var session: AVCaptureSession = .init()
     
@@ -57,10 +58,18 @@ class CameraViewModel: ObservableObject {
        let permission = checkGalleryPermissionStatus()
        if permission.rawValue != 2 {
            cameraManager.captureImage { image in
-               print("eeee")
-               self.capturedImage = image
+               self.addCapturedImage(image)
            }
        }
+    }
+    
+    func addCapturedImage(_ image: UIImage?) {
+        guard let image = image else { return }
+        
+        if capturedImages.count >= 3 {
+            capturedImages.popLast()
+        }
+        capturedImages.insert(image, at: 0)
     }
 
     // Ask for the permission for photo library access

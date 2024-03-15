@@ -44,11 +44,8 @@ struct CameraView: View {
                         }
                         
                         HStack {
-                            if let img = viewModel.capturedImage {
-                                PhotoThumbnail(image: Binding.constant(img))
-                            } else{
-                                Text("X")
-                            }
+                            PhotoThumbnail(images: $viewModel.capturedImages)
+                            
                             Spacer()
                             CaptureButton { if isRunning {
                                 stop()

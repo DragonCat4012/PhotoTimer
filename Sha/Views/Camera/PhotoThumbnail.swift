@@ -8,20 +8,37 @@
 import SwiftUI
 
 struct PhotoThumbnail: View {
-    
-    @Binding var image: UIImage
+    @Binding var images: [UIImage]
     
     var body: some View {
         Group {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 60, height: 60)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
- 
-            Rectangle()
-                .frame(width: 50, height: 50, alignment: .center)
-                .foregroundColor(.black)
+            if !images.isEmpty {
+                ZStack(alignment: .leading) {
+                    if images.count >= 3 {
+                        Image(uiImage: images[2])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    }
+                    if images.count >= 2 {
+                        Image(uiImage: images[1])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 80, height: 55)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    }
+                    Image(uiImage: images[0])
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 60, height: 60)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }.frame(width: 100)
+            } else {
+                Rectangle()
+                    .frame(width: 100, height: 60, alignment: .center)
+                    .foregroundColor(.black)
+            }
         }
     }
 }
