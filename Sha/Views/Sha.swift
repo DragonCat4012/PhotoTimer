@@ -16,6 +16,9 @@ enum AppView {
 class Coordiantor: ObservableObject {
     static let shared = Coordiantor()
     @Published var presentedView: AppView = .start
+    
+    @Published var photoCount = 5
+    @Published var timeIntervall = 3
 }
 
 @main

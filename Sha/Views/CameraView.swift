@@ -43,26 +43,30 @@ struct CameraView: View {
                             captureImage()
                         }
                         
-                        HStack {
+                        HStack(alignment: .center) {
                             PhotoThumbnail(images: $viewModel.capturedImages)
-                            
                             Spacer()
-                            CaptureButton { if isRunning {
-                                stop()
-                            } else {
-                                start()
-                            }
-                                isRunning.toggle() }
+                            CaptureButton { captureButtonAction() }
                             Spacer()
-                            Text("\(count)/\(maxCount)")
+                            Text("\(count)/\(maxCount)") .frame(width: 100)
                         }.padding(.horizontal)
                     }
                 }
             }
         } .onAppear {
+            maxCount = coordinator.photoCount
             stop()
             viewModel.checkForDevicePermission()
         }
+    }
+    
+    func captureButtonAction() {
+        if isRunning {
+            stop()
+        } else {
+            start()
+        }
+        isRunning.toggle()
     }
     
     func stop() {
@@ -71,7 +75,8 @@ struct CameraView: View {
     
     func start() {
         count = 0
-        timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        let seconds = Double(coordinator.timeIntervall)
+        timer = Timer.publish(every: seconds, on: .main, in: .common).autoconnect()
     }
     
     func captureImage() {

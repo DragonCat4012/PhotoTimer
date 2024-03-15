@@ -25,6 +25,7 @@
 		F1AEB37B2BA461A6004368BE /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37A2BA461A6004368BE /* CameraManager.swift */; };
 		F1AEB37D2BA4698A004368BE /* PhotoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37C2BA4698A004368BE /* PhotoThumbnail.swift */; };
 		F1AEB37F2BA469EC004368BE /* CameraDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37E2BA469EC004368BE /* CameraDelegate.swift */; };
+		F1AEB3812BA47E37004368BE /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB3802BA47E37004368BE /* ButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		F1AEB37A2BA461A6004368BE /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		F1AEB37C2BA4698A004368BE /* PhotoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoThumbnail.swift; sourceTree = "<group>"; };
 		F1AEB37E2BA469EC004368BE /* CameraDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDelegate.swift; sourceTree = "<group>"; };
+		F1AEB3802BA47E37004368BE /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +87,6 @@
 				DDAC1E00286B3929001FF0BA /* Assets.xcassets */,
 				DDAC1E02286B3929001FF0BA /* LaunchScreen.storyboard */,
 				DDAC1E05286B3929001FF0BA /* Info.plist */,
-				F1AEB3672BA4508F004368BE /* Sha.swift */,
 			);
 			path = Sha;
 			sourceTree = "<group>";
@@ -93,6 +94,7 @@
 		DDAC1E0D286B5448001FF0BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1AEB3672BA4508F004368BE /* Sha.swift */,
 				F1AEB3752BA4617C004368BE /* Camera */,
 				DDB20D642886E87E000F5A67 /* CameraViewOld.swift */,
 				F12A45BF296DB64E00DEE286 /* ReciverView.swift */,
@@ -100,6 +102,7 @@
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
 				F1AEB36B2BA45AAB004368BE /* StartView.swift */,
 				F1AEB36D2BA45E8F004368BE /* CameraView.swift */,
+				F1AEB3802BA47E37004368BE /* ButtonStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				F1AEB36C2BA45AAB004368BE /* StartView.swift in Sources */,
 				F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */,
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,
+				F1AEB3812BA47E37004368BE /* ButtonStyle.swift in Sources */,
 				DD3B2053286E1B61003E5557 /* SettingsView.swift in Sources */,
 				F1AEB3772BA46186004368BE /* CameraViewModel.swift in Sources */,
 				DD0AE5BC286E2C1100F135FB /* Util.swift in Sources */,
