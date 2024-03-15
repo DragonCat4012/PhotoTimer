@@ -9,20 +9,48 @@ import SwiftUI
 
 struct CameraView: View {
     @EnvironmentObject var coordinator: Coordiantor
+    @ObservedObject var viewModel = CameraViewModel()
     
     var body: some View {
         VStack {
-            Text("Aloha, welcoem back")
-       
-            Button("Settings") {
-                // TODO:
-                coordinator.presentedView = .settings
-                
+            GeometryReader { geometry in
+                ZStack {
+                    
+                    Color.black.edgesIgnoringSafeArea(.all)
+                    
+                    VStack(spacing: 0) {
+                        HStack {
+                            Button(action: {
+                            }, label: {
+                                Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            })
+                            .accentColor(viewModel.isFlashOn ? .yellow : .white)
+                            
+                            Button(action: {
+                                viewModel.switchCamera()
+                            }, label: {
+                                Image(systemName: viewModel.isFrontCameraOn ? "camera.fill" : "camera")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            })
+                        }
+                        
+                        CameraPreview(session: viewModel.session)
+                        
+                        /* HStack {
+                         PhotoThumbnail()
+                         Spacer()
+                         CaptureButton { // Call the capture method }
+                         Spacer()
+                         CameraSwitchButton { // Call the camera switch method }
+                         }*/
+                           // .padding(20)
+                    }
+                }
             }
-            
-            Button("Host session") {
-                // TODO: + add info texts
-            }
+        } .onAppear {
+            // viewModel.setupBindings()
+            viewModel.checkForDevicePermission()
         }
     }
 }
