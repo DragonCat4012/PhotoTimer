@@ -10,6 +10,10 @@ import SwiftUI
 struct CameraView: View {
     @EnvironmentObject var coordinator: Coordiantor
     @ObservedObject var viewModel = CameraViewModel()
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var isRunning = false
+    @State var count = 0
+    @State var maxCount = 5
     
     var body: some View {
         VStack {
@@ -35,22 +39,49 @@ struct CameraView: View {
                             })
                         }
                         
-                        CameraPreview(session: viewModel.session)
+                        CameraPreview(session: viewModel.session).onReceive(timer) { _ in
+                            captureImage()
+                        }
                         
-                        /* HStack {
-                         PhotoThumbnail()
-                         Spacer()
-                         CaptureButton { // Call the capture method }
-                         Spacer()
-                         CameraSwitchButton { // Call the camera switch method }
-                         }*/
-                           // .padding(20)
+                        HStack {
+                            if let img = viewModel.capturedImage {
+                                PhotoThumbnail(image: Binding.constant(img))
+                            } else{
+                                Text("X")
+                            }
+                            Spacer()
+                            CaptureButton { if isRunning {
+                                stop()
+                            } else {
+                                start()
+                            }
+                                isRunning.toggle() }
+                            Spacer()
+                            Text("\(count)/\(maxCount)")
+                        }.padding(.horizontal)
                     }
                 }
             }
         } .onAppear {
-            // viewModel.setupBindings()
+            stop()
             viewModel.checkForDevicePermission()
         }
+    }
+    
+    func stop() {
+        timer.upstream.connect().cancel()
+    }
+    
+    func start() {
+        count = 0
+        timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    }
+    
+    func captureImage() {
+        count += 1
+        if count == maxCount {
+            stop()
+        }
+        viewModel.captureImage()
     }
 }

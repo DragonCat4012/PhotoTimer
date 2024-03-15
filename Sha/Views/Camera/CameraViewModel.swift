@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVFoundation
+import Photos
 
 class CameraViewModel: ObservableObject {
     @ObservedObject var cameraManager = CameraManager()
@@ -16,6 +17,7 @@ class CameraViewModel: ObservableObject {
     @Published var showAlertError = false
     @Published var showSettingAlert = false
     @Published var isPermissionGranted: Bool = false
+    @Published var capturedImage: UIImage?
     
     var session: AVCaptureSession = .init()
     
@@ -48,5 +50,34 @@ class CameraViewModel: ObservableObject {
     
     func configureCamera() {
         cameraManager.configureCaptureSession()
+    }
+    
+    func captureImage() {
+       requestGalleryPermission()
+       let permission = checkGalleryPermissionStatus()
+       if permission.rawValue != 2 {
+           cameraManager.captureImage { image in
+               print("eeee")
+               self.capturedImage = image
+           }
+       }
+    }
+
+    // Ask for the permission for photo library access
+    func requestGalleryPermission() {
+       PHPhotoLibrary.requestAuthorization { status in
+         switch status {
+         case .authorized:
+            break
+         case .denied:
+            self.showSettingAlert = true
+         default:
+            break
+         }
+       }
+    }
+     
+    func checkGalleryPermissionStatus() -> PHAuthorizationStatus {
+       return PHPhotoLibrary.authorizationStatus()
     }
 }

@@ -23,6 +23,8 @@
 		F1AEB3772BA46186004368BE /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB3762BA46186004368BE /* CameraViewModel.swift */; };
 		F1AEB3792BA46198004368BE /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB3782BA46198004368BE /* CameraPreview.swift */; };
 		F1AEB37B2BA461A6004368BE /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37A2BA461A6004368BE /* CameraManager.swift */; };
+		F1AEB37D2BA4698A004368BE /* PhotoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37C2BA4698A004368BE /* PhotoThumbnail.swift */; };
+		F1AEB37F2BA469EC004368BE /* CameraDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AEB37E2BA469EC004368BE /* CameraDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		F1AEB3762BA46186004368BE /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		F1AEB3782BA46198004368BE /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		F1AEB37A2BA461A6004368BE /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		F1AEB37C2BA4698A004368BE /* PhotoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoThumbnail.swift; sourceTree = "<group>"; };
+		F1AEB37E2BA469EC004368BE /* CameraDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +121,8 @@
 				F1AEB3762BA46186004368BE /* CameraViewModel.swift */,
 				F1AEB3782BA46198004368BE /* CameraPreview.swift */,
 				F1AEB37A2BA461A6004368BE /* CameraManager.swift */,
+				F1AEB37C2BA4698A004368BE /* PhotoThumbnail.swift */,
+				F1AEB37E2BA469EC004368BE /* CameraDelegate.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -192,7 +198,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F12A45BE296DB47300DEE286 /* MultipeerConnectionManager.swift in Sources */,
+				F1AEB37D2BA4698A004368BE /* PhotoThumbnail.swift in Sources */,
 				F1AEB3792BA46198004368BE /* CameraPreview.swift in Sources */,
+				F1AEB37F2BA469EC004368BE /* CameraDelegate.swift in Sources */,
 				F1AEB36C2BA45AAB004368BE /* StartView.swift in Sources */,
 				F12A45C0296DB64E00DEE286 /* ReciverView.swift in Sources */,
 				DDB20D632886E872000F5A67 /* LaunchView.swift in Sources */,

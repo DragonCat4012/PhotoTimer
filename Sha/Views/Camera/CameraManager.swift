@@ -29,6 +29,8 @@ class CameraManager: ObservableObject {
     
     private let sessionQueue = DispatchQueue(label: "com.demo.sessionQueue")
     
+    private var cameraDelegate: CameraDelegate?
+    
     func configureCaptureSession() {
         sessionQueue.async { [weak self] in
             guard let self, self.status == .unconfigured else { return }
@@ -121,5 +123,49 @@ class CameraManager: ObservableObject {
                 self.session.stopRunning()
             }
         }
+    }
+    
+
+
+    func captureImage(_ onSucess: @escaping (UIImage?) -> ()) {
+       sessionQueue.async { [weak self] in
+          guard let self else { return }
+      
+          // Configure photo capture settings
+          var photoSettings = AVCapturePhotoSettings()
+      
+          // Capture HEIC photos when supported
+          if photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+             photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+          }
+      
+          // Sets the flash mode for the capture
+          if self.videoDeviceInput!.device.isFlashAvailable {
+          //   photoSettings.flashMode = self.flashMode
+          }
+      
+          photoSettings.isHighResolutionPhotoEnabled = true
+      
+          // Specify photo quality and preview format
+          if let previewPhotoPixelFormatType = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
+             photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPhotoPixelFormatType]
+          }
+
+          photoSettings.photoQualityPrioritization = .quality
+      
+          if let videoConnection = photoOutput.connection(with: .video), videoConnection.isVideoOrientationSupported {
+             videoConnection.videoOrientation = .portrait
+          }
+      
+          cameraDelegate = CameraDelegate { [weak self] image in
+         //    self?.capturedImage = image
+              onSucess(image)
+          }
+      
+          if let cameraDelegate {
+             // Capture the photo with delegate
+             self.photoOutput.capturePhoto(with: photoSettings, delegate: cameraDelegate)
+          }
+       }
     }
 }
