@@ -14,6 +14,7 @@ struct CameraView: View {
     @State var isRunning = false
     @State var count = 0
     @State var maxCount = 5
+    @State var showGridEnabled = true
     
     var body: some View {
         VStack {
@@ -22,7 +23,7 @@ struct CameraView: View {
                     
                     Color.black.edgesIgnoringSafeArea(.all)
                     
-                    VStack(spacing: 0) {
+                    VStack(spacing: 5) {
                         HStack {
                             Button(action: {
                                 coordinator.presentedView = .start
@@ -31,6 +32,9 @@ struct CameraView: View {
                                 Image(systemName: "gear" )
                                     .font(.system(size: 20, weight: .medium, design: .default))
                             })
+                            
+                            Spacer()
+                            
                             Button(action: {
                                 viewModel.switchFlash()
                             }, label: {
@@ -45,10 +49,31 @@ struct CameraView: View {
                                 Image(systemName: viewModel.isFrontCameraOn ? "camera.fill" : "camera")
                                     .font(.system(size: 20, weight: .medium, design: .default))
                             })
+                            
+                            Button(action: {
+                                showGridEnabled.toggle()
+                            }, label: {
+                                Image(systemName: "grid")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            }).foregroundColor(showGridEnabled ? .accentColor : .gray)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                // TODO: naviagte to conenctions
+                            }, label: {
+                                Image(systemName: "app.connected.to.app.below.fill")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            })
                         }
                         
-                        CameraPreview(session: viewModel.session).onReceive(timer) { _ in
-                            captureImage()
+                        ZStack {
+                            CameraPreview(session: viewModel.session).onReceive(timer) { _ in
+                                captureImage()
+                            }
+                            if showGridEnabled {
+                                grid()
+                            }
                         }
                         
                         HStack(alignment: .center) {
@@ -56,7 +81,8 @@ struct CameraView: View {
                             Spacer()
                             CaptureButton(isRunning: $isRunning) { captureButtonAction() }
                             Spacer()
-                            Text("\(count)/\(maxCount)") .frame(width: 100)
+                            Text("\(coordinator.timeIntervall)s").frame(width: 50)
+                            Text("\(count)/\(maxCount)").frame(width: 50)
                         }.padding(.horizontal)
                     }
                 }
@@ -67,6 +93,39 @@ struct CameraView: View {
             viewModel.checkForDevicePermission()
         }
     }
+    
+    func verticalGrid() -> some View {
+        HStack {
+            Spacer()
+            Rectangle().frame(width: 1)
+            Spacer()
+            Rectangle().frame(width: 1)
+            Spacer()
+            Rectangle().frame(width: 1)
+            Spacer()
+        }.frame(maxWidth: .infinity)
+    }
+    
+    func horizontalGrid() -> some View {
+        VStack {
+            Spacer()
+            Rectangle().frame(height: 1)
+            Spacer()
+            Rectangle().frame(height: 1)
+            Spacer()
+            Rectangle().frame(height: 1)
+            Spacer()
+        }
+    }
+    
+    func grid() -> some View {
+        ZStack {
+            horizontalGrid()
+            verticalGrid()
+        }
+    }
+    
+    //MARK: not view stuff
     
     func captureButtonAction() {
         if isRunning {
