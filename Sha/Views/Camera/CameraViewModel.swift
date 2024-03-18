@@ -95,4 +95,8 @@ class CameraViewModel: ObservableObject {
        isFlashOn.toggle()
        cameraManager.toggleTorch(tourchIsOn: isFlashOn)
     }
+    
+    func setFocus(point: CGPoint) {
+       cameraManager.setFocusOnTap(devicePoint: point)
+    }
 }

@@ -186,4 +186,25 @@ class CameraManager: ObservableObject {
           print("Torch not available for this device.")
        }
     }
+    
+    func setFocusOnTap(devicePoint: CGPoint) {
+       guard let cameraDevice = self.videoDeviceInput?.device else { return }
+       do {
+          try cameraDevice.lockForConfiguration()
+
+          if cameraDevice.isFocusModeSupported(.autoFocus) {
+             cameraDevice.focusMode = .autoFocus
+             cameraDevice.focusPointOfInterest = devicePoint
+          }
+
+          cameraDevice.exposurePointOfInterest = devicePoint
+          cameraDevice.exposureMode = .autoExpose
+
+          cameraDevice.isSubjectAreaChangeMonitoringEnabled = true
+
+          cameraDevice.unlockForConfiguration()
+       } catch {
+          print("Failed to configure focus: \(error)")
+       }
+    }
 }

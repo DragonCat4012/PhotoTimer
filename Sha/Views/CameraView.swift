@@ -16,6 +16,10 @@ struct CameraView: View {
     @State var maxCount = 5
     @State var showGridEnabled = true
     
+    @State private var isScaled = false
+    @State private var isFocused = false
+    @State private var focusLocation: CGPoint = .zero
+
     var body: some View {
         VStack {
             GeometryReader { geometry in
@@ -68,9 +72,32 @@ struct CameraView: View {
                         }
                         
                         ZStack {
-                            CameraPreview(session: viewModel.session).onReceive(timer) { _ in
+                            CameraPreview(session: viewModel.session) { tapPoint in
+                                isFocused = true
+                                focusLocation = tapPoint
+                                viewModel.setFocus(point: tapPoint)
+
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            }.onReceive(timer) { _ in
                                 captureImage()
                             }
+                            
+                            if isFocused {
+                                FocusView(position: $focusLocation)
+                                    .scaleEffect(isScaled ? 0.8 : 1)
+                                    .onAppear {
+                                        // Add a springy animation effect for visual appeal.
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
+                                            self.isScaled = true
+                                            // Return to the default state after 0.6 seconds for an elegant user experience.
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                                                self.isFocused = false
+                                                self.isScaled = false
+                                            }
+                                        }
+                                    }
+                            }
+                            
                             if showGridEnabled {
                                 grid()
                             }
