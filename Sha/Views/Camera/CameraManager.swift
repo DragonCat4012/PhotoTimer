@@ -17,6 +17,9 @@ class CameraManager: ObservableObject {
         case failed
     }
     
+    @Published var isPortraitEnabled = false
+    @Published var isLiveEnabled = false
+    @Published var isPhotCropEnabled = false
     @Published var status = Status.unconfigured
     @Published var position: AVCaptureDevice.Position = .back
     @Published private var flashMode: AVCaptureDevice.FlashMode = .off
@@ -74,14 +77,6 @@ class CameraManager: ObservableObject {
             session.commitConfiguration()
             return
         }
-    }
-    
-    func switchCamera() {
-       guard let videoDeviceInput else { return }
-      
-       session.removeInput(videoDeviceInput)
-      
-       setupVideoInput()
     }
     
     private func setupPhotoOutput() {
@@ -160,6 +155,15 @@ class CameraManager: ObservableObject {
              self.photoOutput.capturePhoto(with: photoSettings, delegate: cameraDelegate)
           }
        }
+    }
+    
+    // MARK: Camera Settings
+    func switchCamera() {
+       guard let videoDeviceInput else { return }
+      
+       session.removeInput(videoDeviceInput)
+      
+       setupVideoInput()
     }
     
     func toggleTorch(tourchIsOn: Bool) {

@@ -52,6 +52,27 @@ struct CameraView: View {
                                     .font(.system(size: 20, weight: .medium, design: .default))
                             }).foregroundColor(viewModel.showGridEnabled ? .accentColor : .gray)
                             
+                            Button(action: {
+                                viewModel.toggleLive()
+                            }, label: {
+                                Image(systemName: viewModel.isLiveOn ? "livephoto" : "livephoto.slash")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            })
+                            
+                            Button(action: {
+                                viewModel.togglePortrait()
+                            }, label: {
+                                Image(systemName: "camera.macro")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            }).foregroundColor(viewModel.isPortraitOn ? .accentColor : .gray)
+                            
+                            Button(action: {
+                                viewModel.toggleCrop()
+                            }, label: {
+                                Image(systemName:"rectangle")
+                                    .font(.system(size: 20, weight: .medium, design: .default))
+                            }).foregroundColor(viewModel.isQuadratEnabled ? .accentColor : .gray)
+                            
                             Spacer()
                             
                             Button(action: {

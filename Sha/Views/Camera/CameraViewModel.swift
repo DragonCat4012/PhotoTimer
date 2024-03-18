@@ -28,6 +28,9 @@ class CameraViewModel: ObservableObject {
     @Published var focusLocation: CGPoint = .zero
     
     // camera settings
+    @Published var isQuadratEnabled = false
+    @Published var isLiveOn = false
+    @Published var isPortraitOn = false
     @Published var isFlashOn = false
     @Published var isFrontCameraOn = false
     @Published var showAlertError = false
@@ -107,6 +110,35 @@ class CameraViewModel: ObservableObject {
         timeInterval = coordinator.timeIntervall
         stop()
         checkForDevicePermission()
+    }
+    
+    func toggleLive() {
+        isLiveOn.toggle()
+        if isPortraitOn && isLiveOn {
+            isPortraitOn = false
+        }
+        updateManagerSettings()
+    }
+    
+    func togglePortrait() {
+        isPortraitOn.toggle()
+        if isPortraitOn && isLiveOn {
+            isLiveOn = false
+        }
+        updateManagerSettings()
+    }
+    
+    func toggleCrop() {
+        isQuadratEnabled.toggle()
+        updateManagerSettings()
+    }
+    
+    func updateManagerSettings() {
+        cameraManager.isLiveEnabled = isLiveOn
+        cameraManager.isPortraitEnabled = isPortraitOn
+        cameraManager.isPhotCropEnabled = isQuadratEnabled
+        
+        cameraManager.configureCaptureSession()
     }
     
     func captureButtonAction() {
