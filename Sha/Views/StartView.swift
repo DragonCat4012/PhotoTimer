@@ -45,7 +45,7 @@ struct StartView: View {
                 }.buttonStyle(PrimaryStyle())
                 
                 Button("Join session") {
-                    // TODO: + add info texts
+                    // TODO: + add info texts, portrait and live option
                 }.buttonStyle(SecondaryStyle())
                 Text("Join a session to preview your results on another device (Needs local network access)")
         }.padding()

@@ -94,12 +94,9 @@
 		DDAC1E0D286B5448001FF0BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1AC95CA2BA8425500EF1B59 /* oldFiles */,
 				F1AEB3672BA4508F004368BE /* Sha.swift */,
 				F1AEB3752BA4617C004368BE /* Camera */,
-				DDB20D642886E87E000F5A67 /* CameraViewOld.swift */,
-				F12A45BF296DB64E00DEE286 /* ReciverView.swift */,
-				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
-				DDB20D622886E872000F5A67 /* LaunchView.swift */,
 				F1AEB36B2BA45AAB004368BE /* StartView.swift */,
 				F1AEB3802BA47E37004368BE /* ButtonStyle.swift */,
 			);
@@ -115,6 +112,17 @@
 				F12A45BD296DB47300DEE286 /* MultipeerConnectionManager.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		F1AC95CA2BA8425500EF1B59 /* oldFiles */ = {
+			isa = PBXGroup;
+			children = (
+				DDB20D642886E87E000F5A67 /* CameraViewOld.swift */,
+				F12A45BF296DB64E00DEE286 /* ReciverView.swift */,
+				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
+				DDB20D622886E872000F5A67 /* LaunchView.swift */,
+			);
+			path = oldFiles;
 			sourceTree = "<group>";
 		};
 		F1AEB3752BA4617C004368BE /* Camera */ = {
