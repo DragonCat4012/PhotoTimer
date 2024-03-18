@@ -144,6 +144,7 @@ class CameraViewModel: ObservableObject {
     func captureButtonAction() {
         if isRunning {
             stop()
+            count = 0
         } else {
             start()
         }
