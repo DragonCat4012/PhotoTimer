@@ -66,12 +66,12 @@ struct CameraView: View {
                                     .font(.system(size: 20, weight: .medium, design: .default))
                             }).foregroundColor(viewModel.isPortraitOn ? .accentColor : .gray)
                             
-                            Button(action: {
+                          /*  Button(action: {
                                 viewModel.toggleCrop()
                             }, label: {
                                 Image(systemName:"rectangle")
                                     .font(.system(size: 20, weight: .medium, design: .default))
-                            }).foregroundColor(viewModel.isQuadratEnabled ? .accentColor : .gray)
+                            }).foregroundColor(viewModel.isQuadratEnabled ? .accentColor : .gray)*/
                             
                             Spacer()
                             
