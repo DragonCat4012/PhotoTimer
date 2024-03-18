@@ -12,6 +12,22 @@ import Photos
 class CameraViewModel: ObservableObject {
     @ObservedObject var cameraManager = CameraManager()
     
+    @Published var isRunning = false
+    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    // app settings
+    @Published var count = 0
+    @Published var maxCount = 5
+    @Published var timeInterval = 3
+    
+    // view settings
+    @Published var showGridEnabled = true
+    
+    @Published var isScaled = false
+    @Published var isFocused = false
+    @Published var focusLocation: CGPoint = .zero
+    
+    // camera settings
     @Published var isFlashOn = false
     @Published var isFrontCameraOn = false
     @Published var showAlertError = false
@@ -48,13 +64,14 @@ class CameraViewModel: ObservableObject {
     }
     
     func captureImage() {
-       requestGalleryPermission()
-       let permission = checkGalleryPermissionStatus()
-       if permission.rawValue != 2 {
-           cameraManager.captureImage { image in
-               self.addCapturedImage(image)
-           }
-       }
+        requestGalleryPermission()
+        let permission = checkGalleryPermissionStatus()
+        if permission.rawValue != 2 {
+            cameraManager.captureImage { image in
+                self.addCapturedImage(image)
+                AudioServicesPlaySystemSound(1114)
+            }
+        }
     }
     
     func addCapturedImage(_ image: UIImage?) {
@@ -65,23 +82,58 @@ class CameraViewModel: ObservableObject {
         }
         capturedImages.insert(image, at: 0)
     }
-
+    
     // Ask for the permission for photo library access
     func requestGalleryPermission() {
-       PHPhotoLibrary.requestAuthorization { status in
-         switch status {
-         case .authorized:
-            break
-         case .denied:
-            self.showSettingAlert = true
-         default:
-            break
-         }
-       }
+        PHPhotoLibrary.requestAuthorization { status in
+            switch status {
+            case .authorized:
+                break
+            case .denied:
+                self.showSettingAlert = true
+            default:
+                break
+            }
+        }
     }
-     
+    
     func checkGalleryPermissionStatus() -> PHAuthorizationStatus {
-       return PHPhotoLibrary.authorizationStatus()
+        return PHPhotoLibrary.authorizationStatus()
+    }
+    
+    // MARK: View functions
+    func onAppear(_ coordinator: Coordiantor) {
+        maxCount = coordinator.photoCount
+        timeInterval = coordinator.timeIntervall
+        stop()
+        checkForDevicePermission()
+    }
+    
+    func captureButtonAction() {
+        if isRunning {
+            stop()
+        } else {
+            start()
+        }
+        isRunning.toggle()
+    }
+    
+    func stop() {
+        timer.upstream.connect().cancel()
+    }
+    
+    func start() {
+        count = 0
+        let seconds = Double(timeInterval)
+        timer = Timer.publish(every: seconds, on: .main, in: .common).autoconnect()
+    }
+    
+    func captureImageFromView() {
+        count += 1
+        if count == maxCount {
+            stop()
+        }
+        captureImage()
     }
     
     // MARK: Camera Settings
@@ -92,11 +144,11 @@ class CameraViewModel: ObservableObject {
     }
     
     func switchFlash() {
-       isFlashOn.toggle()
-       cameraManager.toggleTorch(tourchIsOn: isFlashOn)
+        isFlashOn.toggle()
+        cameraManager.toggleTorch(tourchIsOn: isFlashOn)
     }
     
     func setFocus(point: CGPoint) {
-       cameraManager.setFocusOnTap(devicePoint: point)
+        cameraManager.setFocusOnTap(devicePoint: point)
     }
 }

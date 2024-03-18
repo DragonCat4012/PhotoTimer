@@ -10,16 +10,7 @@ import SwiftUI
 struct CameraView: View {
     @EnvironmentObject var coordinator: Coordiantor
     @ObservedObject var viewModel = CameraViewModel()
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State var isRunning = false
-    @State var count = 0
-    @State var maxCount = 5
-    @State var showGridEnabled = true
     
-    @State private var isScaled = false
-    @State private var isFocused = false
-    @State private var focusLocation: CGPoint = .zero
-
     var body: some View {
         VStack {
             GeometryReader { geometry in
@@ -31,7 +22,7 @@ struct CameraView: View {
                         HStack {
                             Button(action: {
                                 coordinator.presentedView = .start
-                                stop()
+                                viewModel.stop()
                             }, label: {
                                 Image(systemName: "gear" )
                                     .font(.system(size: 20, weight: .medium, design: .default))
@@ -55,11 +46,11 @@ struct CameraView: View {
                             })
                             
                             Button(action: {
-                                showGridEnabled.toggle()
+                                viewModel.showGridEnabled.toggle()
                             }, label: {
                                 Image(systemName: "grid")
                                     .font(.system(size: 20, weight: .medium, design: .default))
-                            }).foregroundColor(showGridEnabled ? .accentColor : .gray)
+                            }).foregroundColor(viewModel.showGridEnabled ? .accentColor : .gray)
                             
                             Spacer()
                             
@@ -73,32 +64,31 @@ struct CameraView: View {
                         
                         ZStack {
                             CameraPreview(session: viewModel.session) { tapPoint in
-                                isFocused = true
-                                focusLocation = tapPoint
+                                viewModel.isFocused = true
+                                viewModel.focusLocation = tapPoint
                                 viewModel.setFocus(point: tapPoint)
-
+                                
                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            }.onReceive(timer) { _ in
-                                captureImage()
+                            }.onReceive(viewModel.timer) { _ in
+                                viewModel.captureImageFromView()
                             }
                             
-                            if isFocused {
-                                FocusView(position: $focusLocation)
-                                    .scaleEffect(isScaled ? 0.8 : 1)
+                            if viewModel.isFocused {
+                                FocusView(position: $viewModel.focusLocation)
+                                    .scaleEffect(viewModel.isScaled ? 0.8 : 1)
                                     .onAppear {
-                                        // Add a springy animation effect for visual appeal.
                                         withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
-                                            self.isScaled = true
-                                            // Return to the default state after 0.6 seconds for an elegant user experience.
+                                            self.viewModel.isScaled = true
+                                            
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                                                self.isFocused = false
-                                                self.isScaled = false
+                                                self.viewModel.isFocused = false
+                                                self.viewModel.isScaled = false
                                             }
                                         }
                                     }
                             }
                             
-                            if showGridEnabled {
+                            if viewModel.showGridEnabled {
                                 grid()
                             }
                         }
@@ -106,21 +96,20 @@ struct CameraView: View {
                         HStack(alignment: .center) {
                             PhotoThumbnail(images: $viewModel.capturedImages)
                             Spacer()
-                            CaptureButton(isRunning: $isRunning) { captureButtonAction() }
+                            CaptureButton(isRunning: $viewModel.isRunning) { viewModel.captureButtonAction() }
                             Spacer()
-                            Text("\(coordinator.timeIntervall)s").frame(width: 50)
-                            Text("\(count)/\(maxCount)").frame(width: 50)
+                            Text("\(viewModel.timeInterval)s").frame(width: 50)
+                            Text("\(viewModel.count)/\(viewModel.maxCount)").frame(width: 50)
                         }.padding(.horizontal)
                     }
                 }
             }
         } .onAppear {
-            maxCount = coordinator.photoCount
-            stop()
-            viewModel.checkForDevicePermission()
+            viewModel.onAppear(coordinator)
         }
     }
     
+    // MARK: Supporting Views
     func verticalGrid() -> some View {
         HStack {
             Spacer()
@@ -150,34 +139,5 @@ struct CameraView: View {
             horizontalGrid()
             verticalGrid()
         }
-    }
-    
-    //MARK: not view stuff
-    
-    func captureButtonAction() {
-        if isRunning {
-            stop()
-        } else {
-            start()
-        }
-        isRunning.toggle()
-    }
-    
-    func stop() {
-        timer.upstream.connect().cancel()
-    }
-    
-    func start() {
-        count = 0
-        let seconds = Double(coordinator.timeIntervall)
-        timer = Timer.publish(every: seconds, on: .main, in: .common).autoconnect()
-    }
-    
-    func captureImage() {
-        count += 1
-        if count == maxCount {
-            stop()
-        }
-        viewModel.captureImage()
     }
 }

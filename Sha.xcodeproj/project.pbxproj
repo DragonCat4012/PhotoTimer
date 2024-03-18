@@ -101,7 +101,6 @@
 				DD3B2052286E1B60003E5557 /* SettingsView.swift */,
 				DDB20D622886E872000F5A67 /* LaunchView.swift */,
 				F1AEB36B2BA45AAB004368BE /* StartView.swift */,
-				F1AEB36D2BA45E8F004368BE /* CameraView.swift */,
 				F1AEB3802BA47E37004368BE /* ButtonStyle.swift */,
 			);
 			path = Views;
@@ -121,6 +120,7 @@
 		F1AEB3752BA4617C004368BE /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				F1AEB36D2BA45E8F004368BE /* CameraView.swift */,
 				F1AEB3762BA46186004368BE /* CameraViewModel.swift */,
 				F1AEB3782BA46198004368BE /* CameraPreview.swift */,
 				F1AEB37A2BA461A6004368BE /* CameraManager.swift */,
