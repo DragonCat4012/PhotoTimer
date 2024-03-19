@@ -25,11 +25,9 @@ class CameraManager: ObservableObject {
     @Published private var flashMode: AVCaptureDevice.FlashMode = .off
     
     let session = AVCaptureSession()
-    
     let photoOutput = AVCapturePhotoOutput()
-    
     var videoDeviceInput: AVCaptureDeviceInput?
-    
+    var photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
     private let sessionQueue = DispatchQueue(label: "com.demo.sessionQueue")
     
     private var cameraDelegate: CameraDelegate?
@@ -50,7 +48,7 @@ class CameraManager: ObservableObject {
     
     private func setupVideoInput() {
         do {
-            let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
+            let camera = AVCaptureDevice.default(.builtInDualWideCamera, for: .video, position: position)
             
             guard let camera else {
                 print("CameraManager: Video device is unavailable.")
@@ -86,6 +84,24 @@ class CameraManager: ObservableObject {
             photoOutput.isHighResolutionCaptureEnabled = true
             photoOutput.maxPhotoQualityPrioritization = .quality // work for ios 15.6 and the older versions
             //photoOutput.maxPhotoDimensions = .init(width: 4032, height: 3024) // for ios 16.0*
+            
+            if isLiveEnabled {
+                print("live enabled")
+                photoOutput.isLivePhotoCaptureEnabled = photoOutput.isLivePhotoCaptureSupported
+            }
+            print("setup session")
+            //enable portraitEffect
+            if isPortraitEnabled && photoOutput.isDepthDataDeliverySupported && photoOutput.isPortraitEffectsMatteDeliverySupported {
+                print("Setup portrait")
+                photoOutput.isHighResolutionCaptureEnabled = true
+                photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
+                photoOutput.isPortraitEffectsMatteDeliveryEnabled = photoOutput.isPortraitEffectsMatteDeliverySupported
+                
+                photoSettings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
+                photoSettings.isPortraitEffectsMatteDeliveryEnabled = photoOutput.isPortraitEffectsMatteDeliverySupported
+                photoSettings.embedsDepthDataInPhoto = true
+                photoSettings.isDepthDataFiltered = true
+            }
             
             status = .configured
         } else {
