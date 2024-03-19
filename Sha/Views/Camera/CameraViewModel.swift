@@ -106,6 +106,7 @@ class CameraViewModel: ObservableObject {
     
     // MARK: View functions
     func onAppear(_ coordinator: Coordiantor) {
+        cameraManager.selectedCamera = coordinator.selectedCamera
         maxCount = coordinator.photoCount
         timeInterval = coordinator.timeIntervall
         stop()

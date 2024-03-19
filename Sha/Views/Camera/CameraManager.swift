@@ -17,6 +17,8 @@ class CameraManager: ObservableObject {
         case failed
     }
     
+    var selectedCamera: AVCaptureDevice.DeviceType?
+    
     @Published var isPortraitEnabled = false
     @Published var isLiveEnabled = false
     @Published var isPhotCropEnabled = false
@@ -50,7 +52,12 @@ class CameraManager: ObservableObject {
     
     private func setupVideoInput() {
         do {
-            let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
+            print(selectedCamera)
+            var camera = AVCaptureDevice.default(for: .video)
+            print(camera?.deviceType)
+            if let selectedCamera = selectedCamera {
+                camera = AVCaptureDevice.default(selectedCamera, for: .video, position: position)
+            }
             
             guard let camera else {
                 print("CameraManager: Video device is unavailable.")
@@ -167,7 +174,12 @@ class CameraManager: ObservableObject {
     }
     
     func toggleTorch(tourchIsOn: Bool) {
-       guard let device = AVCaptureDevice.default(for: .video) else { return }
+        var device = AVCaptureDevice.default(for: .video)
+        if let selectedCamera = selectedCamera {
+            device = AVCaptureDevice.default(selectedCamera, for: .video, position: position)
+        }
+        
+        if let device = device  {
           if device.hasTorch {
             do {
                 try device.lockForConfiguration()
@@ -190,6 +202,7 @@ class CameraManager: ObservableObject {
           print("Torch not available for this device.")
        }
     }
+}
     
     func setFocusOnTap(devicePoint: CGPoint) {
        guard let cameraDevice = self.videoDeviceInput?.device else { return }

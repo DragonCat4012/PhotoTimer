@@ -59,14 +59,15 @@ struct CameraView: View {
                                     .font(.system(size: 20, weight: .medium, design: .default))
                             })
                             
-                            Button(action: {
-                                viewModel.togglePortrait()
-                            }, label: {
-                                Image(systemName: "camera.macro")
-                                    .font(.system(size: 20, weight: .medium, design: .default))
-                            }).foregroundColor(viewModel.isPortraitOn ? .accentColor : .gray)
-                            
-                          /*  Button(action: {
+                            if coordinator.canDoPortrait {
+                                Button(action: {
+                                    viewModel.togglePortrait()
+                                }, label: {
+                                    Image(systemName: "camera.macro")
+                                        .font(.system(size: 20, weight: .medium, design: .default))
+                                }).foregroundColor(viewModel.isPortraitOn ? .accentColor : .gray)
+                            }
+                            /*  Button(action: {
                                 viewModel.toggleCrop()
                             }, label: {
                                 Image(systemName:"rectangle")

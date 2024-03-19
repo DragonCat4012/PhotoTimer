@@ -34,9 +34,13 @@ struct StartView: View {
                     Text("Photos")
                     Stepper("", value: $photoCountStepperValue, in: 1...100, step: 1)
                     Text("\(photoCountStepperValue)")
+                }.padding(.bottom, 20)
+                Text("Portrait effect only works with a 'DualWideCamera'")
+                Picker("Cameras?", selection: $coordinator.cameras) {
+                    ForEach(coordinator.cameras, id: \.self) { camera in
+                        Text("\(camera.rawValue.replacingOccurrences(of: "AVCaptureDeviceTypeBuiltIn", with: ""))")
+                    }
                 }
-                Text("CameraPicker ehre oder so")
-                Text("Portrait effect only works with a dualWideCamera")
                 Spacer()
                 Button("Lets go c:") {
                     coordinator.photoCount = photoCountStepperValue
